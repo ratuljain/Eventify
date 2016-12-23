@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_jenkins',
     'rest_framework',
+    'eventify_api',
 ]
 
 MIDDLEWARE_CLASSES = [
