@@ -20,9 +20,9 @@ node {
      stage('Deploy') {
        echo '####### Deploying Code ##########'
        sh 'sudo su -s /bin/bash deployer'
-       sh 'whoami'
-       sh 'export REMOTE_DEPLOYER_PASSWORD="scooty2310"'
-       sh 'sudo ansible-playbook ./prod/deploy.yml --private-key=./ssh_keys/prod_key -u deployer -i ./prod/hosts'
+       echo "My branch is: ${USER}"
+       sh 'cd /var/lib/jenkins/workspace/fsp-deployment-guide'
+       sh 'sh ./deploy_prod.sh'
      }
    }
 }
