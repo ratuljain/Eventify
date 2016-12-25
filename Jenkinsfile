@@ -4,7 +4,7 @@ node {
       // Get some code from a GitHub repository
       sh 'sudo su -s /bin/bash jenkins'
       sh 'whoami'
-      git 'https://github.com/ratuljain1991/Eventify.git'
+      checkout scm
       sh 'cd /var/lib/jenkins/workspace/Eventify_pipeline'
       sh 'virtualenv -q venv'
       sh '. venv/bin/activate'
