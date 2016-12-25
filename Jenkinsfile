@@ -22,7 +22,7 @@ node {
        sh 'sudo su -s /bin/bash deployer'
        echo "My branch is: ${USER}"
        sh 'cd /var/lib/jenkins/workspace/fsp-deployment-guide'
-       sh 'sh ./deploy_prod.sh'
+       sh 'sh deploy_prod.sh'
      }
    }
 }
