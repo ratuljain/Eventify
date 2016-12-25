@@ -6,18 +6,6 @@ node {
       sh 'sudo su -s /bin/bash jenkins'
       echo "My branch is: ${env.BRANCH_NAME}"
       sh 'cd /var/lib/jenkins/workspace/Eventify_pipeline'
-
-      // publish html
-  // snippet generator doesn't include "target:"
-  // https://issues.jenkins-ci.org/browse/JENKINS-29711.
-    publishHTML (target: [
-      allowMissing: false,
-      alwaysLinkToLastBuild: false,
-      keepAll: true,
-      reportDir: 'coverage',
-      reportFiles: 'index.html',
-      reportName: "RCov Report"
-    ])
    }
 
    stage('Build') {
