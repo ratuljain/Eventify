@@ -22,7 +22,7 @@ node {
        sh 'sudo su -s /bin/bash deployer'
        sh 'whoami'
        sh 'export REMOTE_DEPLOYER_PASSWORD="scooty2310"'
-       sh 'ansible-playbook ./prod/deploy.yml --private-key=./ssh_keys/prod_key -u deployer -i ./prod/hosts'
+       sh 'sudo su -s ansible-playbook ./prod/deploy.yml --private-key=./ssh_keys/prod_key -u deployer -i ./prod/hosts'
      }
    }
 }
