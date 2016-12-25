@@ -18,6 +18,7 @@ node {
 
    if(env.BRANCH_NAME == "master" && currentBuild.result == 'SUCCESS'){
      stage('Deploy') {
+       echo '####### Deploying Code ##########'
        sh 'cd /var/lib/jenkins/fsp-deployment-guide'
        sh 'sudo ./deploy_prod.sh'
      }
