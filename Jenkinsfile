@@ -3,7 +3,10 @@ node {
    stage('Preparation') { // for display purposes
       // Get some code from a GitHub repository
       sh 'sudo su -s /bin/bash jenkins'
-      sh 'whoami'
+      echo "My branch is: ${env.BRANCH_NAME}"
+      if(env.BRANCH_NAME == "master"){
+        echo "My branch is master"
+      }
       checkout scm
       sh 'cd /var/lib/jenkins/workspace/Eventify_pipeline'
       sh 'virtualenv -q venv'
