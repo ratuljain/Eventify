@@ -21,8 +21,7 @@ node {
        echo '####### Deploying Code ##########'
        sh 'sudo su -s /bin/bash deployer'
        echo "My branch is: ${USER}"
-       sh 'cd /var/lib/jenkins/workspace/fsp-deployment-guide'
-
+       def out = sh script: '/var/lib/jenkins/workspace/fsp-deployment-guide/deploy_prod', returnStdout: true
      }
    }
 }
