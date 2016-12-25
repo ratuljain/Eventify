@@ -20,7 +20,7 @@ node {
      stage('Deploy') {
        echo '####### Deploying Code ##########'
        sh 'cd /var/lib/jenkins/fsp-deployment-guide'
-       sh 'deploy_prod.sh'
+       sh 'sh deploy_prod.sh'
      }
    }
 }
