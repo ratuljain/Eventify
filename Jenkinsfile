@@ -16,7 +16,7 @@ node {
         sh 'python manage.py migrate'
    }
 
-   if(env.BRANCH_NAME == "master" && currentBuild.result == 'SUCCESS'){
+   if(env.BRANCH_NAME == "master"){
      stage('Deploy') {
        echo '####### Deploying Code ##########'
        sh 'cd /var/lib/jenkins/fsp-deployment-guide'
