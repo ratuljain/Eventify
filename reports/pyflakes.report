@@ -1,24 +1,3 @@
-../../eventifyEnv/lib/python2.7/site-packages/django/contrib/messages/__init__.py:1: [E] PYFLAKES:'from django.contrib.messages.api import *' used; unable to detect undefined names
-../../eventifyEnv/lib/python2.7/site-packages/django/contrib/messages/__init__.py:1: [E] PYFLAKES:'django.contrib.messages.api.*' imported but unused
-../../eventifyEnv/lib/python2.7/site-packages/django/contrib/messages/__init__.py:2: [E] PYFLAKES:'from django.contrib.messages.constants import *' used; unable to detect undefined names
-../../eventifyEnv/lib/python2.7/site-packages/django/contrib/messages/__init__.py:2: [E] PYFLAKES:'django.contrib.messages.constants.*' imported but unused
-../../eventifyEnv/lib/python2.7/site-packages/rest_framework/compat.py:23: [E] PYFLAKES:'django.utils.importlib' imported but unused
-../../eventifyEnv/lib/python2.7/site-packages/rest_framework/compat.py:31: [E] PYFLAKES:'django.core.urlresolvers.reverse_lazy' imported but unused
-../../eventifyEnv/lib/python2.7/site-packages/rest_framework/compat.py:31: [E] PYFLAKES:'django.core.urlresolvers.RegexURLPattern' imported but unused
-../../eventifyEnv/lib/python2.7/site-packages/rest_framework/compat.py:31: [E] PYFLAKES:'django.core.urlresolvers.NoReverseMatch' imported but unused
-../../eventifyEnv/lib/python2.7/site-packages/rest_framework/compat.py:31: [E] PYFLAKES:'django.core.urlresolvers.Resolver404' imported but unused
-../../eventifyEnv/lib/python2.7/site-packages/rest_framework/compat.py:31: [E] PYFLAKES:'django.core.urlresolvers.get_script_prefix' imported but unused
-../../eventifyEnv/lib/python2.7/site-packages/rest_framework/compat.py:31: [E] PYFLAKES:'django.core.urlresolvers.ResolverMatch' imported but unused
-../../eventifyEnv/lib/python2.7/site-packages/rest_framework/compat.py:31: [E] PYFLAKES:'django.core.urlresolvers.RegexURLResolver' imported but unused
-../../eventifyEnv/lib/python2.7/site-packages/rest_framework/compat.py:31: [E] PYFLAKES:'django.core.urlresolvers.resolve' imported but unused
-../../eventifyEnv/lib/python2.7/site-packages/rest_framework/compat.py:31: [E] PYFLAKES:'django.core.urlresolvers.reverse' imported but unused
-../../eventifyEnv/lib/python2.7/site-packages/rest_framework/compat.py:39: [E] PYFLAKES:'urllib.parse as urlparse' imported but unused
-../../eventifyEnv/lib/python2.7/site-packages/rest_framework/compat.py:209: [E] PYFLAKES:'guardian' imported but unused
-../../eventifyEnv/lib/python2.7/site-packages/rest_framework/serializers.py:54: [E] PYFLAKES:'rest_framework.fields.SerializerMethodField' imported but unused
-../../eventifyEnv/lib/python2.7/site-packages/rest_framework/serializers.py:54: [E] PYFLAKES:'rest_framework.fields.MultipleChoiceField' imported but unused
-../../eventifyEnv/lib/python2.7/site-packages/rest_framework/serializers.py:54: [E] PYFLAKES:'rest_framework.fields.RegexField' imported but unused
-../../eventifyEnv/lib/python2.7/site-packages/rest_framework/serializers.py:61: [E] PYFLAKES:'rest_framework.relations.RelatedField' imported but unused
-../../eventifyEnv/lib/python2.7/site-packages/rest_framework/serializers.py:61: [E] PYFLAKES:'rest_framework.relations.ManyRelatedField' imported but unused
-../../eventifyEnv/lib/python2.7/site-packages/rest_framework/serializers.py:61: [E] PYFLAKES:'rest_framework.relations.StringRelatedField' imported but unused
-../../eventifyEnv/lib/python2.7/site-packages/rest_framework/serializers.py:67: [E] PYFLAKES:'rest_framework.fields.CurrentUserDefault' imported but unused
-../../eventifyEnv/lib/python2.7/site-packages/rest_framework/serializers.py:70: [E] PYFLAKES:'rest_framework.relations.Hyperlink' imported but unused
+eventify_api/models.py:3: [E] PYFLAKES:'django.db.models' imported but unused
+eventify_api/tests.py:1: [E] PYFLAKES:'django.test.TestCase' imported but unused
+eventify_api/views.py:1: [E] PYFLAKES:'django.shortcuts.render' imported but unused
