@@ -147,3 +147,4 @@ REST_FRAMEWORK = {
 }
 
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+PROJECT_APPS = ('eventify_api',)

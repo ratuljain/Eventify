@@ -16,6 +16,17 @@ node {
         sh 'python manage.py migrate'
    }
 
+   stage('Publishing Reports') {
+      publishHTML (target: [
+      allowMissing: false,
+      alwaysLinkToLastBuild: false,
+      keepAll: true,
+      reportDir: 'reports/coverage',
+      reportFiles: 'index.html',
+      reportName: "RCov Report"
+    ])
+   }
+
    if(env.BRANCH_NAME == "master"){
      stage('Deploy') {
        echo '####### Deploying Code ##########'
@@ -23,7 +34,7 @@ node {
        echo "My branch is: ${USER}"
        sh 'cd /var/lib/jenkins/workspace/fsp-deployment-guide'
        sh 'sudo chmod -R 700 /var/lib/jenkins/workspace/fsp-deployment-guide/ssh_keys'
-       def out = sh script: '/var/lib/jenkins/workspace/fsp-deployment-guide/deploy_prod.sh', returnStdout: true
+       def out = sh script: '/var/lib/jenkins/workspace/fsp-deployment-guide/deploy_prod.sh', returnStdout: false
      }
    }
 }
