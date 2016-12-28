@@ -1,5 +1,4 @@
 node {
-   def mvnHome
    stage('Preparation') { // for display purposes
       // Get some code from a GitHub repository
       checkout scm
@@ -30,8 +29,9 @@ node {
       reportName: "RCov Report"
     ])
 
-    step([$class: 'WsCleanup'])
-
+    step([$class: 'XUnitBuilder',
+    thresholds: [[$class: 'FailedThreshold', unstableThreshold: '1']],
+    tools: [[$class: 'JUnitType', pattern: 'lettucetests.xml']]])
    }
 
    if(env.BRANCH_NAME == "master"){
@@ -44,4 +44,6 @@ node {
        def out = sh script: '/var/lib/jenkins/workspace/fsp-deployment-guide/deploy_prod.sh', returnStdout: false
      }
    }
+
+   step([$class: 'WsCleanup'])
 }
