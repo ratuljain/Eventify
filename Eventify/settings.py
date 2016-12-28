@@ -40,8 +40,24 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_jenkins',
     'rest_framework',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'rest_framework.authtoken',
+    'rest_auth.registration',
+    'rest_auth',
     'eventify_api',
+    'lettuce.django',
 ]
+
+SITE_ID = 1
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'ratuljain1991@gmail.com'
+# EMAIL_HOST_PASSWORD = ''
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
@@ -90,6 +106,13 @@ DATABASES = {
     }
 }
 
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -148,3 +171,7 @@ REST_FRAMEWORK = {
 
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 PROJECT_APPS = ('eventify_api',)
+
+LETTUCE_TEST_SERVER = 'lettuce.django.server.DjangoServer'
+LETTUCE_SERVER_PORT = 9000
+LETTUCE_USE_TEST_DATABASE = True
