@@ -1,3 +1,10 @@
 eventify_api/models.py:3: [E] PYFLAKES:'django.db.models' imported but unused
 eventify_api/tests.py:1: [E] PYFLAKES:'django.test.TestCase' imported but unused
+eventify_api/urls.py:1: [E] PYFLAKES:'django.conf.urls.url' imported but unused
 eventify_api/views.py:1: [E] PYFLAKES:'django.shortcuts.render' imported but unused
+eventify_api/features/steps/common_steps.py:4: [E] PYFLAKES:'nose.tools.assert_equal' imported but unused
+eventify_api/features/steps/common_steps.py:28: [E] PYFLAKES:redefinition of unused 'step_impl' from line 18
+eventify_api/features/steps/users.py:2: [E] PYFLAKES:'rest_auth' imported but unused
+eventify_api/features/steps/users.py:3: [E] PYFLAKES:'django.core.urlresolvers.reverse' imported but unused
+eventify_api/features/steps/users.py:8: [E] PYFLAKES:'rest_auth.urls' imported but unused
+eventify_api/features/steps/users.py:28: [E] PYFLAKES:redefinition of unused 'step_impl' from line 20

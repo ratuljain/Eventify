@@ -20,18 +20,20 @@ node {
    }
 
    stage('Publishing Reports') {
-      publishHTML (target: [
-      allowMissing: false,
-      alwaysLinkToLastBuild: false,
-      keepAll: true,
-      reportDir: 'reports/coverage',
-      reportFiles: 'index.html',
-      reportName: "RCov Report"
-    ])
+        sh 'python manage.py jenkins  --enable-coverage   --coverage-format html'
 
-    step([$class: 'XUnitBuilder',
-    thresholds: [[$class: 'FailedThreshold', unstableThreshold: '1']],
-    tools: [[$class: 'JUnitType', pattern: 'lettucetests.xml']]])
+        publishHTML (target: [
+        allowMissing: false,
+        alwaysLinkToLastBuild: false,
+        keepAll: true,
+        reportDir: 'reports/coverage',
+        reportFiles: 'index.html',
+        reportName: "RCov Report"
+        ])
+
+        step([$class: 'XUnitBuilder',
+        thresholds: [[$class: 'FailedThreshold', unstableThreshold: '1']],
+        tools: [[$class: 'JUnitType', pattern: 'lettucetests.xml']]])
    }
 
    if(env.BRANCH_NAME == "master"){

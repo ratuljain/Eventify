@@ -1,1 +1,3 @@
-eventify_api/urls.py:29:80: E501 line too long (82 > 79 characters)
+eventify_api/features/steps/users.py:34:38: E251 unexpected spaces around keyword / parameter equals
+eventify_api/features/steps/users.py:34:40: E251 unexpected spaces around keyword / parameter equals
+eventify_api/features/steps/users.py:35:1: W391 blank line at end of file
