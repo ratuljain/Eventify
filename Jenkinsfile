@@ -1,4 +1,7 @@
 node {
+   properties([[$class: 'jenkins.model.BuildDiscarderProperty', strategy:
+            [$class: 'LogRotator', numToKeepStr: '50', artifactNumToKeepStr: '20']
+           ]])
    stage('Preparation') { // for display purposes
       // Get some code from a GitHub repository
       checkout scm
