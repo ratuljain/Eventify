@@ -16,6 +16,10 @@ node {
         sh 'python manage.py migrate'
    }
 
+   stage('Running Tests') {
+        sh 'python manage.py harvest eventify_api --with-xunit'
+   }
+
    stage('Publishing Reports') {
       publishHTML (target: [
       allowMissing: false,
@@ -25,6 +29,9 @@ node {
       reportFiles: 'index.html',
       reportName: "RCov Report"
     ])
+
+    step([$class: 'WsCleanup'])
+
    }
 
    if(env.BRANCH_NAME == "master"){
