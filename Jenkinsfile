@@ -46,7 +46,8 @@ node {
        echo "My branch is: ${USER}"
        sh 'cd /var/lib/jenkins/workspace/fsp-deployment-guide'
        sh 'sudo chmod -R 700 /var/lib/jenkins/workspace/fsp-deployment-guide/ssh_keys'
-       def out = sh script: '/var/lib/jenkins/workspace/fsp-deployment-guide/deploy_prod.sh', returnStdout: false
+       sh 'sudo chmod -R 700 /var/lib/jenkins/workspace/fsp-deployment-guide'
+       def out = sh script: 'sudo /var/lib/jenkins/workspace/fsp-deployment-guide/deploy_prod.sh', returnStdout: false
      }
    }
 
