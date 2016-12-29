@@ -41,13 +41,27 @@ node {
 
    if(env.BRANCH_NAME == "master"){
      stage('Deploy') {
-       echo '####### Deploying Code ##########'
-       sh 'sudo su -s /bin/bash deployer'
-       echo "My branch is: ${USER}"
-       sh 'cd /var/lib/jenkins/workspace/fsp-deployment-guide'
-       sh 'sudo chmod -R 700 /var/lib/jenkins/workspace/fsp-deployment-guide/ssh_keys'
-       sh 'sudo chmod -R 700 /var/lib/jenkins/workspace/fsp-deployment-guide'
-       def out = sh script: 'sudo /var/lib/jenkins/workspace/fsp-deployment-guide/deploy_prod.sh', returnStdout: false
+         try {
+           echo '####### Deploying Code ##########'
+           sh 'sudo su -s /bin/bash deployer'
+           echo "My branch is: ${USER}"
+           sh 'cd /var/lib/jenkins/workspace/fsp-deployment-guide'
+           sh 'sudo chmod -R 700 /var/lib/jenkins/workspace/fsp-deployment-guide/ssh_keys'
+           sh 'sudo chmod -R 700 /var/lib/jenkins/workspace/fsp-deployment-guide'
+           def out = sh script: 'sudo /var/lib/jenkins/workspace/fsp-deployment-guide/deploy_prod.sh', returnStdout: false
+       } catch(error) {
+         echo "First build failed, let's retry if accepted"
+         retry(2) {
+           input "Retry the job ?"
+           echo '####### Deploying Code ##########'
+           sh 'sudo su -s /bin/bash deployer'
+           echo "My branch is: ${USER}"
+           sh 'cd /var/lib/jenkins/workspace/fsp-deployment-guide'
+           sh 'sudo chmod -R 700 /var/lib/jenkins/workspace/fsp-deployment-guide/ssh_keys'
+           sh 'sudo chmod -R 700 /var/lib/jenkins/workspace/fsp-deployment-guide'
+           def out = sh script: 'sudo /var/lib/jenkins/workspace/fsp-deployment-guide/deploy_prod.sh', returnStdout: false
+         }
+       }
      }
    }
 
