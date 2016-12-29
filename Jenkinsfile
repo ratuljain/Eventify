@@ -19,7 +19,7 @@ node {
    }
 
    stage('Running Tests') {
-        sh 'python manage.py harvest eventify_api --with-xunit'
+        sh 'python manage.py harvest --with-xunit'
    }
 
    stage('Publishing Reports') {
