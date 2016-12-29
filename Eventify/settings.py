@@ -175,3 +175,7 @@ PROJECT_APPS = ('eventify_api',)
 LETTUCE_TEST_SERVER = 'lettuce.django.server.DjangoServer'
 LETTUCE_SERVER_PORT = 9000
 LETTUCE_USE_TEST_DATABASE = True
+
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'eventify_api.serializers.UserSerializer'
+}
