@@ -2,7 +2,7 @@
 from rest_auth.serializers import UserDetailsSerializer
 from rest_framework import serializers
 
-from models import UserProfile
+from eventify_api.models import UserProfile
 
 
 class UserSerializer(UserDetailsSerializer):

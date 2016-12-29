@@ -26,4 +26,3 @@ def prepare_browser(scenario):
 @after.each_scenario
 def destroy_browser(scenario):
     pass
-

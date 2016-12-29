@@ -1,1 +1,9 @@
-<?xml version="1.0" ?><testsuite errors="0" failures="0" hostname="localhost" name="lettuce" tests="3" time="0" timestamp="2016-12-28T19:12:46"><testcase classname="User Signup : Register new user" name="Given I have the following unregistered user with given information:" time="0.013563"/><testcase classname="User Signup : Register new user" name="When I send a POST request to &quot;/rest-auth/registration/&quot;" time="0.449895"/><testcase classname="User Signup : Register new user" name="Then I get a 201 response" time="0.001573"/></testsuite>
+<?xml version="1.0" ?>
+<testsuite errors="0" failures="0" hostname="localhost" name="lettuce" tests="3" time="0"
+           timestamp="2016-12-29T12:31:53">
+    <testcase classname="User Signup : Register new user"
+              name="Given I have the following unregistered user with given information:" time="0.022896"/>
+    <testcase classname="User Signup : Register new user"
+              name="When I send a POST request to &quot;/rest-auth/registration/&quot;" time="0.432487"/>
+    <testcase classname="User Signup : Register new user" name="Then I get a 201 response" time="0.001052"/>
+</testsuite>

@@ -32,4 +32,3 @@ def step_impl(step, endpoint):
     """
     url = urlparse.urljoin(baseURL, endpoint)
     world.r = requests.post(url, data = world.payload)
-
