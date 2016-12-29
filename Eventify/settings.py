@@ -171,6 +171,10 @@ REST_FRAMEWORK = {
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 PROJECT_APPS = ('eventify_api',)
 
+LETTUCE_APPS = (
+    'eventify_api',
+)
+
 LETTUCE_TEST_SERVER = 'lettuce.django.server.DjangoServer'
 LETTUCE_SERVER_PORT = 9000
 LETTUCE_USE_TEST_DATABASE = True
