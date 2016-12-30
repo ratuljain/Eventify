@@ -1,1 +1,559 @@
-{"duration": 3, "meta": {"scenarios": {"failures": 0, "total": 9, "success": 9}, "is_success": true, "steps": {"failures": 0, "skipped": 0, "total": 35, "undefined": 0, "success": 35}, "features": {"failures": 0, "total": 1, "success": 1}}, "features": [{"duration": 3, "scenarios": [{"duration": 0, "meta": {"failures": 0, "skipped": 0, "total": 3, "undefined": 0, "success": 3}, "steps": [{"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "Given I have the following unregistered user with given information:"}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "When I send a POST request to \"/rest-auth/registration/\""}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "Then I get a 201 response"}], "name": "Register new user", "outline": null}, {"duration": 0, "meta": {"failures": 0, "skipped": 0, "total": 4, "undefined": 0, "success": 4}, "steps": [{"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "Given I have the following unregistered user with given information:"}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "When I send a POST request to \"/rest-auth/registration/\""}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "Then I get a 400 response"}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "And the response should be JSON \"{\"email\":[\"Enter a valid email address.\"]}\":"}], "name": "Register new user with invalid email", "outline": null}, {"duration": 0, "meta": {"failures": 0, "skipped": 0, "total": 4, "undefined": 0, "success": 4}, "steps": [{"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "Given I have the following unregistered user with given information:"}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "When I send a POST request to \"/rest-auth/registration/\""}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "Then I get a 400 response"}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "And the response should be JSON \"{ \"email\": [\"This field may not be blank.\" ]}\":"}], "name": "Register new user with no email", "outline": null}, {"duration": 0, "meta": {"failures": 0, "skipped": 0, "total": 4, "undefined": 0, "success": 4}, "steps": [{"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "Given I have the following unregistered user with given information:"}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "When I send a POST request to \"/rest-auth/registration/\""}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "Then I get a 400 response"}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "And the response should be JSON \"{\"username\": [\"Ensure this field has at least 5 characters.\"]}\":"}], "name": "Register new user with username less than 5 characters", "outline": null}, {"duration": 0, "meta": {"failures": 0, "skipped": 0, "total": 4, "undefined": 0, "success": 4}, "steps": [{"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "Given I have the following unregistered user with given information:"}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "When I send a POST request to \"/rest-auth/registration/\""}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "Then I get a 400 response"}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "And the response should be JSON \"{\"username\":[\"Ensure this field has no more than 15 characters.\"]}\":"}], "name": "Register new user with username more than 15 characters", "outline": null}, {"duration": 0, "meta": {"failures": 0, "skipped": 0, "total": 4, "undefined": 0, "success": 4}, "steps": [{"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "Given I have the following unregistered user with given information:"}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "When I send a POST request to \"/rest-auth/registration/\""}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "Then I get a 400 response"}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "And the response should be JSON \"{\"non_field_errors\":[\"The two password fields didn't match.\"]}\":"}], "name": "Register new user when different password is entered in the password 2 field", "outline": null}, {"duration": 0, "meta": {"failures": 0, "skipped": 0, "total": 4, "undefined": 0, "success": 4}, "steps": [{"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "Given I have the following unregistered user with given information:"}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "When I send a POST request to \"/rest-auth/registration/\""}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "Then I get a 400 response"}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "And the response should be JSON \"{\"password1\":[\"This field may not be blank.\"]}\":"}], "name": "Register new user when password1 field is empty", "outline": null}, {"duration": 0, "meta": {"failures": 0, "skipped": 0, "total": 4, "undefined": 0, "success": 4}, "steps": [{"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "Given I have the following unregistered user with given information:"}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "When I send a POST request to \"/rest-auth/registration/\""}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "Then I get a 400 response"}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "And the response should be JSON \"{\"password2\":[\"This field may not be blank.\"]}\":"}], "name": "Register new user when password2 field is empty", "outline": null}, {"duration": 0, "meta": {"failures": 0, "skipped": 0, "total": 4, "undefined": 0, "success": 4}, "steps": [{"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "Given I have the following unregistered user with given information:"}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "When I send a POST request to \"/rest-auth/registration/\""}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "Then I get a 400 response"}, {"duration": 0, "failure": {}, "meta": {"failed": false, "skipped": false, "undefined": false, "success": true}, "name": "And the response should be JSON \"{\"password1\":[\"This password is too short. It must contain at least 8 characters.\"]}\":"}], "name": "Register new user when password is less than 8 characters short", "outline": null}], "meta": {"scenarios": {"failures": 0, "skipped": 0, "total": 9, "undefined": 0, "success": 9}, "steps": {"failures": 0, "skipped": 0, "total": 35, "undefined": 0, "success": 35}}, "name": "User Signup", "background": null}]}
+{
+  "duration": 5,
+  "meta": {
+    "scenarios": {
+      "failures": 0,
+      "total": 9,
+      "success": 9
+    },
+    "is_success": true,
+    "steps": {
+      "failures": 0,
+      "skipped": 0,
+      "total": 35,
+      "undefined": 0,
+      "success": 35
+    },
+    "features": {
+      "failures": 0,
+      "total": 1,
+      "success": 1
+    }
+  },
+  "features": [
+    {
+      "duration": 5,
+      "scenarios": [
+        {
+          "duration": 0,
+          "meta": {
+            "failures": 0,
+            "skipped": 0,
+            "total": 3,
+            "undefined": 0,
+            "success": 3
+          },
+          "steps": [
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "Given I have the following unregistered user with given information:"
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "When I send a POST request to \"/rest-auth/registration/\""
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "Then I get a 201 response"
+            }
+          ],
+          "name": "Register new user",
+          "outline": null
+        },
+        {
+          "duration": 0,
+          "meta": {
+            "failures": 0,
+            "skipped": 0,
+            "total": 4,
+            "undefined": 0,
+            "success": 4
+          },
+          "steps": [
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "Given I have the following unregistered user with given information:"
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "When I send a POST request to \"/rest-auth/registration/\""
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "Then I get a 400 response"
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "And the response should be JSON \"{\"email\":[\"Enter a valid email address.\"]}\":"
+            }
+          ],
+          "name": "Register new user with invalid email",
+          "outline": null
+        },
+        {
+          "duration": 0,
+          "meta": {
+            "failures": 0,
+            "skipped": 0,
+            "total": 4,
+            "undefined": 0,
+            "success": 4
+          },
+          "steps": [
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "Given I have the following unregistered user with given information:"
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "When I send a POST request to \"/rest-auth/registration/\""
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "Then I get a 400 response"
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "And the response should be JSON \"{ \"email\": [\"This field may not be blank.\" ]}\":"
+            }
+          ],
+          "name": "Register new user with no email",
+          "outline": null
+        },
+        {
+          "duration": 0,
+          "meta": {
+            "failures": 0,
+            "skipped": 0,
+            "total": 4,
+            "undefined": 0,
+            "success": 4
+          },
+          "steps": [
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "Given I have the following unregistered user with given information:"
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "When I send a POST request to \"/rest-auth/registration/\""
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "Then I get a 400 response"
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "And the response should be JSON \"{\"username\": [\"Ensure this field has at least 5 characters.\"]}\":"
+            }
+          ],
+          "name": "Register new user with username less than 5 characters",
+          "outline": null
+        },
+        {
+          "duration": 0,
+          "meta": {
+            "failures": 0,
+            "skipped": 0,
+            "total": 4,
+            "undefined": 0,
+            "success": 4
+          },
+          "steps": [
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "Given I have the following unregistered user with given information:"
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "When I send a POST request to \"/rest-auth/registration/\""
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "Then I get a 400 response"
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "And the response should be JSON \"{\"username\":[\"Ensure this field has no more than 15 characters.\"]}\":"
+            }
+          ],
+          "name": "Register new user with username more than 15 characters",
+          "outline": null
+        },
+        {
+          "duration": 0,
+          "meta": {
+            "failures": 0,
+            "skipped": 0,
+            "total": 4,
+            "undefined": 0,
+            "success": 4
+          },
+          "steps": [
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "Given I have the following unregistered user with given information:"
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "When I send a POST request to \"/rest-auth/registration/\""
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "Then I get a 400 response"
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "And the response should be JSON \"{\"non_field_errors\":[\"The two password fields didn't match.\"]}\":"
+            }
+          ],
+          "name": "Register new user when different password is entered in the password 2 field",
+          "outline": null
+        },
+        {
+          "duration": 0,
+          "meta": {
+            "failures": 0,
+            "skipped": 0,
+            "total": 4,
+            "undefined": 0,
+            "success": 4
+          },
+          "steps": [
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "Given I have the following unregistered user with given information:"
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "When I send a POST request to \"/rest-auth/registration/\""
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "Then I get a 400 response"
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "And the response should be JSON \"{\"password1\":[\"This field may not be blank.\"]}\":"
+            }
+          ],
+          "name": "Register new user when password1 field is empty",
+          "outline": null
+        },
+        {
+          "duration": 0,
+          "meta": {
+            "failures": 0,
+            "skipped": 0,
+            "total": 4,
+            "undefined": 0,
+            "success": 4
+          },
+          "steps": [
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "Given I have the following unregistered user with given information:"
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "When I send a POST request to \"/rest-auth/registration/\""
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "Then I get a 400 response"
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "And the response should be JSON \"{\"password2\":[\"This field may not be blank.\"]}\":"
+            }
+          ],
+          "name": "Register new user when password2 field is empty",
+          "outline": null
+        },
+        {
+          "duration": 0,
+          "meta": {
+            "failures": 0,
+            "skipped": 0,
+            "total": 4,
+            "undefined": 0,
+            "success": 4
+          },
+          "steps": [
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "Given I have the following unregistered user with given information:"
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "When I send a POST request to \"/rest-auth/registration/\""
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "Then I get a 400 response"
+            },
+            {
+              "duration": 0,
+              "failure": {},
+              "meta": {
+                "failed": false,
+                "skipped": false,
+                "undefined": false,
+                "success": true
+              },
+              "name": "And the response should be JSON \"{\"password1\":[\"This password is too short. It must contain at least 8 characters.\"]}\":"
+            }
+          ],
+          "name": "Register new user when password is less than 8 characters short",
+          "outline": null
+        }
+      ],
+      "meta": {
+        "scenarios": {
+          "failures": 0,
+          "skipped": 0,
+          "total": 9,
+          "undefined": 0,
+          "success": 9
+        },
+        "steps": {
+          "failures": 0,
+          "skipped": 0,
+          "total": 35,
+          "undefined": 0,
+          "success": 35
+        }
+      },
+      "name": "User Signup",
+      "background": null
+    }
+  ]
+}
