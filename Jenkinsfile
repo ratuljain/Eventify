@@ -81,7 +81,7 @@ def runTests(){
 }
 
 def publishReports(){
-    sh 'python manage.py jenkins  --enable-coverage   --coverage-format html'
+    sh 'python manage.py jenkins --enable-coverage --coverage-format html --pep8-ignore E501'
 
     publishHTML (target: [
     allowMissing: false,
@@ -97,9 +97,10 @@ def publishReports(){
     ]], unstableTotalAll: '20', usePreviousBuildAsReference: true
     ])
 
-    step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher',
-    pattern: 'reports/pylint.txt',
-    unstableTotalAll: '20'])
+    step([$class: 'WarningsPublisher',parserConfigurations: [[
+    parserName: 'PyLint', pattern: 'reports/pylint.report'
+    ]], unstableTotalAll: '20', usePreviousBuildAsReference: true
+    ])
 
     step([$class: 'XUnitBuilder',
     thresholds: [[$class: 'FailedThreshold', unstableThreshold: '1']],

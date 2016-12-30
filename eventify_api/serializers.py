@@ -1,10 +1,7 @@
-# from rest_auth.registration.serializers import RegisterSerializer
 from allauth.account.utils import setup_user_email
 from rest_auth.serializers import UserDetailsSerializer
 from rest_framework import serializers
-from allauth.utils import (email_address_exists,
-                           get_username_max_length)
-from allauth.account import app_settings as allauth_settings
+from allauth.utils import (email_address_exists,)
 from allauth.account.adapter import get_adapter
 from django.conf import settings
 from eventify_api.models import UserProfile
