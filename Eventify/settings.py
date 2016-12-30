@@ -182,3 +182,8 @@ LETTUCE_USE_TEST_DATABASE = True
 REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'eventify_api.serializers.UserSerializer'
 }
+REST_AUTH_REGISTER_SERIALIZERS = {
+        'REGISTER_SERIALIZER': 'eventify_api.serializers.RegisterSerializer',
+}
+
+UNIQUE_EMAIL = True

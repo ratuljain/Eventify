@@ -31,4 +31,4 @@ def step_impl(step, endpoint):
     :type step: lettuce.core.Step
     """
     url = urlparse.urljoin(baseURL, endpoint)
-    world.r = requests.post(url, data = world.payload)
+    world.r = requests.post(url, data=world.payload)
