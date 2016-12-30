@@ -155,6 +155,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 JENKINS_TASKS = (
     'django_jenkins.tasks.run_pep8',
     'django_jenkins.tasks.run_pyflakes',
+    'django_jenkins.tasks.run_pylint',
     # 'django_jenkins.tasks.run_jslint',
     # 'django_jenkins.tasks.run_csslint',
     # 'django_jenkins.tasks.run_sloccount'
@@ -182,3 +183,8 @@ LETTUCE_USE_TEST_DATABASE = True
 REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'eventify_api.serializers.UserSerializer'
 }
+REST_AUTH_REGISTER_SERIALIZERS = {
+        'REGISTER_SERIALIZER': 'eventify_api.serializers.RegisterSerializer',
+}
+
+UNIQUE_EMAIL = True

@@ -1,3 +1,0 @@
-eventify_api/features/steps/users.py:34:38: E251 unexpected spaces around keyword / parameter equals
-eventify_api/features/steps/users.py:34:40: E251 unexpected spaces around keyword / parameter equals
-eventify_api/features/steps/users.py:35:1: W391 blank line at end of file

@@ -1,9 +1,11 @@
+import json
+import urlparse
+
 import requests
 from django.utils.six import BytesIO
 from lettuce import step, world
-from nose.tools import assert_equals, assert_equal
+from nose.tools import assert_equals
 from rest_framework.parsers import JSONParser
-
 
 baseURL = "http://127.0.0.1:9000"
 # Asserting the expected status code of the request
@@ -16,7 +18,7 @@ def response_to_dict(json_response):
 
 
 @step('I get a (\d+) response')
-def step_impl(step, expected_status_code):
+def assert_status_code(step, expected_status_code):
     """
     :type step: lettuce.core.Step
     """
@@ -26,13 +28,31 @@ def step_impl(step, expected_status_code):
 
 
 @step('I send a GET request to "(.*)"')
-def step_impl(step, endpoint):
+def send_get_request(step, endpoint):
     """
     :type step: lettuce.core.Step
     """
-    url = baseURL + endpoint
-    world.url_duplicate = url
+    url = urlparse.urljoin(baseURL, endpoint)
     world.r = requests.get(url)
+
+
+@step('I send a POST request to "(.*)"')
+def send_post_request(step, endpoint):
+    """
+    :type step: lettuce.core.Step
+    """
+    url = urlparse.urljoin(baseURL, endpoint)
+    world.r = requests.post(url, data=world.payload)
+
+
+@step('the response should be JSON "(.*)":')
+def assert_json_string(step, respone_text):
+    """
+    :type step: lettuce.core.Step
+    """
+    json_response_string = world.r.text
+    assert_equals(json.loads(json_response_string), json.loads(respone_text))
+
 
 # Retrieve a resource given an endpoint with resource and an ID
 
