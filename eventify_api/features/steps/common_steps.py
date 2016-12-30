@@ -1,7 +1,9 @@
+import json
+
 import requests
 from django.utils.six import BytesIO
 from lettuce import step, world
-from nose.tools import assert_equals, assert_equal
+from nose.tools import assert_equals
 from rest_framework.parsers import JSONParser
 
 
@@ -33,6 +35,16 @@ def step_impl(step, endpoint):
     url = baseURL + endpoint
     world.url_duplicate = url
     world.r = requests.get(url)
+
+
+@step('the response should be JSON "(.*)":')
+def step_impl(step, respone_text):
+    """
+    :type step: lettuce.core.Step
+    """
+    json_response_string =  world.r.text
+    assert_equals(json.loads(json_response_string), json.loads(respone_text))
+
 
 # Retrieve a resource given an endpoint with resource and an ID
 
