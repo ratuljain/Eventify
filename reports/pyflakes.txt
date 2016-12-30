@@ -1,0 +1,194 @@
+************* Module eventify_api.serializers
+eventify_api/serializers.py:35: [W0223(abstract-method), RegisterSerializer] Method 'create' is abstract in class 'BaseSerializer' but is not overridden
+eventify_api/serializers.py:35: [W0223(abstract-method), RegisterSerializer] Method 'update' is abstract in class 'BaseSerializer' but is not overridden
+eventify_api/serializers.py:77: [W0221(arguments-differ), RegisterSerializer.save] Arguments number differs from overridden 'save' method
+eventify_api/serializers.py:80: [W0201(attribute-defined-outside-init), RegisterSerializer.save] Attribute 'cleaned_data' defined outside __init__
+eventify_api/serializers.py:5: [W0611(unused-import), ] Unused get_username_max_length imported from allauth.utils
+eventify_api/serializers.py:7: [W0611(unused-import), ] Unused app_settings imported from allauth.account as allauth_settings
+eventify_api/serializers.py:5: [C0412(ungrouped-imports), ] Imports from package allauth are not grouped
+eventify_api/serializers.py:11: [C0412(ungrouped-imports), ] Imports from package django are not grouped
+************* Module eventify_api.tests
+eventify_api/tests.py:1: [W0611(unused-import), ] Unused TestCase imported from django.test
+************* Module eventify_api.urls
+eventify_api/urls.py:1: [W0611(unused-import), ] Unused url imported from django.conf.urls
+************* Module eventify_api.views
+eventify_api/views.py:1: [W0611(unused-import), ] Unused render imported from django.shortcuts
+************* Module eventify_api.features.steps.common_steps
+eventify_api/features/steps/common_steps.py:20: [W1401(anomalous-backslash-in-string), ] Anomalous backslash in string: '\d'. String constant might be missing an r prefix.
+eventify_api/features/steps/common_steps.py:21: [W0621(redefined-outer-name), step_impl] Redefining name 'step' from outer scope (line 6)
+eventify_api/features/steps/common_steps.py:31: [W0621(redefined-outer-name), step_impl] Redefining name 'step' from outer scope (line 6)
+eventify_api/features/steps/common_steps.py:31: [E0102(function-redefined), step_impl] function already defined line 21
+eventify_api/features/steps/common_steps.py:40: [W0621(redefined-outer-name), step_impl] Redefining name 'step' from outer scope (line 6)
+eventify_api/features/steps/common_steps.py:40: [E0102(function-redefined), step_impl] function already defined line 21
+eventify_api/features/steps/common_steps.py:45: [E1101(no-member), step_impl] Instance of '_local' has no 'payload' member
+eventify_api/features/steps/common_steps.py:49: [W0621(redefined-outer-name), step_impl] Redefining name 'step' from outer scope (line 6)
+eventify_api/features/steps/common_steps.py:49: [E0102(function-redefined), step_impl] function already defined line 21
+************* Module eventify_api.features.steps.users_login
+eventify_api/features/steps/users_login.py:5: [W0621(redefined-outer-name), step_impl] Redefining name 'step' from outer scope (line 1)
+************* Module eventify_api.features.steps.users_registraton
+eventify_api/features/steps/users_registraton.py:15: [W0621(redefined-outer-name), step_impl] Redefining name 'step' from outer scope (line 2)
+
+
+Report
+======
+114 statements analysed.
+
+Statistics by type
+------------------
+
++---------+-------+-----------+-----------+------------+---------+
+|type     |number |old number |difference |%documented |%badname |
++=========+=======+===========+===========+============+=========+
+|module   |15     |NC         |NC         |33.33       |6.67     |
++---------+-------+-----------+-----------+------------+---------+
+|class    |6      |NC         |NC         |0.00        |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+|method   |8      |NC         |NC         |37.50       |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+|function |8      |NC         |NC         |75.00       |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+
+
+
+External dependencies
+---------------------
+::
+
+    allauth
+      \-account
+      | \-adapter (eventify_api.serializers)
+      | \-app_settings (eventify_api.serializers)
+      | \-utils (eventify_api.serializers)
+      \-utils (eventify_api.serializers)
+    django
+      \-apps (eventify_api.apps)
+      \-conf (eventify_api.migrations.0001_initial,eventify_api.serializers)
+      | \-urls (eventify_api.urls)
+      \-contrib
+      | \-auth
+      |   \-models (eventify_api.models)
+      \-db
+      | \-migrations (eventify_api.migrations.0001_initial)
+      | \-models (eventify_api.migrations.0001_initial,eventify_api.models)
+      |   \-deletion (eventify_api.migrations.0001_initial)
+      \-shortcuts (eventify_api.views)
+      \-test (eventify_api.tests)
+      \-utils
+        \-six (eventify_api.features.steps.common_steps,eventify_api.features.steps.users_registraton)
+        \-translation (eventify_api.serializers)
+    eventify_api
+      \-models (eventify_api.serializers)
+    lettuce (eventify_api.features.steps.common_steps,eventify_api.features.steps.users_login,eventify_api.features.steps.users_registraton)
+    nose
+      \-tools (eventify_api.features.steps.common_steps)
+    requests (eventify_api.features.steps.common_steps)
+    rest_auth
+      \-serializers (eventify_api.serializers)
+    rest_framework
+      \-parsers (eventify_api.features.steps.common_steps,eventify_api.features.steps.users_registraton)
+      \-serializers (eventify_api.serializers)
+      \-urlpatterns (eventify_api.urls)
+
+
+
+Raw metrics
+-----------
+
++----------+-------+------+---------+-----------+
+|type      |number |%     |previous |difference |
++==========+=======+======+=========+===========+
+|code      |146    |49.49 |NC       |NC         |
++----------+-------+------+---------+-----------+
+|docstring |22     |7.46  |NC       |NC         |
++----------+-------+------+---------+-----------+
+|comment   |55     |18.64 |NC       |NC         |
++----------+-------+------+---------+-----------+
+|empty     |72     |24.41 |NC       |NC         |
++----------+-------+------+---------+-----------+
+
+
+
+Duplication
+-----------
+
++-------------------------+------+---------+-----------+
+|                         |now   |previous |difference |
++=========================+======+=========+===========+
+|nb duplicated lines      |0     |NC       |NC         |
++-------------------------+------+---------+-----------+
+|percent duplicated lines |0.000 |NC       |NC         |
++-------------------------+------+---------+-----------+
+
+
+
+Messages by category
+--------------------
+
++-----------+-------+---------+-----------+
+|type       |number |previous |difference |
++===========+=======+=========+===========+
+|convention |2      |NC       |NC         |
++-----------+-------+---------+-----------+
+|refactor   |0      |NC       |NC         |
++-----------+-------+---------+-----------+
+|warning    |16     |NC       |NC         |
++-----------+-------+---------+-----------+
+|error      |4      |NC       |NC         |
++-----------+-------+---------+-----------+
+
+
+
+% errors / warnings by module
+-----------------------------
+
++----------------------------------------------+-------+--------+---------+-----------+
+|module                                        |error  |warning |refactor |convention |
++==============================================+=======+========+=========+===========+
+|eventify_api.features.steps.common_steps      |100.00 |31.25   |0.00     |0.00       |
++----------------------------------------------+-------+--------+---------+-----------+
+|eventify_api.serializers                      |0.00   |37.50   |0.00     |100.00     |
++----------------------------------------------+-------+--------+---------+-----------+
+|eventify_api.views                            |0.00   |6.25    |0.00     |0.00       |
++----------------------------------------------+-------+--------+---------+-----------+
+|eventify_api.urls                             |0.00   |6.25    |0.00     |0.00       |
++----------------------------------------------+-------+--------+---------+-----------+
+|eventify_api.tests                            |0.00   |6.25    |0.00     |0.00       |
++----------------------------------------------+-------+--------+---------+-----------+
+|eventify_api.features.steps.users_registraton |0.00   |6.25    |0.00     |0.00       |
++----------------------------------------------+-------+--------+---------+-----------+
+|eventify_api.features.steps.users_login       |0.00   |6.25    |0.00     |0.00       |
++----------------------------------------------+-------+--------+---------+-----------+
+
+
+
+Messages
+--------
+
++-------------------------------+------------+
+|message id                     |occurrences |
++===============================+============+
+|redefined-outer-name           |6           |
++-------------------------------+------------+
+|unused-import                  |5           |
++-------------------------------+------------+
+|function-redefined             |3           |
++-------------------------------+------------+
+|ungrouped-imports              |2           |
++-------------------------------+------------+
+|abstract-method                |2           |
++-------------------------------+------------+
+|no-member                      |1           |
++-------------------------------+------------+
+|attribute-defined-outside-init |1           |
++-------------------------------+------------+
+|arguments-differ               |1           |
++-------------------------------+------------+
+|anomalous-backslash-in-string  |1           |
++-------------------------------+------------+
+
+
+
+Global evaluation
+-----------------
+Your code has been rated at 6.67/10
+
