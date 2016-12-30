@@ -95,9 +95,6 @@ def publishReports(){
     step([$class: 'XUnitBuilder',
     thresholds: [[$class: 'FailedThreshold', unstableThreshold: '1']],
     tools: [[$class: 'JUnitType', pattern: 'lettucetests.xml']]])
-
-    step($class: 'CucumberTestResultArchiver', testResults: 'lettucetests.json')
-
     notifySuccessful()
 }
 
