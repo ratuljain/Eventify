@@ -92,6 +92,13 @@ def publishReports(){
     reportName: "RCov Report"
     ])
 
+    step([$class: 'WarningsPublisher',parserConfigurations: [[
+    parserName: 'Pep8', pattern: 'reports/pep8.report'
+    ]], unstableTotalAll: '0', usePreviousBuildAsReference: true
+    ])
+
+    step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher', checkstyle: 'gitlist-PHP/build/logs/phpcs.xml'])
+
     step([$class: 'XUnitBuilder',
     thresholds: [[$class: 'FailedThreshold', unstableThreshold: '1']],
     tools: [[$class: 'JUnitType', pattern: 'lettucetests.xml']]])

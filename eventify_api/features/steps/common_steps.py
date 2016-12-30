@@ -1,11 +1,11 @@
 import json
+import urlparse
 
 import requests
 from django.utils.six import BytesIO
 from lettuce import step, world
 from nose.tools import assert_equals
 from rest_framework.parsers import JSONParser
-
 
 baseURL = "http://127.0.0.1:9000"
 # Asserting the expected status code of the request
@@ -32,9 +32,17 @@ def step_impl(step, endpoint):
     """
     :type step: lettuce.core.Step
     """
-    url = baseURL + endpoint
-    world.url_duplicate = url
+    url = urlparse.urljoin(baseURL, endpoint)
     world.r = requests.get(url)
+
+
+@step('I send a POST request to "(.*)"')
+def step_impl(step, endpoint):
+    """
+    :type step: lettuce.core.Step
+    """
+    url = urlparse.urljoin(baseURL, endpoint)
+    world.r = requests.post(url, data=world.payload)
 
 
 @step('the response should be JSON "(.*)":')
