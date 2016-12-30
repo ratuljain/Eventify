@@ -1,4 +1,0 @@
-eventify_api/serializers.py:55:80: E501 line too long (80 > 79 characters)
-eventify_api/serializers.py:63:80: E501 line too long (89 > 79 characters)
-eventify_api/migrations/0001_initial.py:22:80: E501 line too long (114 > 79 characters)
-eventify_api/migrations/0001_initial.py:24:80: E501 line too long (121 > 79 characters)

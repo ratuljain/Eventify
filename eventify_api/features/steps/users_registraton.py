@@ -12,7 +12,7 @@ def response_to_dict(json_response):
 
 
 @step("I have the following unregistered user with given information:")
-def step_impl(step):
+def get_registration_info(step):
     """
     :type step: lettuce.core.Step
     """

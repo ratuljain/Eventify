@@ -18,7 +18,7 @@ def response_to_dict(json_response):
 
 
 @step('I get a (\d+) response')
-def step_impl(step, expected_status_code):
+def assert_status_code(step, expected_status_code):
     """
     :type step: lettuce.core.Step
     """
@@ -28,7 +28,7 @@ def step_impl(step, expected_status_code):
 
 
 @step('I send a GET request to "(.*)"')
-def step_impl(step, endpoint):
+def send_get_request(step, endpoint):
     """
     :type step: lettuce.core.Step
     """
@@ -37,7 +37,7 @@ def step_impl(step, endpoint):
 
 
 @step('I send a POST request to "(.*)"')
-def step_impl(step, endpoint):
+def send_post_request(step, endpoint):
     """
     :type step: lettuce.core.Step
     """
@@ -46,7 +46,7 @@ def step_impl(step, endpoint):
 
 
 @step('the response should be JSON "(.*)":')
-def step_impl(step, respone_text):
+def assert_json_string(step, respone_text):
     """
     :type step: lettuce.core.Step
     """

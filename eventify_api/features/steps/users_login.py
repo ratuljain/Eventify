@@ -2,7 +2,7 @@ from lettuce import step, world
 
 
 @step("I login with the following credentials:")
-def step_impl(step):
+def get_login_info(step):
     """
     :type step: lettuce.core.Step
     """
