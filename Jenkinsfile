@@ -19,7 +19,7 @@ node {
    }
 
    stage('Running Tests') {
-        sh 'python manage.py harvest --with-xunit'
+        sh 'python manage.py harvest --with-xunit --with-jsonreport'
    }
 
    stage('Publishing Reports') {
