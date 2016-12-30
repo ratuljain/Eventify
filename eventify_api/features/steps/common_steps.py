@@ -50,7 +50,7 @@ def step_impl(step, respone_text):
     """
     :type step: lettuce.core.Step
     """
-    json_response_string =  world.r.text
+    json_response_string = world.r.text
     assert_equals(json.loads(json_response_string), json.loads(respone_text))
 
 

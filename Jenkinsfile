@@ -94,10 +94,12 @@ def publishReports(){
 
     step([$class: 'WarningsPublisher',parserConfigurations: [[
     parserName: 'Pep8', pattern: 'reports/pep8.report'
-    ]], unstableTotalAll: '0', usePreviousBuildAsReference: true
+    ]], unstableTotalAll: '20', usePreviousBuildAsReference: true
     ])
 
-    step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher', checkstyle: 'gitlist-PHP/build/logs/phpcs.xml'])
+    step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher',
+    pattern: 'reports/pylint.txt',
+    unstableTotalAll: '20'])
 
     step([$class: 'XUnitBuilder',
     thresholds: [[$class: 'FailedThreshold', unstableThreshold: '1']],
