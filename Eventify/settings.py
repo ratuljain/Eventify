@@ -42,12 +42,6 @@ INSTALLED_APPS = [
     'django_jenkins',
     'rest_framework',
     'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'rest_framework.authtoken',
-    'rest_auth.registration',
-    'rest_auth',
 ]
 
 SITE_ID = 1
@@ -179,12 +173,5 @@ LETTUCE_APPS = (
 LETTUCE_TEST_SERVER = 'lettuce.django.server.DjangoServer'
 LETTUCE_SERVER_PORT = 9000
 LETTUCE_USE_TEST_DATABASE = True
-
-REST_AUTH_SERIALIZERS = {
-    'USER_DETAILS_SERIALIZER': 'eventify_api.serializers.UserSerializer'
-}
-REST_AUTH_REGISTER_SERIALIZERS = {
-        'REGISTER_SERIALIZER': 'eventify_api.serializers.RegisterSerializer',
-}
 
 UNIQUE_EMAIL = True
