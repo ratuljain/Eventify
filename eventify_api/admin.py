@@ -1,13 +1,18 @@
-# Register your models here.
-
-# test
-# testing pull requestgit checkout -b pull-request-demo
-# testing pull triggegit r
-# testing pull triggegit 3
-# testing pull triggegit 4
+from django.contrib import admin
+from eventify_api.models import Eventify_User, UserSkill, UserProfileInformation
 
 
-# testing pipeline
+class Eventify_UserAdmin(admin.ModelAdmin):
+    pass
 
-# testing master branch
-# testinggit co
+
+class UserSkillAdmin(admin.ModelAdmin):
+    pass
+
+
+class UserProfileInformationAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Eventify_User, Eventify_UserAdmin)
+admin.site.register(UserSkill, UserSkillAdmin)
+admin.site.register(UserProfileInformation, UserProfileInformationAdmin)
