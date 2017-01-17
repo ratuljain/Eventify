@@ -23,3 +23,54 @@ class Eventify_User(models.Model):
     user_profile_information = models.ForeignKey(
         UserProfileInformation, on_delete=models.CASCADE)
     user_skills = models.ManyToManyField(UserSkill)
+
+
+class Panelist(models.Model):
+    user = models.OneToOneField(
+        Eventify_User,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+
+
+class Organiser(models.Model):
+    user = models.OneToOneField(
+        Eventify_User,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+
+
+class EventCategory(models.Model):
+    category_name = models.CharField(max_length=50)
+
+
+class Venue(models.Model):
+    venue_name = models.CharField(max_length=50)
+    venue_seat_capacity = models.IntegerField()
+    venue_latitude = models.DecimalField(max_digits=9, decimal_places=6)
+    venue_longitude = models.DecimalField(max_digits=9, decimal_places=6)
+
+
+class Event(models.Model):
+    event_category = models.ForeignKey(
+        EventCategory, on_delete=models.CASCADE)
+    venue = models.ForeignKey(
+        Venue, on_delete=models.CASCADE)
+    agenda = models.CharField(max_length=50)
+    event_name = models.CharField(max_length=50)
+    event_start_time = models.DateTimeField()
+    event_end_time = models.DateTimeField()
+    entry_code = models.CharField(max_length=7)
+    organiser = models.ManyToManyField(Organiser)
+    panelist = models.ManyToManyField(Panelist)
+
+
+class Attachment(models.Model):
+    attachment_id = models.URLField()
+    event = models.ForeignKey(
+        Event, on_delete=models.CASCADE)
+
+
+class UserEventBooking(models.Model):
+    pass
