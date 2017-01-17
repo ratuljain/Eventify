@@ -13,7 +13,7 @@ node {
    }
 
    stage('Running Tests') {
-      runTests()
+      //runTests()
    }
 
    stage('Publishing Reports') {
