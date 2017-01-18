@@ -72,7 +72,7 @@ def buildProject(){
     sh 'virtualenv -q venv'
     sh '. venv/bin/activate'
     sh 'pip install -r requirements.txt --user'
-    sh 'yes | python manage.py makemigrations'
+    sh 'yes | python manage.py makemigrations --noinput'
     sh 'yes | python manage.py migrate'
 }
 

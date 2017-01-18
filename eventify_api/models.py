@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 
 class UserProfileInformation(models.Model):
@@ -64,6 +65,7 @@ class Event(models.Model):
     entry_code = models.CharField(max_length=7)
     organiser = models.ManyToManyField(Organiser)
     panelist = models.ManyToManyField(Panelist)
+    booking = models.ManyToManyField(Eventify_User, through='UserEventBooking')
 
 
 class Attachment(models.Model):
@@ -73,4 +75,7 @@ class Attachment(models.Model):
 
 
 class UserEventBooking(models.Model):
-    pass
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    user = models.ForeignKey(Eventify_User, on_delete=models.CASCADE)
+    booking_datetime = models.DateTimeField(default=datetime.now, blank=True)
+    booking_seat_count = models.IntegerField(default=1)
