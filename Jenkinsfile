@@ -72,8 +72,8 @@ def buildProject(){
     sh 'virtualenv -q venv'
     sh '. venv/bin/activate'
     sh 'pip install -r requirements.txt --user'
-    sh 'python manage.py makemigrations'
-    sh 'python manage.py migrate'
+    sh 'yes | python manage.py makemigrations --noinput'
+    sh 'yes | python manage.py migrate'
 }
 
 def runTests(){
@@ -81,7 +81,7 @@ def runTests(){
 }
 
 def publishReports(){
-    sh 'python manage.py jenkins --enable-coverage --coverage-format html --pep8-ignore E501'
+    sh 'python manage.py jenkins --enable-coverage --coverage-format html --pep8-ignore E501 --pylint-load-plugins pylint_django'
 
     publishHTML (target: [
     allowMissing: false,
