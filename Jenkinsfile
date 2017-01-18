@@ -81,7 +81,7 @@ def runTests(){
 }
 
 def publishReports(){
-    sh 'python manage.py jenkins --enable-coverage --coverage-format html --pep8-ignore E501'
+    sh 'python manage.py jenkins --enable-coverage --coverage-format html --pep8-ignore E501 --pylint-load-plugins pylint_django'
 
     publishHTML (target: [
     allowMissing: false,
