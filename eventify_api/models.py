@@ -10,40 +10,61 @@ class UserProfileInformation(models.Model):
     twitter_url = models.URLField()
     facebook_url = models.URLField()
 
+    def __unicode__(self):
+        return self.photo_url
+
 
 class UserSkill(models.Model):
     skill_name = models.CharField(max_length=30)
     skill_description = models.CharField(max_length=150)
 
+    def __unicode__(self):
+        return self.skill_name
 
-class Eventify_User(models.Model):
+
+class EventifyUser(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField(max_length=254)
     phone = models.CharField(max_length=10)
-    user_profile_information = models.ForeignKey(
-        UserProfileInformation, on_delete=models.CASCADE)
+    user_profile_information = models.OneToOneField(
+        UserProfileInformation,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
     user_skills = models.ManyToManyField(UserSkill)
+
+    def __unicode__(self):
+        return self.first_name + " " + self.last_name
 
 
 class Panelist(models.Model):
     user = models.OneToOneField(
-        Eventify_User,
+        EventifyUser,
         on_delete=models.CASCADE,
         primary_key=True,
     )
+
+    def __unicode__(self):
+        return self.user.first_name + " " + self.user.last_name
 
 
 class Organiser(models.Model):
     user = models.OneToOneField(
-        Eventify_User,
+        EventifyUser,
         on_delete=models.CASCADE,
         primary_key=True,
     )
 
+    def __unicode__(self):
+        return self.user.first_name + " " + self.user.last_name
+
 
 class EventCategory(models.Model):
     category_name = models.CharField(max_length=50)
+
+    def __unicode__(self):
+        return self.category_name
 
 
 class Venue(models.Model):
@@ -51,6 +72,9 @@ class Venue(models.Model):
     venue_seat_capacity = models.IntegerField()
     venue_latitude = models.DecimalField(max_digits=9, decimal_places=6)
     venue_longitude = models.DecimalField(max_digits=9, decimal_places=6)
+
+    def __unicode__(self):
+        return self.venue_name
 
 
 class Event(models.Model):
@@ -65,17 +89,23 @@ class Event(models.Model):
     entry_code = models.CharField(max_length=7)
     organiser = models.ManyToManyField(Organiser)
     panelist = models.ManyToManyField(Panelist)
-    booking = models.ManyToManyField(Eventify_User, through='UserEventBooking')
+    booking = models.ManyToManyField(EventifyUser, through='UserEventBooking')
+
+    def __unicode__(self):
+        return self.event_name
 
 
 class Attachment(models.Model):
-    attachment_id = models.URLField()
+    attachment_url = models.URLField()
     event = models.ForeignKey(
         Event, on_delete=models.CASCADE)
+
+    def __unicode__(self):
+        return self.attachment_id
 
 
 class UserEventBooking(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    user = models.ForeignKey(Eventify_User, on_delete=models.CASCADE)
+    user = models.ForeignKey(EventifyUser, on_delete=models.CASCADE)
     booking_datetime = models.DateTimeField(default=datetime.now, blank=True)
     booking_seat_count = models.IntegerField(default=1)

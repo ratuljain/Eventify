@@ -1,5 +1,5 @@
 from django.contrib import admin
-from eventify_api.models import Eventify_User, UserSkill, UserProfileInformation, \
+from eventify_api.models import EventifyUser, UserSkill, UserProfileInformation, \
     Panelist, Organiser, EventCategory, Venue, Attachment, Event, UserEventBooking
 
 
@@ -35,14 +35,16 @@ class AttachmentAdmin(admin.ModelAdmin):
     pass
 
 
+class UserEventBookingInline(admin.TabularInline):
+    model = UserEventBooking
+
+
 class EventAdmin(admin.ModelAdmin):
-    pass
+    model = Event
+    inlines = [UserEventBookingInline]
 
 
-class UserEventBookingAdmin(admin.ModelAdmin):
-    pass
-
-admin.site.register(Eventify_User, Eventify_UserAdmin)
+admin.site.register(EventifyUser, Eventify_UserAdmin)
 admin.site.register(UserSkill, UserSkillAdmin)
 admin.site.register(UserProfileInformation, UserProfileInformationAdmin)
 admin.site.register(Panelist, PanelistAdmin)
@@ -50,5 +52,5 @@ admin.site.register(Organiser, OrganiserAdmin)
 admin.site.register(EventCategory, EventCategoryAdmin)
 admin.site.register(Venue, VenueAdmin)
 admin.site.register(Attachment, AttachmentAdmin)
+# admin.site.register(UserEventBooking, UserEventBookingAdmin)
 admin.site.register(Event, EventAdmin)
-admin.site.register(UserEventBooking, UserEventBookingAdmin)
