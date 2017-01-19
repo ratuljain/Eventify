@@ -18,4 +18,4 @@ class EventSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'event_category', 'venue', 'agenda',
             'event_name', 'event_start_time', 'event_end_time',
-            'entry_code','organiser', 'panelist', 'booking')
+            'entry_code', 'organiser', 'panelist', 'booking',)
