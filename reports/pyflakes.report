@@ -1,2 +1,0 @@
-eventify_api/urls.py:1: [E] PYFLAKES:'django.conf.urls.url' imported but unused
-eventify_api/views.py:1: [E] PYFLAKES:'django.shortcuts.render' imported but unused

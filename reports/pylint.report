@@ -1,10 +1,8 @@
 ************* Module eventify_api.models
 eventify_api/models.py:107: [W5101(model-missing-unicode), UserEventBooking] No __unicode__ method on model (UserEventBooking)
 eventify_api/models.py:2: [C0411(wrong-import-order), ] standard import "from datetime import datetime" comes before "from django.db import models"
-************* Module eventify_api.urls
-eventify_api/urls.py:1: [W0611(unused-import), ] Unused url imported from django.conf.urls
 ************* Module eventify_api.views
-eventify_api/views.py:1: [W0611(unused-import), ] Unused render imported from django.shortcuts
+eventify_api/views.py:11: [W0622(redefined-builtin), api_root] Redefining built-in 'format'
 ************* Module eventify_api.migrations.__init__
 eventify_api/migrations/__init__.py:1: [R0801(duplicate-code), ] Similar lines in 2 files
 ==eventify_api.migrations.0009_auto_20170118_0844:12
@@ -41,7 +39,7 @@ eventify_api/migrations/__init__.py:1: [R0801(duplicate-code), ] Similar lines i
 
 Report
 ======
-191 statements analysed.
+221 statements analysed.
 
 Statistics by type
 ------------------
@@ -49,13 +47,13 @@ Statistics by type
 +---------+-------+-----------+-----------+------------+---------+
 |type     |number |old number |difference |%documented |%badname |
 +=========+=======+===========+===========+============+=========+
-|module   |23     |23         |=          |17.39       |60.87    |
+|module   |23     |23         |=          |13.04       |60.87    |
 +---------+-------+-----------+-----------+------------+---------+
-|class    |35     |35         |=          |0.00        |0.00     |
+|class    |43     |43         |=          |0.00        |0.00     |
 +---------+-------+-----------+-----------+------------+---------+
 |method   |9      |9          |=          |100.00      |0.00     |
 +---------+-------+-----------+-----------+------------+---------+
-|function |0      |0          |=          |0           |0        |
+|function |1      |1          |=          |0.00        |0.00     |
 +---------+-------+-----------+-----------+------------+---------+
 
 
@@ -71,13 +69,19 @@ External dependencies
       \-contrib 
       | \-admin (eventify_api.admin)
       \-db 
-      | \-migrations (eventify_api.migrations.0013_auto_20170118_1459,eventify_api.migrations.0009_auto_20170118_0844,eventify_api.migrations.0011_auto_20170118_0845,eventify_api.migrations.0007_auto_20170117_1554,eventify_api.migrations.0005_auto_20170117_1342,eventify_api.migrations.0008_auto_20170118_0843,eventify_api.migrations.0012_auto_20170118_1450,eventify_api.migrations.0004_auto_20170117_1331,eventify_api.migrations.0003_remove_userprofile_user,eventify_api.migrations.0010_auto_20170118_0844,eventify_api.migrations.0001_initial,eventify_api.migrations.0014_auto_20170118_1516,eventify_api.migrations.0006_auto_20170117_1548,eventify_api.migrations.0002_remove_userprofile_is_organizer)
-      | \-models (eventify_api.migrations.0013_auto_20170118_1459,eventify_api.migrations.0009_auto_20170118_0844,eventify_api.migrations.0011_auto_20170118_0845,eventify_api.migrations.0007_auto_20170117_1554,eventify_api.migrations.0008_auto_20170118_0843,eventify_api.models,eventify_api.migrations.0004_auto_20170117_1331,eventify_api.migrations.0010_auto_20170118_0844,eventify_api.migrations.0012_auto_20170118_1450,eventify_api.migrations.0001_initial,eventify_api.migrations.0006_auto_20170117_1548)
-      |   \-deletion (eventify_api.migrations.0013_auto_20170118_1459,eventify_api.migrations.0009_auto_20170118_0844,eventify_api.migrations.0011_auto_20170118_0845,eventify_api.migrations.0007_auto_20170117_1554,eventify_api.migrations.0008_auto_20170118_0843,eventify_api.migrations.0012_auto_20170118_1450,eventify_api.migrations.0004_auto_20170117_1331,eventify_api.migrations.0010_auto_20170118_0844,eventify_api.migrations.0001_initial,eventify_api.migrations.0006_auto_20170117_1548)
-      \-shortcuts (eventify_api.views)
+        \-migrations (eventify_api.migrations.0013_auto_20170118_1459,eventify_api.migrations.0009_auto_20170118_0844,eventify_api.migrations.0011_auto_20170118_0845,eventify_api.migrations.0007_auto_20170117_1554,eventify_api.migrations.0005_auto_20170117_1342,eventify_api.migrations.0008_auto_20170118_0843,eventify_api.migrations.0012_auto_20170118_1450,eventify_api.migrations.0004_auto_20170117_1331,eventify_api.migrations.0003_remove_userprofile_user,eventify_api.migrations.0010_auto_20170118_0844,eventify_api.migrations.0001_initial,eventify_api.migrations.0014_auto_20170118_1516,eventify_api.migrations.0006_auto_20170117_1548,eventify_api.migrations.0002_remove_userprofile_is_organizer)
+        \-models (eventify_api.migrations.0013_auto_20170118_1459,eventify_api.migrations.0009_auto_20170118_0844,eventify_api.migrations.0011_auto_20170118_0845,eventify_api.migrations.0007_auto_20170117_1554,eventify_api.migrations.0008_auto_20170118_0843,eventify_api.models,eventify_api.migrations.0004_auto_20170117_1331,eventify_api.migrations.0010_auto_20170118_0844,eventify_api.migrations.0012_auto_20170118_1450,eventify_api.migrations.0001_initial,eventify_api.migrations.0006_auto_20170117_1548)
+          \-deletion (eventify_api.migrations.0013_auto_20170118_1459,eventify_api.migrations.0009_auto_20170118_0844,eventify_api.migrations.0011_auto_20170118_0845,eventify_api.migrations.0007_auto_20170117_1554,eventify_api.migrations.0008_auto_20170118_0843,eventify_api.migrations.0012_auto_20170118_1450,eventify_api.migrations.0004_auto_20170117_1331,eventify_api.migrations.0010_auto_20170118_0844,eventify_api.migrations.0001_initial,eventify_api.migrations.0006_auto_20170117_1548)
     eventify_api 
-      \-models (eventify_api.admin)
+      \-models (eventify_api.admin,eventify_api.views,eventify_api.serializers)
+      \-serializers (eventify_api.views)
+      \-views (eventify_api.urls)
     rest_framework 
+      \-decorators (eventify_api.views)
+      \-generics (eventify_api.views)
+      \-response (eventify_api.views)
+      \-reverse (eventify_api.views)
+      \-serializers (eventify_api.serializers)
       \-urlpatterns (eventify_api.urls)
 
 
@@ -88,13 +92,13 @@ Raw metrics
 +----------+-------+------+---------+-----------+
 |type      |number |%     |previous |difference |
 +==========+=======+======+=========+===========+
-|code      |556    |76.69 |556      |=          |
+|code      |595    |75.89 |595      |=          |
 +----------+-------+------+---------+-----------+
-|docstring |0      |0.00  |0        |=          |
+|docstring |6      |0.77  |6        |=          |
 +----------+-------+------+---------+-----------+
-|comment   |32     |4.41  |32       |=          |
+|comment   |32     |4.08  |32       |=          |
 +----------+-------+------+---------+-----------+
-|empty     |137    |18.90 |137      |=          |
+|empty     |151    |19.26 |151      |=          |
 +----------+-------+------+---------+-----------+
 
 
@@ -107,7 +111,7 @@ Duplication
 +=========================+======+=========+===========+
 |nb duplicated lines      |25    |25       |=          |
 +-------------------------+------+---------+-----------+
-|percent duplicated lines |3.561 |3.561    |=          |
+|percent duplicated lines |3.285 |3.285    |=          |
 +-------------------------+------+---------+-----------+
 
 
@@ -118,13 +122,13 @@ Messages by category
 +-----------+-------+---------+-----------+
 |type       |number |previous |difference |
 +===========+=======+=========+===========+
-|convention |1      |1        |=          |
+|convention |1      |2        |-1.00      |
 +-----------+-------+---------+-----------+
 |refactor   |2      |2        |=          |
 +-----------+-------+---------+-----------+
-|warning    |3      |2        |+1.00      |
+|warning    |2      |2        |=          |
 +-----------+-------+---------+-----------+
-|error      |0      |5        |-5.00      |
+|error      |0      |0        |=          |
 +-----------+-------+---------+-----------+
 
 
@@ -135,11 +139,9 @@ Messages by category
 +---------------------------------+------+--------+---------+-----------+
 |module                           |error |warning |refactor |convention |
 +=================================+======+========+=========+===========+
-|eventify_api.models              |0.00  |33.33   |0.00     |100.00     |
+|eventify_api.models              |0.00  |50.00   |0.00     |100.00     |
 +---------------------------------+------+--------+---------+-----------+
-|eventify_api.views               |0.00  |33.33   |0.00     |0.00       |
-+---------------------------------+------+--------+---------+-----------+
-|eventify_api.urls                |0.00  |33.33   |0.00     |0.00       |
+|eventify_api.views               |0.00  |50.00   |0.00     |0.00       |
 +---------------------------------+------+--------+---------+-----------+
 |eventify_api.migrations.__init__ |0.00  |0.00    |100.00   |0.00       |
 +---------------------------------+------+--------+---------+-----------+
@@ -152,11 +154,11 @@ Messages
 +----------------------+------------+
 |message id            |occurrences |
 +======================+============+
-|unused-import         |2           |
-+----------------------+------------+
 |duplicate-code        |2           |
 +----------------------+------------+
 |wrong-import-order    |1           |
++----------------------+------------+
+|redefined-builtin     |1           |
 +----------------------+------------+
 |model-missing-unicode |1           |
 +----------------------+------------+
@@ -165,5 +167,5 @@ Messages
 
 Global evaluation
 -----------------
-Your code has been rated at 9.69/10 (previous run: 8.43/10, +1.26)
+Your code has been rated at 9.77/10 (previous run: 9.73/10, +0.05)
 
