@@ -100,6 +100,15 @@ class EventTalk(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     talk_name = models.CharField(max_length=100)
     talk_datetime = models.DateTimeField(default=datetime.now, blank=True)
+    session = models.ManyToManyField(
+        Panelist, through='UserPanelistSession')
+
+
+class UserPanelistSession(models.Model):
+    event_talk = models.ForeignKey(
+        EventTalk, on_delete=models.CASCADE)
+    event_attendee = models.ForeignKey(EventifyUser, on_delete=models.CASCADE)
+    event_panelist = models.ForeignKey(Panelist, on_delete=models.CASCADE)
 
 
 class Attachment(models.Model):
