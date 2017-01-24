@@ -27,3 +27,6 @@ tests/report/
 .idea/tasks.xml
 .idea/dictionaries
 .idea/jsLiryMappings.xml
+
+
+eventify_api/migrations
