@@ -116,3 +116,11 @@ class UserEventBooking(models.Model):
     user = models.ForeignKey(EventifyUser, on_delete=models.CASCADE)
     booking_datetime = models.DateTimeField(default=datetime.now, blank=True)
     booking_seat_count = models.IntegerField(default=1)
+
+
+class Question(models.Model):
+    by_user = models.ForeignKey(EventifyUser, on_delete=models.CASCADE)
+    event_talk = models.ForeignKey(
+        EventTalk, on_delete=models.CASCADE)
+    question_text = models.CharField(max_length=250)
+    answer_text = models.CharField(max_length=250)
