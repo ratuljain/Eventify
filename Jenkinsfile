@@ -27,7 +27,6 @@ node {
        } catch(error) {
          echo "First build failed, let's retry if accepted"
          retry(2) {
-           input "Retry the job ?"
            deployProject()
          }
        }
