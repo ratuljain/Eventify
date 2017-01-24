@@ -74,6 +74,7 @@ def buildProject(){
     sh 'pip install -r requirements.txt --user'
     sh 'yes | python manage.py makemigrations --noinput'
     sh 'yes | python manage.py migrate'
+    sh "echo \"from django.contrib.auth.models import User; User.objects.filter(email='admin@example.com').delete(); User.objects.create_superuser('admin@example.com', 'admin', 'scooty2310')\" | python manage.py shell"
 }
 
 def runTests(){
