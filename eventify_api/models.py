@@ -133,3 +133,6 @@ class Question(models.Model):
         EventTalk, on_delete=models.CASCADE)
     question_text = models.CharField(max_length=250)
     answer_text = models.CharField(max_length=250)
+
+
+#lol
