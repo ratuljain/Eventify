@@ -39,9 +39,13 @@ class UserEventBookingInline(admin.TabularInline):
     model = UserEventBooking
 
 
+class EventTalkInline(admin.TabularInline):
+    model = EventTalk
+
+
 class EventAdmin(admin.ModelAdmin):
     model = Event
-    inlines = [UserEventBookingInline]
+    inlines = [UserEventBookingInline, EventTalkInline]
 
 
 class UserPanelistSessionInline(admin.TabularInline):

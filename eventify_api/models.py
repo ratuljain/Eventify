@@ -104,7 +104,7 @@ class EventTalk(models.Model):
         Panelist, through='UserPanelistSession')
 
     def __unicode__(self):
-        return self.talk_name
+        return self.event.event_name + " - " + self.talk_name
 
 
 class UserPanelistSession(models.Model):
@@ -112,6 +112,9 @@ class UserPanelistSession(models.Model):
         EventTalk, on_delete=models.CASCADE)
     event_attendee = models.ForeignKey(EventifyUser, on_delete=models.CASCADE)
     event_panelist = models.ForeignKey(Panelist, on_delete=models.CASCADE)
+
+    def __unicode__(self):
+        return self.event_attendee.first_name + " - " + self.event_panelist.user.first_name
 
 
 class Attachment(models.Model):
@@ -129,6 +132,9 @@ class UserEventBooking(models.Model):
     booking_datetime = models.DateTimeField(default=datetime.now, blank=True)
     booking_seat_count = models.IntegerField(default=1)
 
+    def __unicode__(self):
+        return self.event.event_name + " - " + self.user.first_name
+
 
 class Question(models.Model):
     by_user = models.ForeignKey(EventifyUser, on_delete=models.CASCADE)
@@ -136,3 +142,6 @@ class Question(models.Model):
         EventTalk, on_delete=models.CASCADE)
     question_text = models.CharField(max_length=250)
     answer_text = models.CharField(max_length=250)
+
+    def __unicode__(self):
+        return self.event.question_text
