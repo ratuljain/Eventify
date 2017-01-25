@@ -103,6 +103,9 @@ class EventTalk(models.Model):
     session = models.ManyToManyField(
         Panelist, through='UserPanelistSession')
 
+    def __unicode__(self):
+        return self.talk_name
+
 
 class UserPanelistSession(models.Model):
     event_talk = models.ForeignKey(
