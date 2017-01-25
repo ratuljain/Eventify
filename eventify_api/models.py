@@ -24,6 +24,7 @@ class UserSkill(models.Model):
 
 
 class EventifyUser(models.Model):
+    firebase_id = models.CharField(max_length=200)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField(max_length=254)
