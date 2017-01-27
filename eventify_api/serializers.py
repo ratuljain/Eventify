@@ -10,7 +10,7 @@ class EventifyUserSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = EventifyUser
-        fields = ('firebase_id', 'first_name',
+        fields = ('id', 'firebase_id', 'first_name',
                   'last_name', 'email', 'phone', 'user_profile_information', 'user_skills',)
 
 

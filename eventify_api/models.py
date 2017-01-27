@@ -35,7 +35,7 @@ class EventifyUser(models.Model):
         blank=True,
         null=True,
     )
-    user_skills = models.ManyToManyField(UserSkill)
+    user_skills = models.ManyToManyField(UserSkill, blank=True)
 
     def __unicode__(self):
         return self.first_name + " " + self.last_name
