@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django_jenkins',
     'rest_framework',
     'django.contrib.sites',
+    'django_extensions',
 ]
 
 SITE_ID = 1

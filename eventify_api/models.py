@@ -32,7 +32,8 @@ class EventifyUser(models.Model):
     user_profile_information = models.OneToOneField(
         UserProfileInformation,
         on_delete=models.CASCADE,
-        primary_key=True,
+        blank=True,
+        null=True,
     )
     user_skills = models.ManyToManyField(UserSkill)
 
