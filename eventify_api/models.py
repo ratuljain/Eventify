@@ -25,17 +25,6 @@ class UserSkill(models.Model):
 
 class EventifyUser(models.Model):
     firebase_id = models.CharField(max_length=200, unique=True)
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    email = models.EmailField(max_length=254)
-    phone = models.CharField(max_length=10)
-    user_profile_information = models.OneToOneField(
-        UserProfileInformation,
-        on_delete=models.CASCADE,
-        blank=True,
-        null=True,
-    )
-    user_skills = models.ManyToManyField(UserSkill, blank=True)
 
     def __unicode__(self):
         return self.first_name + " " + self.last_name

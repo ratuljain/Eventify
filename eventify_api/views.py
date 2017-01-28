@@ -2,6 +2,8 @@ from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.reverse import reverse
 from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
 
 from eventify_api.models import Venue, Event, UserProfileInformation, UserSkill, EventifyUser, Panelist, Organiser, \
     EventCategory
@@ -95,3 +97,12 @@ class EventList(generics.ListCreateAPIView):
 class EventDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
+
+
+class FirebaseToken(APIView):
+    def get(self, request, format=None):
+        return Response({'tokenid':'fsdhfuiasdbvjkasviuabsfkvjbdfahvbadfhjvbhjdfbvhjadfbvhjbhasdvchs'})
+
+    def post(self, request, format=None):
+        print request.data
+        return Response({'key': 'value'}, status=status.HTTP_201_CREATED)
