@@ -104,7 +104,7 @@ class FirebaseToken(APIView):
         import urllib, json
         from jose import jwt
 
-        idtoken = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjdkZjNlYmM2NmVkOGJhYjA1YTRjN2U1OTExNDM0YmVjZWU1ZTBkYmMifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZXZlbnRpZnlhcHAtZDUxOTYiLCJuYW1lIjoiSmFuZSBRLiBVc2VyIiwicGljdHVyZSI6Imh0dHBzOi8vZXhhbXBsZS5jb20vamFuZS1xLXVzZXIvcHJvZmlsZS5qcGciLCJhdWQiOiJldmVudGlmeWFwcC1kNTE5NiIsImF1dGhfdGltZSI6MTQ4NTYxMjA2MywidXNlcl9pZCI6IjlSdVNxRHZsaXVYR0NydENpcWMzbW5wN1J2QTIiLCJzdWIiOiI5UnVTcUR2bGl1WEdDcnRDaXFjM21ucDdSdkEyIiwiaWF0IjoxNDg1NjE0MTc0LCJleHAiOjE0ODU2MTc3NzQsImVtYWlsIjoicmF0dWxqYWluMTk5MUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsicmF0dWxqYWluMTk5MUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.RjudPbWqd-WCLMVnMKJijQ5Kl3QkIkxIhl3580p1d7rEn_t3xij9zaxWuFlTF0zTEsPtFF080nFllE7zcgFLhV3zZbkKYKVlLus4p47LILvZDe0Hcq9VcgYouWPaWpgxawJcOa3VuJqjE2xDKreo6ffJskVX_Gp_rArhrpH5CqlXszNTenBz0DOIvC0HfcdsQA_mkG5w_fzDr17od-1Uv9bLxyAZGMFz3ECjWUJPhdp6JuZuT2M6M3MDiDtKVFwAgd7N3NyX59rZmNbJ-nVXo7zaqSTr0N-DNiV85fXs7noh1Bs7I4XjhfyyQtCc__WcxUZAWWjaxsfSiX6bWZhqiA"
+        idtoken = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjdkZjNlYmM2NmVkOGJhYjA1YTRjN2U1OTExNDM0YmVjZWU1ZTBkYmMifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZXZlbnRpZnlhcHAtZDUxOTYiLCJuYW1lIjoiSmFuZSBRLiBVc2VyIiwicGljdHVyZSI6Imh0dHBzOi8vZXhhbXBsZS5jb20vamFuZS1xLXVzZXIvcHJvZmlsZS5qcGciLCJhdWQiOiJldmVudGlmeWFwcC1kNTE5NiIsImF1dGhfdGltZSI6MTQ4NTYxNzY3MCwidXNlcl9pZCI6IjlSdVNxRHZsaXVYR0NydENpcWMzbW5wN1J2QTIiLCJzdWIiOiI5UnVTcUR2bGl1WEdDcnRDaXFjM21ucDdSdkEyIiwiaWF0IjoxNDg1NjE3OTA4LCJleHAiOjE0ODU2MjE1MDgsImVtYWlsIjoicmF0dWxqYWluMTk5MUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsicmF0dWxqYWluMTk5MUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.xkUpxRrdm4gHmgTBxjJ5V3ZoXIIXc1ycQKft2yVDre0UP-hUdetBRgeFjR8f1koTd7bnUPHtIckWIOgVOXcXWt5td7Z38DN2vfXAMbSftxYIRmWkizK-C7kANnzspAFE1jzKadU3Jr1gRp_LAYt8GI3C07zUeMdngm-qWm7xifVcce9KQjBUSzv549ka6RaaqAbuhf2f1c75w2CuDeyVMVxOreVSUG2ZZa1m7YnLTi03_Fp4Tl4fN0wIAZ8Zp4MNjHf77Jko_IPzMqXrl7gdcyCzvtDtH00a1_VSqsfVPqTgeyI5lsKfx8QeUT43IgoKKOsKx9CoUY_fKg3TiA3uyg"
         target_audience = "eventifyapp-d5196"
 
         certificate_url = 'https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com'
@@ -115,6 +115,21 @@ class FirebaseToken(APIView):
 
         # will throw error if not valid
         user = jwt.decode(idtoken, certs, algorithms='RS256', audience=target_audience)
+
+        import sys, time
+
+        for a in range(1, 11):
+            sys.stdout.write('\r {0} files processed.'.format(a))
+            time.sleep(.1)
+
+        print('')
+        sys.stdout.write('\r#####                     (33%)')
+        time.sleep(1)
+        sys.stdout.write('\r#############             (66%)')
+        time.sleep(1)
+        sys.stdout.write('\r#######################   (100%)')
+        print('')
+
         # print json.loads(user)
         return Response(user)
 
