@@ -31,6 +31,8 @@ urlpatterns = [
         name='organiser-list'),
     url(r'^eventcategories/(?P<pk>[0-9]+)/$',
         views.EventCategoryDetail.as_view(), name='organiser-detail'),
+    url(r'^firebase-token/$', views.FirebaseToken.as_view(),
+        name='firebase-token'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
