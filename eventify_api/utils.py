@@ -1,4 +1,5 @@
-import urllib, json
+import urllib
+import json
 from jose import jwt
 
 
@@ -13,6 +14,7 @@ def parse_firebase_token(id_token):
     certs = json.loads(certs)
 
     # will throw error if not valid
-    user = jwt.decode(id_token, certs, algorithms='RS256', audience=target_audience)
+    user = jwt.decode(id_token, certs, algorithms='RS256',
+                      audience=target_audience)
 
     return user
