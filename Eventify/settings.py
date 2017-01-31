@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django.contrib.sites',
     'django_extensions',
+    'rest_framework.authtoken',
 ]
 
 SITE_ID = 1

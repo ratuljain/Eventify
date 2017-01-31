@@ -1,8 +1,9 @@
 from django.contrib import admin
-from eventify_api.models import EventifyUser, UserSkill, UserProfileInformation, \
-    Panelist, Organiser, EventCategory, Venue, Attachment, Event, UserEventBooking, EventTalk, UserPanelistSession
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
+
+from eventify_api.models import EventifyUser, UserSkill, UserProfileInformation, \
+    Panelist, Organiser, EventCategory, Venue, Attachment, Event, UserEventBooking, EventTalk, UserPanelistSession
 
 
 class Eventify_UserAdmin(admin.ModelAdmin):
@@ -54,7 +55,7 @@ class UserPanelistSessionInline(admin.TabularInline):
     model = UserPanelistSession
 
 
-class EventTalkAdmgit an(admin.ModelAdmin):
+class EventTalkAdmin(admin.ModelAdmin):
     model = EventTalk
     inlines = [UserPanelistSessionInline]
 

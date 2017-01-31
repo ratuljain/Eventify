@@ -1,14 +1,12 @@
-import traceback
-
+from django.contrib.auth.models import User
 from jose import JWTError
 from rest_framework import generics
-from rest_framework.decorators import api_view
-from rest_framework.reverse import reverse
-from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.authtoken.models import Token
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
 from rest_framework.views import APIView
-from django.contrib.auth.models import User
-import logging
 
 from eventify_api.models import Venue, Event, UserProfileInformation, UserSkill, EventifyUser, Panelist, Organiser, \
     EventCategory
@@ -119,8 +117,6 @@ class FirebaseToken(APIView):
             try:
                 user = User.objects.get(username=username)
             except User.DoesNotExist:
-                # Create a new user. There's no need to set a password
-                # because only the password from settings.py is checked.
                 user = User(username=username)
                 user.set_password(user_id)
                 user.save()
