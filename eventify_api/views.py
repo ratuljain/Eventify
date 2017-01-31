@@ -7,6 +7,7 @@ from rest_framework.reverse import reverse
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from django.contrib.auth.models import User
 import logging
 
 from eventify_api.models import Venue, Event, UserProfileInformation, UserSkill, EventifyUser, Panelist, Organiser, \
@@ -113,6 +114,16 @@ class FirebaseToken(APIView):
 
         try:
             response_body = parse_firebase_token(id_token)
+            user_id = str(response_body['user_id'])
+            username = response_body['email']
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                # Create a new user. There's no need to set a password
+                # because only the password from settings.py is checked.
+                user = User(username=username)
+                user.set_password(user_id)
+                user.save()
             request_status = status.HTTP_200_OK
         except JWTError:
             response_body = {"id_token": "Signature verification failed."}

@@ -1,6 +1,8 @@
 from django.contrib import admin
 from eventify_api.models import EventifyUser, UserSkill, UserProfileInformation, \
     Panelist, Organiser, EventCategory, Venue, Attachment, Event, UserEventBooking, EventTalk, UserPanelistSession
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.models import User
 
 
 class Eventify_UserAdmin(admin.ModelAdmin):
@@ -52,10 +54,13 @@ class UserPanelistSessionInline(admin.TabularInline):
     model = UserPanelistSession
 
 
-class EventTalkAdmin(admin.ModelAdmin):
+class EventTalkAdmgit an(admin.ModelAdmin):
     model = EventTalk
     inlines = [UserPanelistSessionInline]
 
+
+class UserAdmin(BaseUserAdmin):
+    pass
 
 admin.site.register(EventifyUser, Eventify_UserAdmin)
 admin.site.register(UserSkill, UserSkillAdmin)
@@ -67,3 +72,5 @@ admin.site.register(Venue, VenueAdmin)
 admin.site.register(Attachment, AttachmentAdmin)
 admin.site.register(Event, EventAdmin)
 admin.site.register(EventTalk, EventTalkAdmin)
+admin.site.unregister(User,)
+admin.site.register(User, UserAdmin)
