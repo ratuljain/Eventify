@@ -118,4 +118,4 @@ class FirebaseToken(APIView):
             response_body = {"id_token": "Signature verification failed."}
             request_status = status.HTTP_401_UNAUTHORIZED
 
-        return Response(response_body, status=request_status)
+        return Response(data=response_body, status=request_status)
