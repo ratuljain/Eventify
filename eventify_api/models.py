@@ -80,8 +80,7 @@ class Venue(models.Model):
 
 
 class Event(models.Model):
-    event_category = models.ForeignKey(
-        EventCategory, on_delete=models.CASCADE)
+    event_category = models.ManyToManyField(EventCategory)
     venue = models.ForeignKey(
         Venue, on_delete=models.CASCADE)
     agenda = models.CharField(max_length=50)
