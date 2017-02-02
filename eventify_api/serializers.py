@@ -32,6 +32,7 @@ class UserSkillSerializer(serializers.ModelSerializer):
 
 
 class PanelistSerializer(serializers.ModelSerializer):
+    user = EventifyUserSerializer()
 
     class Meta:
         model = Panelist
@@ -39,6 +40,7 @@ class PanelistSerializer(serializers.ModelSerializer):
 
 
 class OrganiserSerializer(serializers.ModelSerializer):
+    user = EventifyUserSerializer()
 
     class Meta:
         model = Organiser
@@ -61,10 +63,13 @@ class VenueSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class EventSerializer(serializers.ModelSerializer):
+    panelist = PanelistSerializer(many=True, read_only=True)
+    organiser = OrganiserSerializer(many=True, read_only=True)
 
     class Meta:
         model = Event
         fields = (
             'id', 'event_category', 'venue', 'agenda',
             'event_name', 'event_start_time', 'event_end_time',
-            'entry_code', 'organiser', 'panelist', 'booking',)
+            'entry_code', 'organiser', 'panelist',)
+        depth = 3
