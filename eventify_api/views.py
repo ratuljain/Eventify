@@ -114,12 +114,15 @@ class FirebaseToken(APIView):
             response_body = parse_firebase_token(id_token)
             user_id = str(response_body['user_id'])
             username = response_body['email']
+            name = response_body['name']
             try:
-                user = User.objects.get(username=username)
-            except User.DoesNotExist:
-                user = User(username=username)
+                user = EventifyUser.objects.get(firebase_id=user_id)
+            except EventifyUser.DoesNotExist:
+                user = User(username=username, email=username, first_name=name)
                 user.set_password(user_id)
                 user.save()
+                eventify_user = EventifyUser(user=user, firebase_id=user_id)
+                eventify_user.save()
             request_status = status.HTTP_200_OK
         except JWTError:
             response_body = {"id_token": "Signature verification failed."}

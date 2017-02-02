@@ -14,7 +14,7 @@ class UserSkill(models.Model):
 
 class UserProfileInformation(models.Model):
     photo_url = models.URLField()
-    phone = models.CharField(max_length=10)
+    phone = models.CharField(max_length=10, unique=True)
     dob = models.DateField()
     description = models.CharField(max_length=500)
     website_url = models.URLField()
