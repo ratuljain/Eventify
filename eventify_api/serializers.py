@@ -4,16 +4,17 @@ from eventify_api.models import Event, Venue, UserSkill, EventifyUser, UserProfi
     EventCategory
 
 
-class EventifyUserSerializer(serializers.HyperlinkedModelSerializer):
-    user_profile_information = serializers.HyperlinkedRelatedField(
-        view_name='userprofileinformation-detail', read_only=True)
-    user_skills = serializers.HyperlinkedRelatedField(
-        many=True, view_name='userskills-detail', read_only=True)
+class EventifyUserSerializer(serializers.ModelSerializer):
+    # user_profile_information = serializers.HyperlinkedRelatedField(
+    #     view_name='userprofileinformation-detail', read_only=True)
+    # user_skills = serializers.HyperlinkedRelatedField(
+    #     many=True, view_name='userskills-detail', read_only=True)
 
     class Meta:
         model = EventifyUser
-        fields = ('id', 'firebase_id', 'first_name',
+        fields = ('id', 'user', 'firebase_id', 'first_name',
                   'last_name', 'email', 'phone', 'user_profile_information', 'user_skills',)
+        depth = 2
 
 
 class UserProfileInformationSerializer(serializers.ModelSerializer):
