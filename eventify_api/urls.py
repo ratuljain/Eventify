@@ -4,6 +4,9 @@ from eventify_api import views
 
 urlpatterns = [
     url(r'^$', views.api_root),
+    url(r'^users/$', views.AuthUserList.as_view(), name='user-list'),
+    url(r'^users/(?P<pk>[0-9]+)/$',
+        views.AuthUserDetail.as_view(), name='user-detail'),
     url(r'^venues/$', views.VenueList.as_view(), name='venue-list'),
     url(r'^venues/(?P<pk>[0-9]+)/$',
         views.VenueDetail.as_view(), name='venue-detail'),

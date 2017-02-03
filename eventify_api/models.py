@@ -48,7 +48,7 @@ class Panelist(models.Model):
     )
 
     def __unicode__(self):
-        return self.user.first_name + " " + self.user.last_name
+        return self.user.user.first_name + " " + self.user.user.last_name
 
 
 class Organiser(models.Model):
@@ -59,7 +59,7 @@ class Organiser(models.Model):
     )
 
     def __unicode__(self):
-        return self.user.first_name + " " + self.user.last_name
+        return self.user.user.first_name + " " + self.user.user.last_name
 
 
 class EventCategory(models.Model):

@@ -6,10 +6,6 @@ from eventify_api.models import Event, Venue, UserSkill, EventifyUser, UserProfi
 
 
 class DjangoAuthUserSerializer(serializers.ModelSerializer):
-    # user_profile_information = serializers.HyperlinkedRelatedField(
-    #     view_name='userprofileinformation-detail', read_only=True)
-    # user_skills = serializers.HyperlinkedRelatedField(
-    #     many=True, view_name='userskills-detail', read_only=True)
 
     class Meta:
         model = User

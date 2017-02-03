@@ -11,7 +11,8 @@ from rest_framework.views import APIView
 from eventify_api.models import Venue, Event, UserProfileInformation, UserSkill, EventifyUser, Panelist, Organiser, \
     EventCategory
 from eventify_api.serializers import VenueSerializer, EventSerializer, UserProfileInformationSerializer, \
-    UserSkillSerializer, EventifyUserSerializer, PanelistSerializer, OrganiserSerializer, EventCategorySerializer
+    UserSkillSerializer, EventifyUserSerializer, PanelistSerializer, OrganiserSerializer, EventCategorySerializer, \
+    DjangoAuthUserSerializer
 from eventify_api.utils import parse_firebase_token
 
 
@@ -21,6 +22,16 @@ def api_root(request, format=None):
         'stops': reverse('venue-list', request=request, format=format),
         'events': reverse('event-list', request=request, format=format),
     })
+
+
+class AuthUserList(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = DjangoAuthUserSerializer
+
+
+class AuthUserDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = DjangoAuthUserSerializer
 
 
 class UserProfileInformationList(generics.ListCreateAPIView):
