@@ -80,7 +80,7 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = (
-            'id', 'event_category', 'venue', 'agenda',
+            'id', 'event_bg_image', 'event_category', 'venue', 'agenda',
             'event_name', 'event_start_time', 'event_end_time',
             'entry_code', 'organiser', 'panelist',)
-        depth = 3
+        depth = 2

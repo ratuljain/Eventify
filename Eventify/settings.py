@@ -189,7 +189,7 @@ LETTUCE_USE_TEST_DATABASE = True
 UNIQUE_EMAIL = True
 
 cloudinary.config(
-  cloud_name = "dukt9s7aj",
-  api_key = "742926962481883",
-  api_secret = "MQ5RQj650yZcaIhxC1IYcbnvSxg"
+    cloud_name="dukt9s7aj",
+    api_key="742926962481883",
+    api_secret="MQ5RQj650yZcaIhxC1IYcbnvSxg"
 )

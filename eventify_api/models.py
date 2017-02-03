@@ -81,7 +81,7 @@ class Venue(models.Model):
 
 
 class Event(models.Model):
-    event_bg_image = CloudinaryField('image')
+    event_bg_image = CloudinaryField('image', blank=True, null=True)
     event_category = models.ManyToManyField(EventCategory)
     venue = models.ForeignKey(
         Venue, on_delete=models.CASCADE)
