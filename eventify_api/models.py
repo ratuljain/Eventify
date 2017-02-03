@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -80,6 +81,7 @@ class Venue(models.Model):
 
 
 class Event(models.Model):
+    event_bg_image = CloudinaryField('image')
     event_category = models.ManyToManyField(EventCategory)
     venue = models.ForeignKey(
         Venue, on_delete=models.CASCADE)
