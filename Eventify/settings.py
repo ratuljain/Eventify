@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import cloudinary
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -185,3 +187,9 @@ LETTUCE_SERVER_PORT = 9000
 LETTUCE_USE_TEST_DATABASE = True
 
 UNIQUE_EMAIL = True
+
+cloudinary.config(
+    cloud_name="dukt9s7aj",
+    api_key="742926962481883",
+    api_secret="MQ5RQj650yZcaIhxC1IYcbnvSxg"
+)

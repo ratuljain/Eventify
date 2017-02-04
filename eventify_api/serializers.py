@@ -1,27 +1,38 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from eventify_api.models import Event, Venue, UserSkill, EventifyUser, UserProfileInformation, Panelist, Organiser, \
     EventCategory
 
 
-class EventifyUserSerializer(serializers.HyperlinkedModelSerializer):
-    user_profile_information = serializers.HyperlinkedRelatedField(
-        view_name='userprofileinformation-detail', read_only=True)
-    user_skills = serializers.HyperlinkedRelatedField(
-        many=True, view_name='userskills-detail', read_only=True)
+class DjangoAuthUserSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = EventifyUser
-        fields = ('id', 'firebase_id', 'first_name',
-                  'last_name', 'email', 'phone', 'user_profile_information', 'user_skills',)
+        model = User
+        fields = ('id', 'username', 'first_name',
+                  'last_name', 'email', 'date_joined',)
+        depth = 1
 
 
 class UserProfileInformationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfileInformation
-        fields = ('id', 'photo_url', 'dob',
-                  'description', 'website_url', 'twitter_url', 'facebook_url',)
+        fields = ('id', 'photo_url', 'phone', 'dob',
+                  'description', 'website_url', 'twitter_url', 'facebook_url', 'user_skills',)
+
+
+class EventifyUserSerializer(serializers.ModelSerializer):
+    # user_profile_information = serializers.HyperlinkedRelatedField(
+    #     view_name='userprofileinformation-detail', read_only=True)
+    # user_skills = serializers.HyperlinkedRelatedField(
+    #     many=True, view_name='userskills-detail', read_only=True)
+    user = DjangoAuthUserSerializer()
+
+    class Meta:
+        model = EventifyUser
+        fields = ('id', 'user', 'firebase_id', 'user_profile_information',)
+        depth = 1
 
 
 class UserSkillSerializer(serializers.ModelSerializer):
@@ -69,7 +80,7 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = (
-            'id', 'event_category', 'venue', 'agenda',
+            'id', 'event_bg_image', 'event_category', 'venue', 'agenda',
             'event_name', 'event_start_time', 'event_end_time',
             'entry_code', 'organiser', 'panelist',)
-        depth = 3
+        depth = 2

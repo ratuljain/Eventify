@@ -11,7 +11,8 @@ from rest_framework.views import APIView
 from eventify_api.models import Venue, Event, UserProfileInformation, UserSkill, EventifyUser, Panelist, Organiser, \
     EventCategory
 from eventify_api.serializers import VenueSerializer, EventSerializer, UserProfileInformationSerializer, \
-    UserSkillSerializer, EventifyUserSerializer, PanelistSerializer, OrganiserSerializer, EventCategorySerializer
+    UserSkillSerializer, EventifyUserSerializer, PanelistSerializer, OrganiserSerializer, EventCategorySerializer, \
+    DjangoAuthUserSerializer
 from eventify_api.utils import parse_firebase_token
 
 
@@ -21,6 +22,16 @@ def api_root(request, format=None):
         'stops': reverse('venue-list', request=request, format=format),
         'events': reverse('event-list', request=request, format=format),
     })
+
+
+class AuthUserList(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = DjangoAuthUserSerializer
+
+
+class AuthUserDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = DjangoAuthUserSerializer
 
 
 class UserProfileInformationList(generics.ListCreateAPIView):
@@ -114,12 +125,15 @@ class FirebaseToken(APIView):
             response_body = parse_firebase_token(id_token)
             user_id = str(response_body['user_id'])
             username = response_body['email']
+            name = response_body['name']
             try:
-                user = User.objects.get(username=username)
-            except User.DoesNotExist:
-                user = User(username=username)
+                user = EventifyUser.objects.get(firebase_id=user_id)
+            except EventifyUser.DoesNotExist:
+                user = User(username=username, email=username, first_name=name)
                 user.set_password(user_id)
                 user.save()
+                eventify_user = EventifyUser(user=user, firebase_id=user_id)
+                eventify_user.save()
             request_status = status.HTTP_200_OK
         except JWTError:
             response_body = {"id_token": "Signature verification failed."}

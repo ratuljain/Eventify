@@ -1,18 +1,8 @@
 from datetime import datetime
 
+from cloudinary.models import CloudinaryField
+from django.contrib.auth.models import User
 from django.db import models
-
-
-class UserProfileInformation(models.Model):
-    photo_url = models.URLField()
-    dob = models.DateField()
-    description = models.CharField(max_length=500)
-    website_url = models.URLField()
-    twitter_url = models.URLField()
-    facebook_url = models.URLField()
-
-    def __unicode__(self):
-        return self.photo_url
 
 
 class UserSkill(models.Model):
@@ -23,22 +13,32 @@ class UserSkill(models.Model):
         return self.skill_name
 
 
+class UserProfileInformation(models.Model):
+    photo_url = models.URLField()
+    phone = models.CharField(max_length=10, unique=True)
+    dob = models.DateField()
+    description = models.CharField(max_length=500)
+    website_url = models.URLField()
+    twitter_url = models.URLField()
+    facebook_url = models.URLField()
+    user_skills = models.ManyToManyField(UserSkill, blank=True)
+
+    def __unicode__(self):
+        return self.photo_url
+
+
 class EventifyUser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     firebase_id = models.CharField(max_length=200, unique=True)
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    email = models.EmailField(max_length=254)
-    phone = models.CharField(max_length=10)
     user_profile_information = models.OneToOneField(
         UserProfileInformation,
         on_delete=models.CASCADE,
         blank=True,
         null=True,
     )
-    user_skills = models.ManyToManyField(UserSkill, blank=True)
 
     def __unicode__(self):
-        return self.first_name + " " + self.last_name
+        return self.user.first_name + " " + self.user.last_name
 
 
 class Panelist(models.Model):
@@ -49,7 +49,7 @@ class Panelist(models.Model):
     )
 
     def __unicode__(self):
-        return self.user.first_name + " " + self.user.last_name
+        return self.user.user.first_name + " " + self.user.user.last_name
 
 
 class Organiser(models.Model):
@@ -60,7 +60,7 @@ class Organiser(models.Model):
     )
 
     def __unicode__(self):
-        return self.user.first_name + " " + self.user.last_name
+        return self.user.user.first_name + " " + self.user.user.last_name
 
 
 class EventCategory(models.Model):
@@ -81,8 +81,8 @@ class Venue(models.Model):
 
 
 class Event(models.Model):
-    event_category = models.ForeignKey(
-        EventCategory, on_delete=models.CASCADE)
+    event_bg_image = CloudinaryField('image', blank=True, null=True)
+    event_category = models.ManyToManyField(EventCategory)
     venue = models.ForeignKey(
         Venue, on_delete=models.CASCADE)
     agenda = models.CharField(max_length=50)
