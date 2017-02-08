@@ -69,8 +69,9 @@ class VenueSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Venue
-        fields = ('id', 'venue_name', 'venue_seat_capacity',
-                  'venue_latitude', 'venue_longitude',)
+        fields = ('id', 'venue_name', 'venue_seat_capacity', 'location',
+                  'venue_latitude', 'venue_longitude', 'venue_latitude_str',
+                  'venue_longitude_str')
 
 
 class EventSerializer(serializers.ModelSerializer):

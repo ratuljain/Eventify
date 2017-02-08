@@ -3,6 +3,7 @@ from datetime import datetime
 from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import User
 from django.db import models
+from places.fields import PlacesField
 
 
 class UserSkill(models.Model):
@@ -73,8 +74,15 @@ class EventCategory(models.Model):
 class Venue(models.Model):
     venue_name = models.CharField(max_length=50)
     venue_seat_capacity = models.IntegerField()
+    location = PlacesField(blank=True, null=True)
     venue_latitude = models.DecimalField(max_digits=9, decimal_places=6)
     venue_longitude = models.DecimalField(max_digits=9, decimal_places=6)
+    venue_latitude_str = models.CharField(max_length=50, blank=True, null=True)
+    venue_longitude_str = models.CharField(max_length=50, blank=True, null=True)
+
+    def clean(self):
+        self.venue_latitude_str = self.location.latitude
+        self.venue_longitude_str = self.location.longitude
 
     def __unicode__(self):
         return self.venue_name

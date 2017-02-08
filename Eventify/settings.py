@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django_extensions',
     'rest_framework.authtoken',
+    'places',
 ]
 
 SITE_ID = 1
@@ -193,3 +194,5 @@ cloudinary.config(
     api_key="742926962481883",
     api_secret="MQ5RQj650yZcaIhxC1IYcbnvSxg"
 )
+
+PLACES_MAPS_API_KEY = 'AIzaSyBqJsshdcMRAPeZIvzJ7YRBfENrdkwT4MA'
