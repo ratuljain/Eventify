@@ -28,7 +28,7 @@ class UserProfileInformation(models.Model):
 
 
 class EventifyUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    auth_user = models.OneToOneField(User, on_delete=models.CASCADE)
     firebase_id = models.CharField(max_length=200, unique=True)
     user_profile_information = models.OneToOneField(
         UserProfileInformation,
@@ -38,7 +38,7 @@ class EventifyUser(models.Model):
     )
 
     def __unicode__(self):
-        return self.user.first_name + " " + self.user.last_name
+        return self.auth_user.first_name + " " + self.auth_user.last_name
 
 
 class Panelist(models.Model):
@@ -49,7 +49,7 @@ class Panelist(models.Model):
     )
 
     def __unicode__(self):
-        return self.user.user.first_name + " " + self.user.user.last_name
+        return self.user.auth_user.first_name + " " + self.user.auth_user.last_name
 
 
 class Organiser(models.Model):
@@ -60,7 +60,7 @@ class Organiser(models.Model):
     )
 
     def __unicode__(self):
-        return self.user.user.first_name + " " + self.user.user.last_name
+        return self.user.auth_user.first_name + " " + self.user.auth_user.last_name
 
 
 class EventCategory(models.Model):
@@ -85,7 +85,7 @@ class Event(models.Model):
     event_category = models.ManyToManyField(EventCategory)
     venue = models.ForeignKey(
         Venue, on_delete=models.CASCADE)
-    agenda = models.CharField(max_length=50)
+    agenda = models.TextField()
     event_name = models.CharField(max_length=50)
     event_start_time = models.DateTimeField()
     event_end_time = models.DateTimeField()

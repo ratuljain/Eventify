@@ -27,11 +27,11 @@ class EventifyUserSerializer(serializers.ModelSerializer):
     #     view_name='userprofileinformation-detail', read_only=True)
     # user_skills = serializers.HyperlinkedRelatedField(
     #     many=True, view_name='userskills-detail', read_only=True)
-    user = DjangoAuthUserSerializer()
+    auth_user = DjangoAuthUserSerializer()
 
     class Meta:
         model = EventifyUser
-        fields = ('id', 'user', 'firebase_id', 'user_profile_information',)
+        fields = ('id', 'auth_user', 'firebase_id', 'user_profile_information',)
         depth = 1
 
 
@@ -83,4 +83,4 @@ class EventSerializer(serializers.ModelSerializer):
             'id', 'event_bg_image', 'event_category', 'venue', 'agenda',
             'event_name', 'event_start_time', 'event_end_time',
             'entry_code', 'organiser', 'panelist',)
-        depth = 2
+        depth = 3
