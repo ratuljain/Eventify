@@ -134,12 +134,14 @@ class UserPanelistSession(models.Model):
 
 
 class Attachment(models.Model):
-    attachment_url = models.URLField()
+    file = models.FileField(
+        upload_to='documents/%Y/%m/%d', blank=True, null=True)
+    attachment_url = models.URLField(blank=True, null=True)
     event_talk = models.ForeignKey(
-        EventTalk, on_delete=models.CASCADE)
+        EventTalk, on_delete=models.CASCADE, blank=True, null=True)
 
     def __unicode__(self):
-        return self.attachment_id
+        return self.file.path
 
 
 class UserEventBooking(models.Model):
