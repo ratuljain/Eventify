@@ -78,7 +78,8 @@ class Venue(models.Model):
     venue_latitude = models.DecimalField(max_digits=9, decimal_places=6)
     venue_longitude = models.DecimalField(max_digits=9, decimal_places=6)
     venue_latitude_str = models.CharField(max_length=50, blank=True, null=True)
-    venue_longitude_str = models.CharField(max_length=50, blank=True, null=True)
+    venue_longitude_str = models.CharField(
+        max_length=50, blank=True, null=True)
 
     def clean(self):
         self.venue_latitude_str = self.location.latitude

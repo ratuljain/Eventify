@@ -9,10 +9,10 @@ from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
 from eventify_api.models import Venue, Event, UserProfileInformation, UserSkill, EventifyUser, Panelist, Organiser, \
-    EventCategory
+    EventCategory, EventTalk
 from eventify_api.serializers import VenueSerializer, EventSerializer, UserProfileInformationSerializer, \
     UserSkillSerializer, EventifyUserSerializer, PanelistSerializer, OrganiserSerializer, EventCategorySerializer, \
-    DjangoAuthUserSerializer
+    DjangoAuthUserSerializer, EventTalkSerializer
 from eventify_api.utils import parse_firebase_token
 
 
@@ -102,6 +102,16 @@ class VenueList(generics.ListCreateAPIView):
 class VenueDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Venue.objects.all()
     serializer_class = VenueSerializer
+
+
+class EventTalkList(generics.ListCreateAPIView):
+    queryset = EventTalk.objects.all()
+    serializer_class = EventTalkSerializer
+
+
+class EventTalkDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = EventTalk.objects.all()
+    serializer_class = EventTalkSerializer
 
 
 class EventList(generics.ListCreateAPIView):
