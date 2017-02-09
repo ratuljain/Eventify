@@ -79,7 +79,8 @@ class EventTalkSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = EventTalk
-        fields = ('id', 'event', 'talk_name', 'talk_datetime',)
+        fields = ('id', 'talk_name', 'talk_description',
+                  'talk_start_time', 'talk_end_time',)
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -91,5 +92,5 @@ class EventSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'event_bg_image', 'event_category', 'venue', 'agenda',
             'event_name', 'event_start_time', 'event_end_time',
-            'entry_code', 'organiser', 'panelist',)
+            'entry_code', 'organiser', 'panelist', 'talks',)
         depth = 3

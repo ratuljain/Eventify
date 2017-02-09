@@ -32,7 +32,7 @@ urlpatterns = [
         views.OrganiserDetail.as_view(), name='organiser-detail'),
     url(r'^talks/$', views.EventTalkList.as_view(), name='organiser-list'),
     url(r'^talks/(?P<pk>[0-9]+)/$',
-        views.OrganiserDetail.as_view(), name='organiser-detail'),
+        views.EventTalkDetail.as_view(), name='organiser-detail'),
     url(r'^eventcategories/$', views.EventTalkDetail.as_view(),
         name='organiser-list'),
     url(r'^eventcategories/(?P<pk>[0-9]+)/$',

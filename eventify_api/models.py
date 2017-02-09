@@ -108,9 +108,14 @@ class Event(models.Model):
 
 
 class EventTalk(models.Model):
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    event = models.ForeignKey(
+        Event, related_name='talks', on_delete=models.CASCADE)
     talk_name = models.CharField(max_length=100)
-    talk_datetime = models.DateTimeField(default=datetime.now, blank=True)
+    talk_description = models.TextField(blank=True, null=True)
+    talk_start_time = models.TimeField(
+        default=datetime.now, blank=True, null=True)
+    talk_end_time = models.TimeField(
+        default=datetime.now, blank=True, null=True)
     session = models.ManyToManyField(
         Panelist, through='UserPanelistSession')
 
