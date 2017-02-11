@@ -3,6 +3,7 @@ from datetime import datetime
 from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_save
 from places.fields import PlacesField
 
 
@@ -134,9 +135,9 @@ class UserPanelistSession(models.Model):
 
 
 class Attachment(models.Model):
-    file = models.FileField(
-        upload_to='documents/%Y/%m/%d', blank=True, null=True)
+    file = models.FileField(upload_to="documents", blank=True, null=True)
     attachment_url = models.URLField(blank=True, null=True)
+    file_name = models.CharField(max_length=200, blank=True, null=True)
     event_talk = models.ForeignKey(
         EventTalk, on_delete=models.CASCADE, blank=True, null=True)
 
