@@ -101,6 +101,9 @@ DATABASES = {
         'PASSWORD': 'fortheloveofgodpleaseuseagoodpassword',
         'HOST': 'localhost',
         'PORT': '',
+        'TEST': {
+            'NAME': 'mytestdatabase',
+        },
     }
 }
 
@@ -171,7 +174,7 @@ JENKINS_TASKS = (
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
     # 'PAGE_SIZE': 10
 }

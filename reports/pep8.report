@@ -1,0 +1,9 @@
+eventify_api/serializers.py:85:1: E302 expected 2 blank lines, found 1
+eventify_api/tests.py:13:1: E302 expected 2 blank lines, found 1
+eventify_api/tests.py:20:5: E303 too many blank lines (2)
+eventify_api/tests.py:30:5: E303 too many blank lines (2)
+eventify_api/tests.py:34:51: E231 missing whitespace after ':'
+eventify_api/tests.py:39:5: E303 too many blank lines (2)
+eventify_api/tests.py:63:5: E303 too many blank lines (2)
+eventify_api/tests.py:94:5: E303 too many blank lines (2)
+eventify_api/tests.py:102:1: W391 blank line at end of file

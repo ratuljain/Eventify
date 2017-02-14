@@ -76,8 +76,10 @@ class Venue(models.Model):
     venue_name = models.CharField(max_length=50)
     venue_seat_capacity = models.IntegerField()
     location = PlacesField(blank=True, null=True)
-    venue_latitude = models.DecimalField(max_digits=9, decimal_places=6)
-    venue_longitude = models.DecimalField(max_digits=9, decimal_places=6)
+    venue_latitude = models.DecimalField(
+        max_digits=9, decimal_places=6, blank=True, null=True)
+    venue_longitude = models.DecimalField(
+        max_digits=9, decimal_places=6, blank=True, null=True)
     venue_latitude_str = models.CharField(max_length=50, blank=True, null=True)
     venue_longitude_str = models.CharField(
         max_length=50, blank=True, null=True)
@@ -139,7 +141,7 @@ class Attachment(models.Model):
     attachment_url = models.URLField(blank=True, null=True)
     file_name = models.CharField(max_length=200, blank=True, null=True)
     event_talk = models.ForeignKey(
-        EventTalk, on_delete=models.CASCADE, blank=True, null=True)
+        EventTalk, on_delete=models.CASCADE, related_name='talks_attachments', blank=True, null=True)
 
     def __unicode__(self):
         return self.file.path

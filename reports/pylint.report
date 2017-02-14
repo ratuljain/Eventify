@@ -1,45 +1,57 @@
+************* Module eventify_api.apps
+eventify_api/apps.py:10: [W0612(unused-variable), EventifyApiConfig.ready] Unused variable 'signals'
 ************* Module eventify_api.models
-eventify_api/models.py:107: [W5101(model-missing-unicode), UserEventBooking] No __unicode__ method on model (UserEventBooking)
-eventify_api/models.py:2: [C0411(wrong-import-order), ] standard import "from datetime import datetime" comes before "from django.db import models"
+eventify_api/models.py:86: [E1101(no-member), Venue.clean] Instance of 'PlacesField' has no 'latitude' member
+eventify_api/models.py:87: [E1101(no-member), Venue.clean] Instance of 'PlacesField' has no 'longitude' member
+eventify_api/models.py:145: [E1101(no-member), Attachment.__unicode__] Instance of 'File' has no 'path' member
+eventify_api/models.py:145: [E1101(no-member), Attachment.__unicode__] Instance of 'FileField' has no 'path' member
+eventify_api/models.py:6: [W0611(unused-import), ] Unused post_save imported from django.db.models.signals
+************* Module eventify_api.signals
+eventify_api/signals.py:3: [W0611(unused-import), ] Unused settings imported from django.conf
+eventify_api/signals.py:9: [W0611(unused-import), ] Unused Venue imported from eventify_api.models
+************* Module eventify_api.tests
+eventify_api/tests.py:102: [C0305(trailing-newlines), ] Trailing newlines
+eventify_api/tests.py:10: [W0403(relative-import), ] Relative import 'models', should be u'eventify_api.models'
+eventify_api/tests.py:10: [W0611(unused-import), ] Unused EventifyUser imported from models
+eventify_api/tests.py:11: [W0611(unused-import), ] Unused URLValidator imported from django.core.validators
+eventify_api/tests.py:7: [C0412(ungrouped-imports), ] Imports from package rest_framework are not grouped
+eventify_api/tests.py:11: [C0412(ungrouped-imports), ] Imports from package django are not grouped
 ************* Module eventify_api.views
-eventify_api/views.py:11: [W0622(redefined-builtin), api_root] Redefining built-in 'format'
+eventify_api/views.py:20: [W0622(redefined-builtin), api_root] Redefining built-in 'format'
+eventify_api/views.py:131: [W0622(redefined-builtin), FirebaseToken.post] Redefining built-in 'format'
+eventify_api/views.py:5: [W0611(unused-import), ] Unused Token imported from rest_framework.authtoken.models
+************* Module eventify_api.migrations.0023_auto_20170214_1549
+eventify_api/migrations/0023_auto_20170214_1549.py:19: [C0301(line-too-long), ] Line too long (167/160)
 ************* Module eventify_api.migrations.__init__
 eventify_api/migrations/__init__.py:1: [R0801(duplicate-code), ] Similar lines in 2 files
-==eventify_api.migrations.0009_auto_20170118_0844:12
-==eventify_api.migrations.0011_auto_20170118_0845:12
+==eventify_api.signals:19
+==eventify_api.tests:77
+        import pyrebase
+
+        config = {
+            "apiKey": "AIzaSyBOvqjUrM1juX2ZiPD1HwDQOjvKPY0q9nM",
+            "authDomain": "eventifyapp-d5196.firebaseapp.com",
+            "databaseURL": "https://eventifyapp-d5196.firebaseio.com/",
+            "storageBucket": "eventifyapp-d5196.appspot.com",
+            "serviceAccount": "/Users/ratuljain/PycharmProjects/Eventify/eventify_api/serviceAccountCredentials.json"
+        }
+
+eventify_api/migrations/__init__.py:1: [R0801(duplicate-code), ] Similar lines in 2 files
+==eventify_api.migrations.0013_auto_20170209_1739:11
+==eventify_api.migrations.0020_auto_20170210_1937:11
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='usereventbooking',
-            name='event',
-            field=models.ForeignKey(
-                on_delete=django.db.models.deletion.CASCADE, to='eventify_api.Event'),
+            model_name='attachment',
+            name='attachment_url',
+            field=models.URLField(blank=True, null=True),
         ),
-        migrations.AlterField(
-            model_name='usereventbooking',
-            name='user',
-            field=models.ForeignKey(
-                on_delete=django.db.models.deletion.CASCADE, to='eventify_api.Eventify_User'),
-        ),
-    ]
-eventify_api/migrations/__init__.py:1: [R0801(duplicate-code), ] Similar lines in 2 files
-==eventify_api.migrations.0004_auto_20170117_1331:30
-==eventify_api.migrations.0012_auto_20170118_1450:17
-            fields=[
-                ('id', models.AutoField(auto_created=True,
-                                        primary_key=True, serialize=False, verbose_name='ID')),
-                ('first_name', models.CharField(max_length=50)),
-                ('last_name', models.CharField(max_length=50)),
-                ('email', models.EmailField(max_length=254)),
-                ('phone', models.CharField(max_length=10)),
-                ('user_profile_information', models.ForeignKey(
-                    on_delete=django.db.models.deletion.CASCADE, to='eventify_api.UserProfileInformation')),
 
 
 Report
 ======
-221 statements analysed.
+525 statements analysed.
 
 Statistics by type
 ------------------
@@ -47,13 +59,13 @@ Statistics by type
 +---------+-------+-----------+-----------+------------+---------+
 |type     |number |old number |difference |%documented |%badname |
 +=========+=======+===========+===========+============+=========+
-|module   |23     |23         |=          |13.04       |60.87    |
+|module   |34     |34         |=          |2.94        |67.65    |
 +---------+-------+-----------+-----------+------------+---------+
-|class    |43     |43         |=          |0.00        |0.00     |
+|class    |98     |97         |+1.00      |0.00        |0.00     |
 +---------+-------+-----------+-----------+------------+---------+
-|method   |9      |9          |=          |100.00      |0.00     |
+|method   |25     |23         |+2.00      |96.00       |0.00     |
 +---------+-------+-----------+-----------+------------+---------+
-|function |1      |1          |=          |0.00        |0.00     |
+|function |4      |4          |=          |0.00        |0.00     |
 +---------+-------+-----------+-----------+------------+---------+
 
 
@@ -62,27 +74,50 @@ External dependencies
 ---------------------
 ::
 
+    cloudinary 
+      \-models (eventify_api.migrations.0007_event_event_bg_image,eventify_api.models)
     django 
       \-apps (eventify_api.apps)
-      \-conf (eventify_api.migrations.0001_initial)
+      \-conf (eventify_api.signals,eventify_api.migrations.0004_eventifyuser_user)
       | \-urls (eventify_api.urls)
       \-contrib 
       | \-admin (eventify_api.admin)
+      | \-auth 
+      |   \-admin (eventify_api.admin)
+      |   \-models (eventify_api.tests,eventify_api.views,eventify_api.admin,eventify_api.models,eventify_api.signals,eventify_api.serializers)
+      \-core 
+      | \-validators (eventify_api.tests)
       \-db 
-        \-migrations (eventify_api.migrations.0013_auto_20170118_1459,eventify_api.migrations.0009_auto_20170118_0844,eventify_api.migrations.0011_auto_20170118_0845,eventify_api.migrations.0007_auto_20170117_1554,eventify_api.migrations.0005_auto_20170117_1342,eventify_api.migrations.0008_auto_20170118_0843,eventify_api.migrations.0012_auto_20170118_1450,eventify_api.migrations.0004_auto_20170117_1331,eventify_api.migrations.0003_remove_userprofile_user,eventify_api.migrations.0010_auto_20170118_0844,eventify_api.migrations.0001_initial,eventify_api.migrations.0014_auto_20170118_1516,eventify_api.migrations.0006_auto_20170117_1548,eventify_api.migrations.0002_remove_userprofile_is_organizer)
-        \-models (eventify_api.migrations.0013_auto_20170118_1459,eventify_api.migrations.0009_auto_20170118_0844,eventify_api.migrations.0011_auto_20170118_0845,eventify_api.migrations.0007_auto_20170117_1554,eventify_api.migrations.0008_auto_20170118_0843,eventify_api.models,eventify_api.migrations.0004_auto_20170117_1331,eventify_api.migrations.0010_auto_20170118_0844,eventify_api.migrations.0012_auto_20170118_1450,eventify_api.migrations.0001_initial,eventify_api.migrations.0006_auto_20170117_1548)
-          \-deletion (eventify_api.migrations.0013_auto_20170118_1459,eventify_api.migrations.0009_auto_20170118_0844,eventify_api.migrations.0011_auto_20170118_0845,eventify_api.migrations.0007_auto_20170117_1554,eventify_api.migrations.0008_auto_20170118_0843,eventify_api.migrations.0012_auto_20170118_1450,eventify_api.migrations.0004_auto_20170117_1331,eventify_api.migrations.0010_auto_20170118_0844,eventify_api.migrations.0001_initial,eventify_api.migrations.0006_auto_20170117_1548)
+      | \-migrations (eventify_api.migrations.0014_attachment_file,eventify_api.migrations.0004_eventifyuser_user,eventify_api.migrations.0021_auto_20170210_2026,eventify_api.migrations.0008_auto_20170208_1540,eventify_api.migrations.0001_initial,eventify_api.migrations.0012_auto_20170209_1653,eventify_api.migrations.0017_auto_20170209_1747,eventify_api.migrations.0010_venue_location,eventify_api.migrations.0023_auto_20170214_1549,eventify_api.migrations.0019_auto_20170209_2056,eventify_api.migrations.0009_auto_20170208_1927,eventify_api.migrations.0011_auto_20170208_2047,eventify_api.migrations.0003_auto_20170127_2000,eventify_api.migrations.0022_attachment_file_name,eventify_api.migrations.0015_remove_attachment_event_talk,eventify_api.migrations.0018_auto_20170209_1807,eventify_api.migrations.0002_auto_20170127_1532,eventify_api.migrations.0013_auto_20170209_1739,eventify_api.migrations.0005_auto_20170202_1655,eventify_api.migrations.0006_auto_20170202_1953,eventify_api.migrations.0007_event_event_bg_image,eventify_api.migrations.0016_remove_attachment_file,eventify_api.migrations.0020_auto_20170210_1937)
+      | \-models (eventify_api.migrations.0003_auto_20170127_2000,eventify_api.migrations.0014_attachment_file,eventify_api.migrations.0004_eventifyuser_user,eventify_api.migrations.0021_auto_20170210_2026,eventify_api.migrations.0013_auto_20170209_1739,eventify_api.migrations.0020_auto_20170210_1937,eventify_api.migrations.0019_auto_20170209_2056,eventify_api.migrations.0022_attachment_file_name,eventify_api.models,eventify_api.migrations.0018_auto_20170209_1807,eventify_api.migrations.0002_auto_20170127_1532,eventify_api.migrations.0001_initial,eventify_api.migrations.0005_auto_20170202_1655,eventify_api.migrations.0012_auto_20170209_1653,eventify_api.migrations.0017_auto_20170209_1747,eventify_api.migrations.0006_auto_20170202_1953,eventify_api.migrations.0009_auto_20170208_1927,eventify_api.migrations.0011_auto_20170208_2047,eventify_api.migrations.0023_auto_20170214_1549)
+      |   \-deletion (eventify_api.migrations.0004_eventifyuser_user,eventify_api.migrations.0018_auto_20170209_1807,eventify_api.migrations.0023_auto_20170214_1549,eventify_api.migrations.0001_initial,eventify_api.migrations.0012_auto_20170209_1653,eventify_api.migrations.0017_auto_20170209_1747)
+      |   \-signals (eventify_api.signals,eventify_api.models)
+      \-dispatch (eventify_api.signals)
     eventify_api 
-      \-models (eventify_api.admin,eventify_api.views,eventify_api.serializers)
+      \-models (eventify_api.tests,eventify_api.admin,eventify_api.signals,eventify_api.serializers,eventify_api.views)
       \-serializers (eventify_api.views)
+      \-signals (eventify_api.apps)
+      \-utils (eventify_api.tests,eventify_api.views)
       \-views (eventify_api.urls)
+    jose (eventify_api.views)
+      \-jwt (eventify_api.utils)
+    places 
+      \-fields (eventify_api.migrations.0010_venue_location,eventify_api.models)
+    pyrebase (eventify_api.tests,eventify_api.signals)
+    requests (eventify_api.tests)
     rest_framework 
+      \-authtoken 
+      | \-models (eventify_api.tests,eventify_api.signals,eventify_api.views)
       \-decorators (eventify_api.views)
       \-generics (eventify_api.views)
       \-response (eventify_api.views)
-      \-reverse (eventify_api.views)
+      \-reverse (eventify_api.tests,eventify_api.views)
       \-serializers (eventify_api.serializers)
+      \-status (eventify_api.tests,eventify_api.views)
+      \-test (eventify_api.tests)
       \-urlpatterns (eventify_api.urls)
+      \-views (eventify_api.views)
+    unittest2 (eventify_api.tests)
 
 
 
@@ -92,13 +127,13 @@ Raw metrics
 +----------+-------+------+---------+-----------+
 |type      |number |%     |previous |difference |
 +==========+=======+======+=========+===========+
-|code      |595    |75.89 |595      |=          |
+|code      |1109   |72.77 |1093     |+16.00     |
 +----------+-------+------+---------+-----------+
-|docstring |6      |0.77  |6        |=          |
+|docstring |37     |2.43  |29       |+8.00      |
 +----------+-------+------+---------+-----------+
-|comment   |32     |4.08  |32       |=          |
+|comment   |58     |3.81  |57       |+1.00      |
 +----------+-------+------+---------+-----------+
-|empty     |151    |19.26 |151      |=          |
+|empty     |320    |21.00 |315      |+5.00      |
 +----------+-------+------+---------+-----------+
 
 
@@ -109,9 +144,9 @@ Duplication
 +-------------------------+------+---------+-----------+
 |                         |now   |previous |difference |
 +=========================+======+=========+===========+
-|nb duplicated lines      |25    |25       |=          |
+|nb duplicated lines      |18    |8        |+10.00     |
 +-------------------------+------+---------+-----------+
-|percent duplicated lines |3.285 |3.285    |=          |
+|percent duplicated lines |1.208 |0.548    |+0.66      |
 +-------------------------+------+---------+-----------+
 
 
@@ -122,13 +157,13 @@ Messages by category
 +-----------+-------+---------+-----------+
 |type       |number |previous |difference |
 +===========+=======+=========+===========+
-|convention |1      |2        |-1.00      |
+|convention |4      |4        |=          |
 +-----------+-------+---------+-----------+
-|refactor   |2      |2        |=          |
+|refactor   |2      |1        |+1.00      |
 +-----------+-------+---------+-----------+
-|warning    |2      |2        |=          |
+|warning    |10     |10       |=          |
 +-----------+-------+---------+-----------+
-|error      |0      |0        |=          |
+|error      |4      |4        |=          |
 +-----------+-------+---------+-----------+
 
 
@@ -136,36 +171,54 @@ Messages by category
 % errors / warnings by module
 -----------------------------
 
-+---------------------------------+------+--------+---------+-----------+
-|module                           |error |warning |refactor |convention |
-+=================================+======+========+=========+===========+
-|eventify_api.models              |0.00  |50.00   |0.00     |100.00     |
-+---------------------------------+------+--------+---------+-----------+
-|eventify_api.views               |0.00  |50.00   |0.00     |0.00       |
-+---------------------------------+------+--------+---------+-----------+
-|eventify_api.migrations.__init__ |0.00  |0.00    |100.00   |0.00       |
-+---------------------------------+------+--------+---------+-----------+
++------------------------------------------------+-------+--------+---------+-----------+
+|module                                          |error  |warning |refactor |convention |
++================================================+=======+========+=========+===========+
+|eventify_api.models                             |100.00 |10.00   |0.00     |0.00       |
++------------------------------------------------+-------+--------+---------+-----------+
+|eventify_api.tests                              |0.00   |30.00   |0.00     |75.00      |
++------------------------------------------------+-------+--------+---------+-----------+
+|eventify_api.views                              |0.00   |30.00   |0.00     |0.00       |
++------------------------------------------------+-------+--------+---------+-----------+
+|eventify_api.signals                            |0.00   |20.00   |0.00     |0.00       |
++------------------------------------------------+-------+--------+---------+-----------+
+|eventify_api.apps                               |0.00   |10.00   |0.00     |0.00       |
++------------------------------------------------+-------+--------+---------+-----------+
+|eventify_api.migrations.__init__                |0.00   |0.00    |100.00   |0.00       |
++------------------------------------------------+-------+--------+---------+-----------+
+|eventify_api.migrations.0023_auto_20170214_1549 |0.00   |0.00    |0.00     |25.00      |
++------------------------------------------------+-------+--------+---------+-----------+
 
 
 
 Messages
 --------
 
-+----------------------+------------+
-|message id            |occurrences |
-+======================+============+
-|duplicate-code        |2           |
-+----------------------+------------+
-|wrong-import-order    |1           |
-+----------------------+------------+
-|redefined-builtin     |1           |
-+----------------------+------------+
-|model-missing-unicode |1           |
-+----------------------+------------+
++------------------+------------+
+|message id        |occurrences |
++==================+============+
+|unused-import     |6           |
++------------------+------------+
+|no-member         |4           |
++------------------+------------+
+|ungrouped-imports |2           |
++------------------+------------+
+|redefined-builtin |2           |
++------------------+------------+
+|duplicate-code    |2           |
++------------------+------------+
+|unused-variable   |1           |
++------------------+------------+
+|trailing-newlines |1           |
++------------------+------------+
+|relative-import   |1           |
++------------------+------------+
+|line-too-long     |1           |
++------------------+------------+
 
 
 
 Global evaluation
 -----------------
-Your code has been rated at 9.77/10 (previous run: 9.73/10, +0.05)
+Your code has been rated at 9.31/10 (previous run: 9.31/10, +0.00)
 

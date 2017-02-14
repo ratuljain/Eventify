@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from eventify_api.models import Event, Venue, UserSkill, EventifyUser, UserProfileInformation, Panelist, Organiser, \
-    EventCategory, EventTalk
+    EventCategory, EventTalk, Attachment
 
 
 class DjangoAuthUserSerializer(serializers.ModelSerializer):
@@ -75,12 +75,21 @@ class VenueSerializer(serializers.HyperlinkedModelSerializer):
                   'venue_longitude_str')
 
 
-class EventTalkSerializer(serializers.HyperlinkedModelSerializer):
+class AttachmentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Attachment
+        fields = ('id', 'file', 'attachment_url',
+                  'file_name',)
+
+
+class EventTalkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EventTalk
         fields = ('id', 'talk_name', 'talk_description',
-                  'talk_start_time', 'talk_end_time',)
+                  'talk_start_time', 'talk_end_time', 'talks_attachments',)
+        depth = 1
 
 
 class EventSerializer(serializers.ModelSerializer):

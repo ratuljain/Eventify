@@ -31,3 +31,5 @@ tests/report/
 
 eventify_api/migrations
 debug.log
+reports
+documents

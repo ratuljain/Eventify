@@ -1,0 +1,7 @@
+eventify_api/apps.py:10: [E] PYFLAKES:'eventify_api.signals' imported but unused
+eventify_api/models.py:6: [E] PYFLAKES:'django.db.models.signals.post_save' imported but unused
+eventify_api/signals.py:3: [E] PYFLAKES:'django.conf.settings' imported but unused
+eventify_api/signals.py:9: [E] PYFLAKES:'eventify_api.models.Venue' imported but unused
+eventify_api/tests.py:10: [E] PYFLAKES:'models.EventifyUser' imported but unused
+eventify_api/tests.py:11: [E] PYFLAKES:'django.core.validators.URLValidator' imported but unused
+eventify_api/views.py:5: [E] PYFLAKES:'rest_framework.authtoken.models.Token' imported but unused
