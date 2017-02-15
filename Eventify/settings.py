@@ -199,3 +199,5 @@ cloudinary.config(
 )
 
 PLACES_MAPS_API_KEY = 'AIzaSyBqJsshdcMRAPeZIvzJ7YRBfENrdkwT4MA'
+
+SERVICE_ACCOUNT_JSON_FILE = os.path.join("eventify_api", "serviceAccountCredentials.json")

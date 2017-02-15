@@ -8,6 +8,7 @@ from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
 from unittest2 import TestCase
 
+from Eventify.settings import SERVICE_ACCOUNT_JSON_FILE
 from eventify_api.utils import parse_firebase_token
 from models import Venue, Attachment
 
@@ -75,15 +76,12 @@ class FirebaseJWParsingTest(TestCase):
 
     def setUp(self):
 
-        dir_path = os.path.dirname(os.path.abspath(__file__))
-        serviceAccount_file_path = os.path.join(dir_path, "serviceAccountCredentials.json")
-
         config = {
             "apiKey": "AIzaSyBOvqjUrM1juX2ZiPD1HwDQOjvKPY0q9nM",
             "authDomain": "eventifyapp-d5196.firebaseapp.com",
             "databaseURL": "https://eventifyapp-d5196.firebaseio.com/",
             "storageBucket": "eventifyapp-d5196.appspot.com",
-            "serviceAccount": serviceAccount_file_path
+            "serviceAccount": SERVICE_ACCOUNT_JSON_FILE
         }
 
         firebase = pyrebase.initialize_app(config)

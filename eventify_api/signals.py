@@ -6,6 +6,7 @@ from django.db.models.signals import post_save, pre_init
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
+from Eventify.settings import SERVICE_ACCOUNT_JSON_FILE
 from eventify_api.models import Venue, Attachment
 
 
@@ -24,7 +25,7 @@ def do_something(sender, instance, created, **kwargs):
         "authDomain": "eventifyapp-d5196.firebaseapp.com",
         "databaseURL": "https://eventifyapp-d5196.firebaseio.com/",
         "storageBucket": "eventifyapp-d5196.appspot.com",
-        "serviceAccount": "/Users/ratuljain/PycharmProjects/Eventify/eventify_api/serviceAccountCredentials.json"
+        "serviceAccount": SERVICE_ACCOUNT_JSON_FILE
     }
 
     # get name of file
