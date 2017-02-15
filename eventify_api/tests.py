@@ -57,7 +57,7 @@ class EventifyAttachmentCreationTest(TestCase):
 
     def setUp(self):
         self.attachment = Attachment(
-            file="/Users/ratuljain/PycharmProjects/Eventify/documents/eventify_model.pdf")
+            file="eventify_model.pdf")
         self.attachment.save()
 
     def test_attachment_url_creation(self):
