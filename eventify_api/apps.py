@@ -6,5 +6,5 @@ from django.apps import AppConfig
 class EventifyApiConfig(AppConfig):
     name = 'eventify_api'
 
-    # def ready(self):
-    #     from eventify_api import signals
+    def ready(self):
+        from eventify_api import signals

@@ -1,14 +1,15 @@
+import os
+import pyrebase
 import requests
+from django.contrib.auth.models import User
 from rest_framework import status
+from rest_framework.authtoken.models import Token
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
 from unittest2 import TestCase
-from django.contrib.auth.models import User
-from rest_framework.authtoken.models import Token
 
 from eventify_api.utils import parse_firebase_token
-from models import Venue, EventifyUser, Attachment
-from django.core.validators import URLValidator
+from models import Venue, Attachment
 
 
 class VenueTests(APITestCase):
@@ -73,14 +74,16 @@ class FirebaseJWParsingTest(TestCase):
     login_mail = "testuser@test.com"
 
     def setUp(self):
-        import pyrebase
+
+        dir_path = os.path.dirname(os.path.abspath(__file__))
+        serviceAccount_file_path = os.path.join(dir_path, "serviceAccountCredentials.json")
 
         config = {
             "apiKey": "AIzaSyBOvqjUrM1juX2ZiPD1HwDQOjvKPY0q9nM",
             "authDomain": "eventifyapp-d5196.firebaseapp.com",
             "databaseURL": "https://eventifyapp-d5196.firebaseio.com/",
             "storageBucket": "eventifyapp-d5196.appspot.com",
-            "serviceAccount": "/Users/ratuljain/PycharmProjects/Eventify/eventify_api/serviceAccountCredentials.json"
+            "serviceAccount": serviceAccount_file_path
         }
 
         firebase = pyrebase.initialize_app(config)
@@ -104,6 +107,6 @@ class FirebaseJWParsingTest(TestCase):
         """
         # Using post_save as a test signal
 
-        u = User(username='ghjcsdbjhcw')
+        u = User(username='ghjcshgdbjhcw')
         u.save()
         # self.assertTrue(True)
