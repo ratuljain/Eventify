@@ -22,6 +22,8 @@ urlpatterns = [
         views.UserSkillDetail.as_view(), name='userskills-detail'),
     url(r'^eventifyusers/$', views.EventifyUserList.as_view(),
         name='eventifyuser-list'),
+    # url(r'^uid/(?P<pk>(.+))/$', views.EventifyUserDetailFireBaseID.as_view(),
+    #     name='eventifyuserfuid-list'),
     url(r'^eventifyusers/(?P<pk>[0-9]+)/$',
         views.EventifyUserDetail.as_view(), name='eventifyuser-detail'),
     url(r'^panelists/$', views.PanelistList.as_view(), name='panelist-list'),

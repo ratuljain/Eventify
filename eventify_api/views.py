@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.http import Http404
 from jose import JWTError
 from rest_framework import generics
 from rest_framework import status
@@ -55,13 +56,42 @@ class UserSkillDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class EventifyUserList(generics.ListCreateAPIView):
-    queryset = EventifyUser.objects.all()
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `username` query parameter in the URL.
+        """
+        queryset = EventifyUser.objects.all()
+        username = self.request.query_params.get('firebase_id', None)
+        if username is not None:
+            queryset = queryset.filter(firebase_id=username)
+        return queryset
+
     serializer_class = EventifyUserSerializer
 
 
 class EventifyUserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = EventifyUser.objects.all()
     serializer_class = EventifyUserSerializer
+
+
+# class EventifyUserDetailFireBaseID(APIView):
+#     """
+#     Retrieve, update or delete a snippet instance.
+#     """
+#
+#     def get_object(self, pk):
+#         try:
+#             print pk
+#             return EventifyUser.objects.get(firebase_id=pk)
+#         except EventifyUser.DoesNotExist:
+#             raise Http404
+#
+#     def get(self, request, pk, format=None):
+#         snippet = self.get_object(pk)
+#         serializer = EventifyUserSerializer(snippet)
+#         return Response(serializer.data)
 
 
 class PanelistList(generics.ListCreateAPIView):
