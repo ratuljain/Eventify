@@ -1,6 +1,10 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
+from rest_framework.routers import DefaultRouter
 from rest_framework.urlpatterns import format_suffix_patterns
+from rest_framework_nested import routers
+
 from eventify_api import views
+
 
 urlpatterns = [
     url(r'^$', views.api_root),
@@ -41,8 +45,12 @@ urlpatterns = [
         views.EventCategoryDetail.as_view(), name='organiser-detail'),
     url(r'^firebase-token/$', views.FirebaseToken.as_view(),
         name='firebase-token'),
+    url(r'^bookings/$', views.UserEventBookingDetailList.as_view(),
+        name='booking-list'),
     url(r'^bookings/(?P<pk>[0-9]+)/$',
         views.UserEventBookingDetail.as_view(), name='booking-detail'),
+    url(r'^verifyuser/event/(?P<event_pk>[0-9]+)/user/(?P<firebase_uid>(.)+)/$',
+        views.ToggleUserEventBookingPinVerified.as_view(), name='booking-verify'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

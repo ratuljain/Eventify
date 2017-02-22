@@ -10,7 +10,7 @@ from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
 from eventify_api.models import Venue, Event, UserProfileInformation, UserSkill, EventifyUser, Panelist, Organiser, \
-    EventCategory, EventTalk
+    EventCategory, EventTalk, UserEventBooking
 from eventify_api.serializers import VenueSerializer, EventSerializer, UserProfileInformationSerializer, \
     UserSkillSerializer, EventifyUserSerializer, PanelistSerializer, OrganiserSerializer, EventCategorySerializer, \
     DjangoAuthUserSerializer, EventTalkSerializer, UserEventBookingSerializer
@@ -59,8 +59,7 @@ class EventifyUserList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         """
-        Optionally restricts the returned purchases to a given user,
-        by filtering against a `username` query parameter in the URL.
+
         """
         queryset = EventifyUser.objects.all()
         username = self.request.query_params.get('firebase_id', None)
@@ -174,6 +173,11 @@ class EventDetail(APIView):
         return Response(serializer.data)
 
 
+class UserEventBookingDetailList(generics.ListCreateAPIView):
+    queryset = UserEventBooking.objects.all()
+    serializer_class = UserEventBookingSerializer
+
+
 class UserEventBookingDetail(APIView):
 
     def get_object(self, pk):
@@ -185,9 +189,38 @@ class UserEventBookingDetail(APIView):
     def get(self, request, pk, format=None):
         event = self.get_object(pk)
         event_bookings = event.usereventbooking_set.all()
+
+        pin_verified = self.request.query_params.get('verified', None)
+        if pin_verified is not None:
+            event_bookings = event_bookings.filter(pin_verified=pin_verified)
+
         booking_serialized = UserEventBookingSerializer(
             event_bookings, many=True)
         return Response(booking_serialized.data)
+
+
+"""
+Endpoint to check if pin entered by the user for an event
+is correct. Toggle verifed filed depending on the result.
+"""
+
+
+class ToggleUserEventBookingPinVerified(APIView):
+
+    def put(self, request, event_pk, firebase_uid, format=None):
+
+        try:
+            event = Event.objects.get(pk=event_pk)
+            user = EventifyUser.objects.get(firebase_id=firebase_uid)
+            event_bookings = event.usereventbooking_set.get(user=user)
+            event_bookings.pin_verified = request.data['pin_verified']
+            event_bookings.save()
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Event.DoesNotExist:
+            raise Http404
+        except UserEventBooking.DoesNotExist:
+            raise Http404
 
 
 class FirebaseToken(APIView):

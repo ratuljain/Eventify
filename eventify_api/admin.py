@@ -44,6 +44,7 @@ class UserEventBookingInline(admin.TabularInline):
 
 class EventTalkInline(admin.TabularInline):
     model = EventTalk
+    max_num = 3
 
 
 class EventAdmin(admin.ModelAdmin):

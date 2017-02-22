@@ -64,7 +64,8 @@ class UserEventBookingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserEventBooking
-        fields = ('user', 'booking_datetime', 'booking_seat_count',)
+        fields = ('user', 'booking_datetime',
+                  'booking_seat_count', 'pin_verified', )
 
 
 class EventCategorySerializer(serializers.ModelSerializer):
