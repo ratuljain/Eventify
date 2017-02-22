@@ -154,7 +154,7 @@ class UserEventBooking(models.Model):
     booking_seat_count = models.IntegerField(default=1)
 
     def __unicode__(self):
-        return self.event.event_name + " - " + self.user.first_name
+        return self.event.event_name + " - " + self.user.firebase_id
 
 
 class Question(models.Model):

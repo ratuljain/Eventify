@@ -13,7 +13,7 @@ from eventify_api.models import Venue, Event, UserProfileInformation, UserSkill,
     EventCategory, EventTalk
 from eventify_api.serializers import VenueSerializer, EventSerializer, UserProfileInformationSerializer, \
     UserSkillSerializer, EventifyUserSerializer, PanelistSerializer, OrganiserSerializer, EventCategorySerializer, \
-    DjangoAuthUserSerializer, EventTalkSerializer
+    DjangoAuthUserSerializer, EventTalkSerializer, UserEventBookingSerializer
 from eventify_api.utils import parse_firebase_token
 
 
@@ -148,10 +148,46 @@ class EventList(generics.ListCreateAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 
+# usereventbooking_set
+# class EventDetail(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Event.objects.all()
+#     serializer_class = EventSerializer
 
-class EventDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Event.objects.all()
-    serializer_class = EventSerializer
+
+class EventDetail(APIView):
+
+    def get_object(self, pk):
+        try:
+            return Event.objects.get(pk=pk)
+        except Event.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        event = self.get_object(pk)
+        event_bookings = event.usereventbooking_set.all()
+        print event_bookings
+        booking_serialized = UserEventBookingSerializer(
+            event_bookings, many=True)
+        print booking_serialized.data
+        serializer = EventSerializer(event)
+        # serializer.data['booking'] = booking_serialized.data
+        return Response(serializer.data)
+
+
+class UserEventBookingDetail(APIView):
+
+    def get_object(self, pk):
+        try:
+            return Event.objects.get(pk=pk)
+        except Event.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        event = self.get_object(pk)
+        event_bookings = event.usereventbooking_set.all()
+        booking_serialized = UserEventBookingSerializer(
+            event_bookings, many=True)
+        return Response(booking_serialized.data)
 
 
 class FirebaseToken(APIView):
