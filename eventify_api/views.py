@@ -1,3 +1,6 @@
+import random
+import string
+
 from django.contrib.auth.models import User
 from django.http import Http404
 from jose import JWTError
@@ -213,7 +216,24 @@ class ToggleUserEventBookingPinVerified(APIView):
             event = Event.objects.get(pk=event_pk)
             user = EventifyUser.objects.get(firebase_id=firebase_uid)
             event_bookings = event.usereventbooking_set.get(user=user)
-            event_bookings.pin_verified = request.data['pin_verified']
+            event_bookings.pin_verified = True
+            # event_bookings.pin_verified = request.data['pin_verified']
+            event_bookings.save()
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Event.DoesNotExist:
+            raise Http404
+        except UserEventBooking.DoesNotExist:
+            raise Http404
+
+    def delete(self, request, event_pk, firebase_uid, format=None):
+
+        try:
+            event = Event.objects.get(pk=event_pk)
+            user = EventifyUser.objects.get(firebase_id=firebase_uid)
+            event_bookings = event.usereventbooking_set.get(user=user)
+            event_bookings.pin_verified = False
+            # event_bookings.pin_verified = request.data['pin_verified']
             event_bookings.save()
 
             return Response(status=status.HTTP_204_NO_CONTENT)
@@ -232,11 +252,18 @@ class FirebaseToken(APIView):
 
         try:
             response_body = parse_firebase_token(id_token)
+            print response_body
             user_id = str(response_body['user_id'])
             username = response_body['email']
             name = response_body['name']
+
             try:
                 user = EventifyUser.objects.get(firebase_id=user_id)
+                eventify_auth_user = user.auth_user
+                if eventify_auth_user.first_name != name:
+                    eventify_auth_user.first_name = name
+                    eventify_auth_user.save()
+
             except EventifyUser.DoesNotExist:
                 user = User(username=username, email=username, first_name=name)
                 user.set_password(user_id)
