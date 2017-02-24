@@ -1,4 +1,8 @@
+import random
+import string
+
 from django.contrib.auth.models import User
+from django.http import Http404
 from jose import JWTError
 from rest_framework import generics
 from rest_framework import status
@@ -9,10 +13,10 @@ from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
 from eventify_api.models import Venue, Event, UserProfileInformation, UserSkill, EventifyUser, Panelist, Organiser, \
-    EventCategory, EventTalk
+    EventCategory, EventTalk, UserEventBooking
 from eventify_api.serializers import VenueSerializer, EventSerializer, UserProfileInformationSerializer, \
     UserSkillSerializer, EventifyUserSerializer, PanelistSerializer, OrganiserSerializer, EventCategorySerializer, \
-    DjangoAuthUserSerializer, EventTalkSerializer
+    DjangoAuthUserSerializer, EventTalkSerializer, UserEventBookingSerializer
 from eventify_api.utils import parse_firebase_token
 
 
@@ -55,13 +59,41 @@ class UserSkillDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class EventifyUserList(generics.ListCreateAPIView):
-    queryset = EventifyUser.objects.all()
+
+    def get_queryset(self):
+        """
+
+        """
+        queryset = EventifyUser.objects.all()
+        username = self.request.query_params.get('firebase_id', None)
+        if username is not None:
+            queryset = queryset.filter(firebase_id=username)
+        return queryset
+
     serializer_class = EventifyUserSerializer
 
 
 class EventifyUserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = EventifyUser.objects.all()
     serializer_class = EventifyUserSerializer
+
+
+# class EventifyUserDetailFireBaseID(APIView):
+#     """
+#     Retrieve, update or delete a snippet instance.
+#     """
+#
+#     def get_object(self, pk):
+#         try:
+#             print pk
+#             return EventifyUser.objects.get(firebase_id=pk)
+#         except EventifyUser.DoesNotExist:
+#             raise Http404
+#
+#     def get(self, request, pk, format=None):
+#         snippet = self.get_object(pk)
+#         serializer = EventifyUserSerializer(snippet)
+#         return Response(serializer.data)
 
 
 class PanelistList(generics.ListCreateAPIView):
@@ -118,10 +150,135 @@ class EventList(generics.ListCreateAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 
+# usereventbooking_set
+# class EventDetail(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Event.objects.all()
+#     serializer_class = EventSerializer
 
-class EventDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Event.objects.all()
-    serializer_class = EventSerializer
+
+class EventDetail(APIView):
+
+    def get_object(self, pk):
+        try:
+            return Event.objects.get(pk=pk)
+        except Event.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        event = self.get_object(pk)
+        event_bookings = event.usereventbooking_set.all()
+        print event_bookings
+        booking_serialized = UserEventBookingSerializer(
+            event_bookings, many=True)
+        print booking_serialized.data
+        serializer = EventSerializer(event)
+        # serializer.data['booking'] = booking_serialized.data
+        return Response(serializer.data)
+
+
+class UserEventBookingDetailList(generics.ListCreateAPIView):
+    queryset = UserEventBooking.objects.all()
+    serializer_class = UserEventBookingSerializer
+
+
+class UserEventBookingDetail(APIView):
+
+    def get_object(self, pk):
+        try:
+            return Event.objects.get(pk=pk)
+        except Event.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        event = self.get_object(pk)
+        event_bookings = event.usereventbooking_set.all()
+
+        pin_verified = self.request.query_params.get('verified', None)
+        if pin_verified is not None:
+            event_bookings = event_bookings.filter(pin_verified=pin_verified)
+
+        booking_serialized = UserEventBookingSerializer(
+            event_bookings, many=True)
+        return Response(booking_serialized.data)
+
+
+"""
+Endpoint to check if pin entered by the user for an event
+is correct. Toggle verifed filed depending on the result.
+"""
+
+
+class ToggleUserEventBookingPinVerified(APIView):
+    """
+    ENDPOINT TO CHECK STATUS OF A BOOKING.
+    {
+        "booked": boolean,
+        "verified": boolean
+    }
+    """
+
+    def get(self, request, event_pk, firebase_uid, format=None):
+        try:
+            event = Event.objects.get(pk=event_pk)
+            user = EventifyUser.objects.get(firebase_id=firebase_uid)
+            user_booking_status = {}
+
+            booking_info = UserEventBooking.objects.get(event=event, user=user)
+            user_booking_status['booked'] = True
+            user_booking_status['verified'] = booking_info.pin_verified
+
+            return Response(data=user_booking_status, status=status.HTTP_200_OK)
+
+        except Event.DoesNotExist:
+            raise Http404
+        except UserEventBooking.DoesNotExist:
+            raise Http404
+
+    def post(self, request, event_pk, firebase_uid, format=None):
+
+        try:
+            event = Event.objects.get(pk=event_pk)
+            user = EventifyUser.objects.get(firebase_id=firebase_uid)
+
+            UserEventBooking.objects.get_or_create(event=event, user=user)
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Event.DoesNotExist:
+            raise Http404
+        except UserEventBooking.DoesNotExist:
+            raise Http404
+
+    def put(self, request, event_pk, firebase_uid, format=None):
+
+        try:
+            event = Event.objects.get(pk=event_pk)
+            user = EventifyUser.objects.get(firebase_id=firebase_uid)
+            event_bookings = event.usereventbooking_set.get(user=user)
+            event_bookings.pin_verified = True
+            # event_bookings.pin_verified = request.data['pin_verified']
+            event_bookings.save()
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Event.DoesNotExist:
+            raise Http404
+        except UserEventBooking.DoesNotExist:
+            raise Http404
+
+    def delete(self, request, event_pk, firebase_uid, format=None):
+
+        try:
+            event = Event.objects.get(pk=event_pk)
+            user = EventifyUser.objects.get(firebase_id=firebase_uid)
+            event_bookings = event.usereventbooking_set.get(user=user)
+            event_bookings.pin_verified = False
+            # event_bookings.pin_verified = request.data['pin_verified']
+            event_bookings.save()
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Event.DoesNotExist:
+            raise Http404
+        except UserEventBooking.DoesNotExist:
+            raise Http404
 
 
 class FirebaseToken(APIView):
@@ -133,16 +290,24 @@ class FirebaseToken(APIView):
 
         try:
             response_body = parse_firebase_token(id_token)
+            print response_body
             user_id = str(response_body['user_id'])
             username = response_body['email']
             name = response_body['name']
+
             try:
                 user = EventifyUser.objects.get(firebase_id=user_id)
+                eventify_auth_user = user.auth_user
+                if eventify_auth_user.first_name != name:
+                    eventify_auth_user.first_name = name
+                    eventify_auth_user.save()
+
             except EventifyUser.DoesNotExist:
-                user = User(username=username, email=username, first_name=name)
-                user.set_password(user_id)
-                user.save()
-                eventify_user = EventifyUser(user=user, firebase_id=user_id)
+                user, created = User.objects.get_or_create(
+                    username=username, email=username, first_name=name)
+                # user.set_password(user_id)
+                eventify_user = EventifyUser(
+                    auth_user=user, firebase_id=user_id)
                 eventify_user.save()
             request_status = status.HTTP_200_OK
         except JWTError:

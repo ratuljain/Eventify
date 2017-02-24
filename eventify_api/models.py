@@ -112,7 +112,7 @@ class Event(models.Model):
 
 class EventTalk(models.Model):
     event = models.ForeignKey(
-        Event, related_name='talks', on_delete=models.CASCADE)
+        Event, related_name='talks', on_delete=models.CASCADE, blank=True, null=True)
     talk_name = models.CharField(max_length=100)
     talk_description = models.TextField(blank=True, null=True)
     talk_start_time = models.TimeField(
@@ -152,9 +152,10 @@ class UserEventBooking(models.Model):
     user = models.ForeignKey(EventifyUser, on_delete=models.CASCADE)
     booking_datetime = models.DateTimeField(default=datetime.now, blank=True)
     booking_seat_count = models.IntegerField(default=1)
+    pin_verified = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return self.event.event_name + " - " + self.user.first_name
+        return self.event.event_name + " - " + self.user.firebase_id
 
 
 class Question(models.Model):

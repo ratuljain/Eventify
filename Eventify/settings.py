@@ -174,7 +174,7 @@ JENKINS_TASKS = (
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+        'rest_framework.permissions.AllowAny',
     ],
     # 'PAGE_SIZE': 10
 }
@@ -200,4 +200,5 @@ cloudinary.config(
 
 PLACES_MAPS_API_KEY = 'AIzaSyBqJsshdcMRAPeZIvzJ7YRBfENrdkwT4MA'
 
-SERVICE_ACCOUNT_JSON_FILE = os.path.join("eventify_api", "serviceAccountCredentials.json")
+SERVICE_ACCOUNT_JSON_FILE = os.path.join(
+    "eventify_api", "serviceAccountCredentials.json")

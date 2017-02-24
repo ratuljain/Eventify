@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from eventify_api.models import Event, Venue, UserSkill, EventifyUser, UserProfileInformation, Panelist, Organiser, \
-    EventCategory, EventTalk, Attachment
+    EventCategory, EventTalk, Attachment, UserEventBooking
 
 
 class DjangoAuthUserSerializer(serializers.ModelSerializer):
@@ -33,7 +33,7 @@ class EventifyUserSerializer(serializers.ModelSerializer):
         model = EventifyUser
         fields = ('id', 'auth_user', 'firebase_id',
                   'user_profile_information',)
-        depth = 1
+        depth = 2
 
 
 class UserSkillSerializer(serializers.ModelSerializer):
@@ -57,6 +57,15 @@ class OrganiserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Organiser
         fields = ('user',)
+
+
+class UserEventBookingSerializer(serializers.ModelSerializer):
+    user = EventifyUserSerializer()
+
+    class Meta:
+        model = UserEventBooking
+        fields = ('user', 'booking_datetime',
+                  'booking_seat_count', 'pin_verified', )
 
 
 class EventCategorySerializer(serializers.ModelSerializer):
@@ -101,5 +110,5 @@ class EventSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'event_bg_image', 'event_category', 'venue', 'agenda',
             'event_name', 'event_start_time', 'event_end_time',
-            'entry_code', 'organiser', 'panelist', 'talks',)
-        depth = 3
+            'entry_code', 'organiser', 'panelist', 'talks', 'booking')
+        depth = 4
