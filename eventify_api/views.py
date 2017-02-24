@@ -209,6 +209,44 @@ is correct. Toggle verifed filed depending on the result.
 
 
 class ToggleUserEventBookingPinVerified(APIView):
+    """
+    ENDPOINT TO CHECK STATUS OF A BOOKING.
+    {
+        "booked": boolean,
+        "verified": boolean
+    }
+    """
+
+    def get(self, request, event_pk, firebase_uid, format=None):
+        try:
+            event = Event.objects.get(pk=event_pk)
+            user = EventifyUser.objects.get(firebase_id=firebase_uid)
+            user_booking_status = {}
+
+            booking_info = UserEventBooking.objects.get(event=event, user=user)
+            user_booking_status['booked'] = True
+            user_booking_status['verified'] = booking_info.pin_verified
+
+            return Response(data=user_booking_status, status=status.HTTP_200_OK)
+
+        except Event.DoesNotExist:
+            raise Http404
+        except UserEventBooking.DoesNotExist:
+            raise Http404
+
+    def post(self, request, event_pk, firebase_uid, format=None):
+
+        try:
+            event = Event.objects.get(pk=event_pk)
+            user = EventifyUser.objects.get(firebase_id=firebase_uid)
+
+            UserEventBooking.objects.get_or_create(event=event, user=user)
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Event.DoesNotExist:
+            raise Http404
+        except UserEventBooking.DoesNotExist:
+            raise Http404
 
     def put(self, request, event_pk, firebase_uid, format=None):
 
@@ -265,10 +303,11 @@ class FirebaseToken(APIView):
                     eventify_auth_user.save()
 
             except EventifyUser.DoesNotExist:
-                user = User(username=username, email=username, first_name=name)
-                user.set_password(user_id)
-                user.save()
-                eventify_user = EventifyUser(user=user, firebase_id=user_id)
+                user, created = User.objects.get_or_create(
+                    username=username, email=username, first_name=name)
+                # user.set_password(user_id)
+                eventify_user = EventifyUser(
+                    auth_user=user, firebase_id=user_id)
                 eventify_user.save()
             request_status = status.HTTP_200_OK
         except JWTError:
