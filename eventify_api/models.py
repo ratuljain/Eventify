@@ -1,10 +1,17 @@
 from datetime import datetime
 
+import StringIO
+
+import cloudinary
+import qrcode
 from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import User
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save
 from places.fields import PlacesField
+from cloudinary.uploader import upload
 
 
 class UserSkill(models.Model):
@@ -105,6 +112,7 @@ class Event(models.Model):
     organiser = models.ManyToManyField(Organiser)
     panelist = models.ManyToManyField(Panelist)
     booking = models.ManyToManyField(EventifyUser, through='UserEventBooking')
+    qr_code_url = models.URLField(blank=True, null=True)
 
     def __unicode__(self):
         return self.event_name
