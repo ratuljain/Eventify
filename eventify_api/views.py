@@ -13,10 +13,10 @@ from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
 from eventify_api.models import Venue, Event, UserProfileInformation, UserSkill, EventifyUser, Panelist, Organiser, \
-    EventCategory, EventTalk, UserEventBooking
+    EventCategory, EventTalk, UserEventBooking, UserEventFeedback
 from eventify_api.serializers import VenueSerializer, EventSerializer, UserProfileInformationSerializer, \
     UserSkillSerializer, EventifyUserSerializer, PanelistSerializer, OrganiserSerializer, EventCategorySerializer, \
-    DjangoAuthUserSerializer, EventTalkSerializer, UserEventBookingSerializer
+    DjangoAuthUserSerializer, EventTalkSerializer, UserEventBookingSerializer, UserEventFeedbackSerializer
 from eventify_api.utils import parse_firebase_token
 
 
@@ -146,14 +146,35 @@ class EventTalkDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = EventTalkSerializer
 
 
-class EventList(generics.ListCreateAPIView):
-    queryset = Event.objects.all()
-    serializer_class = EventSerializer
-
-# usereventbooking_set
-# class EventDetail(generics.RetrieveUpdateDestroyAPIView):
+# class EventList(generics.ListCreateAPIView):
 #     queryset = Event.objects.all()
 #     serializer_class = EventSerializer
+
+
+class EventList(APIView):
+    def get(self, request, format=None):
+        try:
+            organiser_id = self.request.query_params.get('organiser', None)
+            events = Event.objects.all()
+
+            if organiser_id:
+                user = EventifyUser.objects.get(pk=organiser_id)
+                organiser = Organiser.objects.get(user=user)
+                events = Event.objects.filter(organiser=organiser)
+
+            serializer = EventSerializer(events, many=True)
+            return Response(serializer.data)
+        except EventifyUser.DoesNotExist:
+            raise Http404
+        except Organiser.DoesNotExist:
+            raise Http404
+
+    def post(self, request, format=None):
+        serializer = EventSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class EventDetail(APIView):
@@ -166,11 +187,9 @@ class EventDetail(APIView):
 
     def get(self, request, pk, format=None):
         event = self.get_object(pk)
-        event_bookings = event.usereventbooking_set.all()
-        print event_bookings
-        booking_serialized = UserEventBookingSerializer(
-            event_bookings, many=True)
-        print booking_serialized.data
+        # event_bookings = event.usereventbooking_set.all()
+        # booking_serialized = UserEventBookingSerializer(
+        #     event_bookings, many=True)
         serializer = EventSerializer(event)
         # serializer.data['booking'] = booking_serialized.data
         return Response(serializer.data)
@@ -200,6 +219,66 @@ class UserEventBookingDetail(APIView):
         booking_serialized = UserEventBookingSerializer(
             event_bookings, many=True)
         return Response(booking_serialized.data)
+
+
+class UserEventFeedbackList(APIView):
+
+    def get_object(self, pk):
+        try:
+            return Event.objects.get(pk=pk)
+        except Event.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        event = self.get_object(pk)
+        event_bookings = event.usereventfeedback_set.all()
+        booking_serialized = UserEventFeedbackSerializer(
+            event_bookings, many=True)
+        return Response(booking_serialized.data)
+
+
+class UserEventFeedbackDetail(generics.ListCreateAPIView):
+    queryset = UserEventFeedback.objects.all()
+    serializer_class = UserEventFeedbackSerializer
+
+
+# class UserEventFeedbackDetail(APIView):
+#
+#     def get(self, request, event_pk, firebase_uid, format=None):
+#         try:
+#             event = Event.objects.get(pk=event_pk)
+#             user = EventifyUser.objects.get(firebase_id=firebase_uid)
+#             user_booking_status = {}
+#
+#             user_feedback = UserEventFeedback.objects.get(event=event, user=user)
+#
+#             booking_serialized = UserEventFeedbackSerializer(user_feedback)
+#             return Response(data=booking_serialized.data, status=status.HTTP_200_OK)
+#
+#         except Event.DoesNotExist:
+#             raise Http404
+#         except EventifyUser.DoesNotExist:
+#             raise Http404
+#         except UserEventFeedback.DoesNotExist:
+#             raise Http404
+#
+#     def post(self, request, event_pk, firebase_uid, format=None):
+#         try:
+#             event = Event.objects.get(pk=event_pk)
+#             user = EventifyUser.objects.get(firebase_id=firebase_uid)
+#             user_booking_status = {}
+#
+#             user_feedback = UserEventFeedback.objects.get(event=event, user=user)
+#
+#             booking_serialized = UserEventFeedbackSerializer(user_feedback)
+#             return Response(data=booking_serialized.data, status=status.HTTP_200_OK)
+#
+#         except Event.DoesNotExist:
+#             raise Http404
+#         except EventifyUser.DoesNotExist:
+#             raise Http404
+#         except UserEventFeedback.DoesNotExist:
+#             raise Http404
 
 
 """

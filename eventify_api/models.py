@@ -14,6 +14,18 @@ from places.fields import PlacesField
 from cloudinary.uploader import upload
 
 
+class IntegerRangeField(models.IntegerField):
+
+    def __init__(self, verbose_name=None, name=None, min_value=None, max_value=None, **kwargs):
+        self.min_value, self.max_value = min_value, max_value
+        models.IntegerField.__init__(self, verbose_name, name, **kwargs)
+
+    def formfield(self, **kwargs):
+        defaults = {'min_value': self.min_value, 'max_value': self.max_value}
+        defaults.update(kwargs)
+        return super(IntegerRangeField, self).formfield(**defaults)
+
+
 class UserSkill(models.Model):
     skill_name = models.CharField(max_length=30)
     skill_description = models.CharField(max_length=150)
@@ -112,6 +124,8 @@ class Event(models.Model):
     organiser = models.ManyToManyField(Organiser)
     panelist = models.ManyToManyField(Panelist)
     booking = models.ManyToManyField(EventifyUser, through='UserEventBooking')
+    feedback = models.ManyToManyField(
+        EventifyUser, related_name="event_user_feedback", through='UserEventFeedback')
     qr_code_url = models.URLField(blank=True, null=True)
 
     def __unicode__(self):
@@ -161,6 +175,30 @@ class UserEventBooking(models.Model):
     booking_datetime = models.DateTimeField(default=datetime.now, blank=True)
     booking_seat_count = models.IntegerField(default=1)
     pin_verified = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return self.event.event_name + " - " + self.user.firebase_id
+
+    class Meta:
+        unique_together = ('event', 'user',)
+
+
+# False - negative response, True - Positive response
+# In case of rating < 3, True for boolean will mean that
+# the user didn't like the respective boolean field
+# In case of rating > 3, True for boolean will mean that
+# the user liked the respective boolean field
+class UserEventFeedback(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    user = models.ForeignKey(EventifyUser, on_delete=models.CASCADE)
+    rating = IntegerRangeField(min_value=1, max_value=5, blank=True, null=True)
+    feedback_text = models.CharField(max_length=500, blank=True, null=True)
+    food = models.BooleanField(default=False)
+    panelist = models.BooleanField(default=False)
+    relevance = models.BooleanField(default=False)
+    engagement = models.BooleanField(default=False)
+    duration = models.BooleanField(default=False)
+    crowd = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.event.event_name + " - " + self.user.firebase_id

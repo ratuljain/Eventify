@@ -3,7 +3,8 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 
 from eventify_api.models import EventifyUser, UserSkill, UserProfileInformation, \
-    Panelist, Organiser, EventCategory, Venue, Attachment, Event, UserEventBooking, EventTalk, UserPanelistSession
+    Panelist, Organiser, EventCategory, Venue, Attachment, Event, UserEventBooking, EventTalk, UserPanelistSession, \
+    UserEventFeedback
 
 
 class Eventify_UserAdmin(admin.ModelAdmin):
@@ -47,9 +48,13 @@ class EventTalkInline(admin.TabularInline):
     max_num = 3
 
 
+class EventFeedbackInline(admin.TabularInline):
+    model = UserEventFeedback
+
+
 class EventAdmin(admin.ModelAdmin):
     model = Event
-    inlines = [UserEventBookingInline, EventTalkInline]
+    inlines = [UserEventBookingInline, EventTalkInline, EventFeedbackInline]
 
 
 class UserPanelistSessionInline(admin.TabularInline):
