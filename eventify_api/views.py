@@ -1,6 +1,7 @@
 import random
 import string
 
+from datetime import datetime
 from django.contrib.auth.models import User
 from django.http import Http404
 from jose import JWTError
@@ -152,6 +153,7 @@ class EventTalkDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class EventList(APIView):
+
     def get(self, request, format=None):
         try:
             organiser_id = self.request.query_params.get('organiser', None)
@@ -160,7 +162,8 @@ class EventList(APIView):
             if organiser_id:
                 user = EventifyUser.objects.get(pk=organiser_id)
                 organiser = Organiser.objects.get(user=user)
-                events = Event.objects.filter(organiser=organiser)
+                events = Event.objects.filter(
+                    organiser=organiser, event_start_time__gte=datetime.now())
 
             serializer = EventSerializer(events, many=True)
             return Response(serializer.data)
