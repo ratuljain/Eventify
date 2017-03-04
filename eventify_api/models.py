@@ -213,3 +213,14 @@ class Question(models.Model):
 
     def __unicode__(self):
         return self.event.question_text
+
+
+# class EventCoupons(models.Model):
+#     event = models.ForeignKey(
+#         Event, related_name='coupons', on_delete=models.CASCADE, blank=True, null=True)
+#     provider_name = models.CharField(max_length=250, blank=True, null=True)
+#     coupon_description = models.CharField(max_length=250, blank=True, null=True)
+#     coupon_url = models.URLField(max_length=250, blank=True, null=True)
+#
+#     def __unicode__(self):
+#         return self.event.question_text

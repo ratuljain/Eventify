@@ -157,13 +157,19 @@ class EventList(APIView):
     def get(self, request, format=None):
         try:
             organiser_id = self.request.query_params.get('organiser', None)
+            is_upcoming = self.request.query_params.get('upcoming', None)
             events = Event.objects.all()
 
-            if organiser_id:
+            is_upcoming_boolean = is_upcoming in ['true', '1']
+
+            if organiser_id and not is_upcoming:
                 user = EventifyUser.objects.get(pk=organiser_id)
                 organiser = Organiser.objects.get(user=user)
                 events = Event.objects.filter(
                     organiser=organiser, event_start_time__gte=datetime.now())
+            if not organiser_id and is_upcoming:
+                events = Event.objects.filter(
+                    event_start_time__gte=datetime.now())
 
             serializer = EventSerializer(events, many=True)
             return Response(serializer.data)
