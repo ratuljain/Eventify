@@ -151,23 +151,44 @@ class EventTalkDetail(generics.RetrieveUpdateDestroyAPIView):
 #     queryset = Event.objects.all()
 #     serializer_class = EventSerializer
 
+"""
+Return list of events.
+Only one query param allowed.
+If organiser_id is provided all the events are organized by that particular organizer are shown
+If firebase_id is provided all the events attended or booked by that user are shown
+If is_upcoming is provided all the events which are going to happen in the future wrt datetime.now()
+will be shown
+"""
+
 
 class EventList(APIView):
 
     def get(self, request, format=None):
         try:
             organiser_id = self.request.query_params.get('organiser', None)
+            firebase_id = self.request.query_params.get('firebase-id', None)
             is_upcoming = self.request.query_params.get('upcoming', None)
             events = Event.objects.all()
 
+            number_of_param = [organiser_id, firebase_id, is_upcoming]
+            number_of_param = [i for i in number_of_param if i is not None]
+
+            if len(number_of_param) > 1:
+                return Response({"detail": "Only one param allowed"},
+                                status=status.HTTP_400_BAD_REQUEST)
+
             is_upcoming_boolean = is_upcoming in ['true', '1']
 
-            if organiser_id and not is_upcoming:
+            if firebase_id:
+                user = EventifyUser.objects.get(firebase_id=firebase_id)
+                bookings = UserEventBooking.objects.filter(user=user)
+                events = [booking.event for booking in bookings]
+            if organiser_id:
                 user = EventifyUser.objects.get(pk=organiser_id)
                 organiser = Organiser.objects.get(user=user)
                 events = Event.objects.filter(
                     organiser=organiser, event_start_time__gte=datetime.now())
-            if not organiser_id and is_upcoming:
+            if is_upcoming:
                 events = Event.objects.filter(
                     event_start_time__gte=datetime.now())
 
