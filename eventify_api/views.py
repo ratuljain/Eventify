@@ -1,7 +1,7 @@
 import random
 import string
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.contrib.auth.models import User
 from django.http import Http404
 from jose import JWTError
@@ -186,8 +186,9 @@ class EventList(APIView):
             if organiser_id:
                 user = EventifyUser.objects.get(pk=organiser_id)
                 organiser = Organiser.objects.get(user=user)
+                nine_hours_from_now = datetime.now() + timedelta(hours=9)
                 events = Event.objects.filter(
-                    organiser=organiser, event_start_time__gte=datetime.now())
+                    organiser=organiser, event_start_time__gte=nine_hours_from_now)
             if is_upcoming:
                 events = Event.objects.filter(
                     event_start_time__gte=datetime.now())

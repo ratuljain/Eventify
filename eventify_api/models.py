@@ -29,10 +29,33 @@ class UserSkill(models.Model):
 
 
 class UserProfileInformation(models.Model):
+    SEX_CHOICES = (
+        ('F', 'Female',),
+        ('M', 'Male',),
+    )
+    ROLE_CHOICES = (
+        ('Developer', 'Developer',),
+        ('Tester', 'Tester',),
+        ('Manager', 'Manager',),
+        ('Student', 'Student',),
+    )
     photo_url = models.URLField()
     phone = models.CharField(max_length=10, unique=True)
     dob = models.DateField()
+    sex = models.CharField(
+        max_length=1,
+        choices=SEX_CHOICES,
+        blank=True,
+        null=True
+    )
     description = models.CharField(max_length=500)
+    employer = models.CharField(max_length=100, blank=True, null=True)
+    role = models.CharField(
+        max_length=100,
+        choices=ROLE_CHOICES,
+        blank=True,
+        null=True
+    )
     website_url = models.URLField()
     twitter_url = models.URLField()
     facebook_url = models.URLField()
