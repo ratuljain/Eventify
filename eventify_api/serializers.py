@@ -19,7 +19,7 @@ class UserProfileInformationSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfileInformation
         fields = ('id', 'photo_url', 'phone', 'dob',
-                  'description', 'website_url', 'twitter_url', 'facebook_url', 'user_skills',)
+                  'description', 'sex', 'employer', 'role', 'website_url', 'twitter_url', 'facebook_url', 'user_skills',)
 
 
 class EventifyUserSerializer(serializers.ModelSerializer):

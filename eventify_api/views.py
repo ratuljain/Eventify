@@ -24,8 +24,9 @@ from eventify_api.utils import parse_firebase_token
 @api_view(['GET'])
 def api_root(request, format=None):
     return Response({
-        'stops': reverse('venue-list', request=request, format=format),
+        'venues': reverse('venue-list', request=request, format=format),
         'events': reverse('event-list', request=request, format=format),
+        'eventify_users': reverse('eventifyuser-list', request=request, format=format),
     })
 
 
@@ -59,19 +60,38 @@ class UserSkillDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserSkillSerializer
 
 
-class EventifyUserList(generics.ListCreateAPIView):
+# class EventifyUserList(generics.ListCreateAPIView):
+#
+#     def get_queryset(self):
+#         queryset = EventifyUser.objects.all()
+#         username = self.request.query_params.get('firebase_id', None)
+#         if username is not None:
+#             queryset = queryset.filter(firebase_id=username)
+#         return queryset
+#
+#     serializer_class = EventifyUserSerializer
 
-    def get_queryset(self):
-        """
 
-        """
+class EventifyUserList(APIView):
+    """
+    List all snippets, or create a new snippet.
+    """
+
+    def get(self, request, format=None):
         queryset = EventifyUser.objects.all()
         username = self.request.query_params.get('firebase_id', None)
         if username is not None:
             queryset = queryset.filter(firebase_id=username)
-        return queryset
+        serializer = EventifyUserSerializer(queryset, many=True)
+        return Response(serializer.data)
 
-    serializer_class = EventifyUserSerializer
+    # def post(self, request, format=None):
+    #     serializer = SnippetSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class EventifyUserDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -79,22 +99,6 @@ class EventifyUserDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = EventifyUserSerializer
 
 
-# class EventifyUserDetailFireBaseID(APIView):
-#     """
-#     Retrieve, update or delete a snippet instance.
-#     """
-#
-#     def get_object(self, pk):
-#         try:
-#             print pk
-#             return EventifyUser.objects.get(firebase_id=pk)
-#         except EventifyUser.DoesNotExist:
-#             raise Http404
-#
-#     def get(self, request, pk, format=None):
-#         snippet = self.get_object(pk)
-#         serializer = EventifyUserSerializer(snippet)
-#         return Response(serializer.data)
 
 
 class PanelistList(generics.ListCreateAPIView):
@@ -273,45 +277,6 @@ class UserEventFeedbackDetail(generics.ListCreateAPIView):
     serializer_class = UserEventFeedbackSerializer
 
 
-# class UserEventFeedbackDetail(APIView):
-#
-#     def get(self, request, event_pk, firebase_uid, format=None):
-#         try:
-#             event = Event.objects.get(pk=event_pk)
-#             user = EventifyUser.objects.get(firebase_id=firebase_uid)
-#             user_booking_status = {}
-#
-#             user_feedback = UserEventFeedback.objects.get(event=event, user=user)
-#
-#             booking_serialized = UserEventFeedbackSerializer(user_feedback)
-#             return Response(data=booking_serialized.data, status=status.HTTP_200_OK)
-#
-#         except Event.DoesNotExist:
-#             raise Http404
-#         except EventifyUser.DoesNotExist:
-#             raise Http404
-#         except UserEventFeedback.DoesNotExist:
-#             raise Http404
-#
-#     def post(self, request, event_pk, firebase_uid, format=None):
-#         try:
-#             event = Event.objects.get(pk=event_pk)
-#             user = EventifyUser.objects.get(firebase_id=firebase_uid)
-#             user_booking_status = {}
-#
-#             user_feedback = UserEventFeedback.objects.get(event=event, user=user)
-#
-#             booking_serialized = UserEventFeedbackSerializer(user_feedback)
-#             return Response(data=booking_serialized.data, status=status.HTTP_200_OK)
-#
-#         except Event.DoesNotExist:
-#             raise Http404
-#         except EventifyUser.DoesNotExist:
-#             raise Http404
-#         except UserEventFeedback.DoesNotExist:
-#             raise Http404
-
-
 """
 Endpoint to check if pin entered by the user for an event
 is correct. Toggle verifed filed depending on the result.
@@ -425,3 +390,8 @@ class FirebaseToken(APIView):
             request_status = status.HTTP_401_UNAUTHORIZED
 
         return Response(data=response_body, status=request_status)
+
+
+class TestEndpoint(APIView):
+    def post(self, request, format=None):
+        print request.data
