@@ -30,8 +30,8 @@ class UserSkill(models.Model):
 
 class UserProfileInformation(models.Model):
     SEX_CHOICES = (
-        ('F', 'Female',),
-        ('M', 'Male',),
+        ('Female', 'Female',),
+        ('Male', 'Male',),
     )
     ROLE_CHOICES = (
         ('Developer', 'Developer',),
@@ -43,7 +43,7 @@ class UserProfileInformation(models.Model):
     phone = models.CharField(max_length=10, unique=True)
     dob = models.DateField()
     sex = models.CharField(
-        max_length=1,
+        max_length=6,
         choices=SEX_CHOICES,
         blank=True,
         null=True
@@ -66,7 +66,8 @@ class UserProfileInformation(models.Model):
 
 
 class EventifyUser(models.Model):
-    auth_user = models.OneToOneField(User, on_delete=models.CASCADE)
+    auth_user = models.OneToOneField(
+        User, on_delete=models.CASCADE, blank=True, null=True)
     firebase_id = models.CharField(max_length=200, unique=True)
     user_profile_information = models.OneToOneField(
         UserProfileInformation,
@@ -76,7 +77,7 @@ class EventifyUser(models.Model):
     )
 
     def __unicode__(self):
-        return self.auth_user.first_name + " " + self.auth_user.last_name
+        return self.auth_user.first_name
 
 
 class Panelist(models.Model):

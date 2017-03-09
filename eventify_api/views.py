@@ -60,18 +60,6 @@ class UserSkillDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserSkillSerializer
 
 
-# class EventifyUserList(generics.ListCreateAPIView):
-#
-#     def get_queryset(self):
-#         queryset = EventifyUser.objects.all()
-#         username = self.request.query_params.get('firebase_id', None)
-#         if username is not None:
-#             queryset = queryset.filter(firebase_id=username)
-#         return queryset
-#
-#     serializer_class = EventifyUserSerializer
-
-
 class EventifyUserList(APIView):
     """
     List all snippets, or create a new snippet.
@@ -85,20 +73,17 @@ class EventifyUserList(APIView):
         serializer = EventifyUserSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    # def post(self, request, format=None):
-    #     serializer = SnippetSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+    def post(self, request, format=None):
+        serializer = EventifyUserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class EventifyUserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = EventifyUser.objects.all()
     serializer_class = EventifyUserSerializer
-
-
 
 
 class PanelistList(generics.ListCreateAPIView):
@@ -390,8 +375,3 @@ class FirebaseToken(APIView):
             request_status = status.HTTP_401_UNAUTHORIZED
 
         return Response(data=response_body, status=request_status)
-
-
-class TestEndpoint(APIView):
-    def post(self, request, format=None):
-        print request.data
