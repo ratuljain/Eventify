@@ -21,6 +21,8 @@ class UserProfileInformationSerializer(serializers.ModelSerializer):
         fields = ('id', 'photo_url', 'phone', 'dob',
                   'description', 'sex', 'employer', 'role', 'website_url', 'twitter_url', 'facebook_url', 'user_skills',)
 
+        depth = 1
+
 
 class EventifyUserSerializer(serializers.ModelSerializer):
     # user_profile_information = serializers.HyperlinkedRelatedField(
