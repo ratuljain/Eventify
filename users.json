@@ -4,7 +4,7 @@
     "pk": 1,
     "fields": {
         "password": "pbkdf2_sha256$24000$h7KbLVWAQm29$KQ3cXtVKBXEMKM1i4zPgIr+HSOH2eDR484KLELgbLnI=",
-        "last_login": "2017-02-22T12:53:15.825Z",
+        "last_login": "2017-03-08T14:01:41.663Z",
         "is_superuser": true,
         "username": "admin",
         "first_name": "",
@@ -37,270 +37,36 @@
 },
 {
     "model": "auth.user",
-    "pk": 11,
+    "pk": 65,
     "fields": {
-        "password": "pbkdf2_sha256$24000$5Qqq1GVcYj1I$u5vYWuwl6ji3kKapmmdY4Y9DnrxcjGgc8uGhILoE1Hs=",
+        "password": "",
         "last_login": null,
         "is_superuser": false,
-        "username": "organizer1",
-        "first_name": "Organizer",
+        "username": "organiser@gmail.com",
+        "first_name": "Organiser",
         "last_name": "Bro",
         "email": "organiser@gmail.com",
         "is_staff": false,
         "is_active": true,
-        "date_joined": "2017-02-02T14:30:45Z",
+        "date_joined": "2017-03-09T15:33:09.869Z",
         "groups": [],
         "user_permissions": []
     }
 },
 {
     "model": "auth.user",
-    "pk": 12,
-    "fields": {
-        "password": "pbkdf2_sha256$24000$Insde3DPq3Fq$Uyuln4Ki4HEQKDqhEAkRCrWq+FrRnf8ToFZvgbkL/sA=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "panelist1",
-        "first_name": "panelist1",
-        "last_name": "broseph",
-        "email": "panelist1@gmail.com",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2017-02-02T14:32:59Z",
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "auth.user",
-    "pk": 13,
+    "pk": 66,
     "fields": {
         "password": "",
         "last_login": null,
         "is_superuser": false,
-        "username": "testus312312123er",
-        "first_name": "",
-        "last_name": "",
-        "email": "",
+        "username": "panelist@gmail.com",
+        "first_name": "Panelist",
+        "last_name": "Bro",
+        "email": "panelist@gmail.com",
         "is_staff": false,
         "is_active": true,
-        "date_joined": "2017-02-14T11:33:48.233Z",
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "auth.user",
-    "pk": 14,
-    "fields": {
-        "password": "pbkdf2_sha256$24000$Aaw8Art7zP7h$Vym1Dke8Ue4VORd0HXiPqBjVT2+cegIBOpW8i1zucvE=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "eventattendee1",
-        "first_name": "eventattendee1",
-        "last_name": "lol",
-        "email": "eventattendee1@gmail.com",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2017-02-21T10:41:49Z",
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "auth.user",
-    "pk": 15,
-    "fields": {
-        "password": "pbkdf2_sha256$24000$Nzfvw5XeNbvw$0X5ZXEJbbVFIJUgXIvfgRtNrFMRBWC52VueDhHkabR8=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "eventattendee2",
-        "first_name": "eventattendee2",
-        "last_name": "sup",
-        "email": "eventattendee2@gmail.com",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2017-02-21T10:42:18Z",
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "auth.user",
-    "pk": 16,
-    "fields": {
-        "password": "pbkdf2_sha256$24000$pT0UwA74L0eS$Mnh/5VXyYSY94UtHr1clRKy0dVrd4yAyziFhwe4nKyY=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "eventattendee3",
-        "first_name": "eventattendee2",
-        "last_name": "lel",
-        "email": "eventattendee3@gmail.com",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2017-02-21T10:54:14Z",
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "auth.user",
-    "pk": 17,
-    "fields": {
-        "password": "pbkdf2_sha256$24000$3XPHt6IttaoD$onDQTi5uu2zisP5BhzWgUUC2Pgw6scnt95KezUZwpz4=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "testuser321@gmail.com",
-        "first_name": "ZT6ZM6MW",
-        "last_name": "",
-        "email": "testuser321@gmail.com",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2017-02-22T15:52:48.105Z",
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "auth.user",
-    "pk": 19,
-    "fields": {
-        "password": "pbkdf2_sha256$24000$FkgfgDhS5A5K$/6E4nqbqqBTYn5GZVnA3SxZADJdpQmllJUHZPx/AteU=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "testuser32211@gmail.com",
-        "first_name": "HC1HT7JG",
-        "last_name": "",
-        "email": "testuser32211@gmail.com",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2017-02-22T15:54:25.556Z",
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "auth.user",
-    "pk": 23,
-    "fields": {
-        "password": "pbkdf2_sha256$24000$HSU6xoHmjV9q$dz3vo1kn72Fe73RkQY7k502qA94VOnXZ+z2OSxL39hc=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "lolbro@gmail.com",
-        "first_name": "Lol Broseph",
-        "last_name": "",
-        "email": "lolbro@gmail.com",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2017-02-23T09:51:41.412Z",
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "auth.user",
-    "pk": 24,
-    "fields": {
-        "password": "pbkdf2_sha256$24000$FCV02AaoBIjx$yIW1P7JaFCZhWmYoynx3llfow+JEDUk/R5y8yOMqdfQ=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "cello@gmail.com",
-        "first_name": "lol Daniel",
-        "last_name": "",
-        "email": "cello@gmail.com",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2017-02-23T10:07:48.892Z",
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "auth.user",
-    "pk": 28,
-    "fields": {
-        "password": "pbkdf2_sha256$24000$szytfjYW9Ydc$euc+bCctWg+rpOYIepD+EradFIZfbgYN+qW1nTdK5gU=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "insta@gmail.com",
-        "first_name": "Loud Speaker",
-        "last_name": "",
-        "email": "insta@gmail.com",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2017-02-23T12:41:38.181Z",
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "auth.user",
-    "pk": 31,
-    "fields": {
-        "password": "",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "insta123@gmail.com",
-        "first_name": "lolol",
-        "last_name": "",
-        "email": "insta123@gmail.com",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2017-02-23T13:03:51.168Z",
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "auth.user",
-    "pk": 32,
-    "fields": {
-        "password": "",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "booty@gmail.com",
-        "first_name": "Booty Hair",
-        "last_name": "",
-        "email": "booty@gmail.com",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2017-02-24T13:31:48.594Z",
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "auth.user",
-    "pk": 33,
-    "fields": {
-        "password": "",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "luca@jeetlab.com",
-        "first_name": "Luca Yesupatham Daniel",
-        "last_name": "",
-        "email": "luca@jeetlab.com",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2017-02-24T15:22:13.664Z",
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "auth.user",
-    "pk": 34,
-    "fields": {
-        "password": "",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "ajasra@jeetlab.com",
-        "first_name": "ajasra das",
-        "last_name": "",
-        "email": "ajasra@jeetlab.com",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2017-02-24T15:40:08.126Z",
+        "date_joined": "2017-03-09T15:35:39.795Z",
         "groups": [],
         "user_permissions": []
     }
