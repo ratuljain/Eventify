@@ -69,6 +69,7 @@ class EventifyUser(models.Model):
     auth_user = models.OneToOneField(
         User, on_delete=models.CASCADE, blank=True, null=True)
     firebase_id = models.CharField(max_length=200, unique=True)
+    fcm_token = models.CharField(max_length=320, unique=False, blank=True, null=True)
     user_profile_information = models.OneToOneField(
         UserProfileInformation,
         on_delete=models.CASCADE,
