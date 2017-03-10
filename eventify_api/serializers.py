@@ -19,23 +19,19 @@ class UserProfileInformationSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfileInformation
         fields = ('id', 'photo_url', 'phone', 'dob',
-                  'description', 'sex', 'employer', 'role', 'website_url', 'twitter_url', 'facebook_url', 'user_skills',)
+                  'description', 'sex', 'employer', 'role',
+                  'website_url', 'twitter_url', 'facebook_url', 'user_skills',)
 
         depth = 1
 
 
 class EventifyUserSerializer(serializers.ModelSerializer):
-    # user_profile_information = serializers.HyperlinkedRelatedField(
-    # user_profile_information = serializers.HyperlinkedRelatedField(
-    #     view_name='userprofileinformation-detail', read_only=True)
-    # user_skills = serializers.HyperlinkedRelatedField(
-    #     many=True, view_name='userskills-detail', read_only=True)
     auth_user = DjangoAuthUserSerializer()
     user_profile_information = UserProfileInformationSerializer()
 
     class Meta:
         model = EventifyUser
-        fields = ('id', 'auth_user', 'firebase_id',
+        fields = ('id', 'auth_user', 'firebase_id', 'fcm_token',
                   'user_profile_information',)
         depth = 2
 
@@ -47,9 +43,9 @@ class EventifyUserSerializer(serializers.ModelSerializer):
             firebase_id=validated_data['firebase_id'])
         user_profile_information = None
 
-        auth_user = User.objects.create(**auth_user_data)
+        auth_user = User.objects.update_or_create(**auth_user_data)
         if auth_user.pk:
-            user_profile_information = UserProfileInformation.objects.create(
+            user_profile_information = UserProfileInformation.objects.update_or_create(
                 **user_profile_information_data)
         if auth_user.pk and user_profile_information:
             eventifyUser.auth_user = auth_user

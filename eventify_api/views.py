@@ -65,11 +65,16 @@ class EventifyUserList(APIView):
     List all snippets, or create a new snippet.
     """
 
-    def get(self, request, format=None):
+    def get_queryset(self):
         queryset = EventifyUser.objects.all()
         username = self.request.query_params.get('firebase_id', None)
         if username is not None:
             queryset = queryset.filter(firebase_id=username)
+
+        return queryset
+
+    def get(self, request, format=None):
+        queryset = self.get_queryset()
         serializer = EventifyUserSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -80,6 +85,17 @@ class EventifyUserList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def put(self, request, format=None):
+        try:
+            fcm_token = request.data['fcm_token']
+        except KeyError:
+            return Response({"error":"No fcm_token key found"}, status=status.HTTP_400_BAD_REQUEST)
+        eventify_user = self.get_queryset().first()
+        if eventify_user:
+            eventify_user.fcm_token = fcm_token
+            eventify_user.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
 class EventifyUserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = EventifyUser.objects.all()
