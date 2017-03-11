@@ -235,8 +235,15 @@ class EventDetail(APIView):
         # booking_serialized = UserEventBookingSerializer(
         #     event_bookings, many=True)
         serializer = EventSerializer(event)
-        # serializer.data['booking'] = booking_serialized.data
         return Response(serializer.data)
+
+    def put(self, request, pk, format=None):
+        event = self.get_object(pk)
+        Event.objects.filter(pk=pk).update(closed=True)
+        event_bookings = event.usereventbooking_set.values("user")
+        EventifyUser.objects.filter(id__in=event_bookings).update(blocked=True)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class UserEventBookingDetailList(generics.ListCreateAPIView):
