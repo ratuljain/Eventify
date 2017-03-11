@@ -69,7 +69,9 @@ class EventifyUser(models.Model):
     auth_user = models.OneToOneField(
         User, on_delete=models.CASCADE, blank=True, null=True)
     firebase_id = models.CharField(max_length=200, unique=True)
-    fcm_token = models.CharField(max_length=320, unique=False, blank=True, null=True)
+    fcm_token = models.CharField(
+        max_length=320, unique=False, blank=True, null=True)
+    blocked = models.BooleanField(default=False)
     user_profile_information = models.OneToOneField(
         UserProfileInformation,
         on_delete=models.CASCADE,
@@ -146,6 +148,7 @@ class Event(models.Model):
     feedback = models.ManyToManyField(
         EventifyUser, related_name="event_user_feedback", through='UserEventFeedback')
     qr_code_url = models.URLField(blank=True, null=True)
+    closed = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.event_name

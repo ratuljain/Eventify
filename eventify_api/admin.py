@@ -15,6 +15,9 @@ class UserSkillAdmin(admin.ModelAdmin):
     pass
 
 
+class UserFeedbackAdmin(admin.ModelAdmin):
+    pass
+
 class UserProfileInformationAdmin(admin.ModelAdmin):
     pass
 
@@ -71,6 +74,7 @@ class UserAdmin(BaseUserAdmin):
 
 admin.site.register(EventifyUser, Eventify_UserAdmin)
 admin.site.register(UserSkill, UserSkillAdmin)
+admin.site.register(UserEventFeedback, UserFeedbackAdmin)
 admin.site.register(UserProfileInformation, UserProfileInformationAdmin)
 admin.site.register(Panelist, PanelistAdmin)
 admin.site.register(Organiser, OrganiserAdmin)

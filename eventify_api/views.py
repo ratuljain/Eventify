@@ -18,7 +18,7 @@ from eventify_api.models import Venue, Event, UserProfileInformation, UserSkill,
 from eventify_api.serializers import VenueSerializer, EventSerializer, UserProfileInformationSerializer, \
     UserSkillSerializer, EventifyUserSerializer, PanelistSerializer, OrganiserSerializer, EventCategorySerializer, \
     DjangoAuthUserSerializer, EventTalkSerializer, UserEventBookingSerializer, UserEventFeedbackSerializer
-from eventify_api.utils import parse_firebase_token
+from eventify_api.utils import parse_firebase_token, convertToBoolean
 
 
 @api_view(['GET'])
@@ -89,13 +89,14 @@ class EventifyUserList(APIView):
         try:
             fcm_token = request.data['fcm_token']
         except KeyError:
-            return Response({"error":"No fcm_token key found"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "No fcm_token key found"}, status=status.HTTP_400_BAD_REQUEST)
         eventify_user = self.get_queryset().first()
         if eventify_user:
             eventify_user.fcm_token = fcm_token
             eventify_user.save()
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_404_NOT_FOUND)
+
 
 class EventifyUserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = EventifyUser.objects.all()
@@ -163,6 +164,7 @@ If organiser_id is provided all the events are organized by that particular orga
 If firebase_id is provided all the events attended or booked by that user are shown
 If is_upcoming is provided all the events which are going to happen in the future wrt datetime.now()
 will be shown
+closed param can only be used in conjunction with firebase-id
 """
 
 
@@ -182,12 +184,16 @@ class EventList(APIView):
                 return Response({"detail": "Only one param allowed"},
                                 status=status.HTTP_400_BAD_REQUEST)
 
-            is_upcoming_boolean = is_upcoming in ['true', '1']
+            is_closed = self.request.query_params.get('closed', None)
+            is_closed = convertToBoolean(is_closed)
 
             if firebase_id:
                 user = EventifyUser.objects.get(firebase_id=firebase_id)
                 bookings = UserEventBooking.objects.filter(user=user)
-                events = [booking.event for booking in bookings]
+                if is_closed is True:
+                    events = [booking.event for booking in bookings if booking.event.closed]
+                else:
+                    events = [booking.event for booking in bookings]
             if organiser_id:
                 user = EventifyUser.objects.get(pk=organiser_id)
                 organiser = Organiser.objects.get(user=user)
@@ -198,8 +204,10 @@ class EventList(APIView):
                 events = Event.objects.filter(
                     event_start_time__gte=datetime.now())
 
+            print events
+
             serializer = EventSerializer(events, many=True)
-            return Response(serializer.data)
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
         except EventifyUser.DoesNotExist:
             raise Http404
         except Organiser.DoesNotExist:
@@ -257,7 +265,7 @@ class UserEventBookingDetail(APIView):
         return Response(booking_serialized.data)
 
 
-class UserEventFeedbackList(APIView):
+class UserEventFeedbackDetail(APIView):
 
     def get_object(self, pk):
         try:
@@ -265,6 +273,7 @@ class UserEventFeedbackList(APIView):
         except Event.DoesNotExist:
             raise Http404
 
+    # get all feedback of an event
     def get(self, request, pk, format=None):
         event = self.get_object(pk)
         event_bookings = event.usereventfeedback_set.all()
@@ -272,10 +281,31 @@ class UserEventFeedbackList(APIView):
             event_bookings, many=True)
         return Response(booking_serialized.data)
 
+    # def post(self, request, format=None):
+    #     serializer = UserEventFeedbackSerializer(data=post_data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         EventifyUser.objects.filter(pk=post_data['user']).update(blocked=False)
+    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class UserEventFeedbackDetail(generics.ListCreateAPIView):
-    queryset = UserEventFeedback.objects.all()
-    serializer_class = UserEventFeedbackSerializer
+
+class UserEventFeedbackList(APIView):
+
+    def get(self, request, format=None):
+        feedback = UserEventFeedback.objects.all()
+        serializer = UserEventFeedbackSerializer(feedback, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        post_data = request.data
+        serializer = UserEventFeedbackSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            EventifyUser.objects.filter(
+                pk=post_data['user']).update(blocked=False)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 """

@@ -31,7 +31,7 @@ class EventifyUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EventifyUser
-        fields = ('id', 'auth_user', 'firebase_id', 'fcm_token',
+        fields = ('id', 'auth_user', 'firebase_id', 'fcm_token', 'blocked',
                   'user_profile_information',)
         depth = 2
 
@@ -137,5 +137,5 @@ class EventSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'event_bg_image', 'event_category', 'venue', 'agenda',
             'event_name', 'event_start_time', 'event_end_time',
-            'entry_code', 'organiser', 'panelist', 'talks',)
+            'entry_code', 'organiser', 'panelist', 'talks', 'closed',)
         depth = 4

@@ -18,3 +18,7 @@ def parse_firebase_token(id_token):
                       audience=target_audience)
 
     return user
+
+
+def convertToBoolean(param):
+    return param in ['true', '1', 'True']
