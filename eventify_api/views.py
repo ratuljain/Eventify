@@ -4,6 +4,7 @@ import string
 from datetime import datetime, timedelta
 from django.contrib.auth.models import User
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 from jose import JWTError
 from rest_framework import generics
 from rest_framework import status
@@ -298,9 +299,18 @@ class UserEventFeedbackDetail(APIView):
 
 
 class UserEventFeedbackList(APIView):
+    def get_queryset(self):
+        try:
+            return UserEventFeedback.objects.all()
+        except Event.DoesNotExist:
+            raise Http404
 
     def get(self, request, format=None):
-        feedback = UserEventFeedback.objects.all()
+        feedback = self.get_queryset()
+        firebase_id = self.request.query_params.get('firebase-id', None)
+        if firebase_id:
+            user = get_object_or_404(EventifyUser, firebase_id=firebase_id)
+            feedback = user.usereventfeedback_set.all()
         serializer = UserEventFeedbackSerializer(feedback, many=True)
         return Response(serializer.data)
 
