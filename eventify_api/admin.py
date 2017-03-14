@@ -4,21 +4,23 @@ from django.contrib.auth.models import User
 
 from eventify_api.models import EventifyUser, UserSkill, UserProfileInformation, \
     Panelist, Organiser, EventCategory, Venue, Attachment, Event, UserEventBooking, EventTalk, UserPanelistSession, \
-    UserEventFeedback, EventCoupon, UserConnection
+    UserEventFeedback, EventCoupon, Relationship
 
 
 class UserConnectionInline(admin.TabularInline):
-    model = UserConnection
-    fk_name = 'initiated_by_user'
+    model = Relationship
+    fk_name = 'from_person'
+
 
 class UserConnectionAdmin(admin.ModelAdmin):
-    model = UserConnection
-    fk_name = 'initiated_by_user'
+    model = Relationship
+    fk_name = 'from_person'
 
 
 class Eventify_UserAdmin(admin.ModelAdmin):
     model = EventifyUser
     inlines = [UserConnectionInline]
+
 
 class UserSkillAdmin(admin.ModelAdmin):
     pass
@@ -100,4 +102,4 @@ admin.site.register(Event, EventAdmin)
 admin.site.register(EventTalk, EventTalkAdmin)
 admin.site.unregister(User,)
 admin.site.register(User, UserAdmin)
-admin.site.register(UserConnection, UserConnectionAdmin)
+admin.site.register(Relationship, UserConnectionAdmin)

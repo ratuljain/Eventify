@@ -6,6 +6,17 @@ from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import User
 from django.db import models
 from places.fields import PlacesField
+from django.utils import timezone
+
+
+RELATIONSHIP_PENDING = 0
+RELATIONSHIP_ACCEPTED = 1
+RELATIONSHIP_BLOCKED = 2
+RELATIONSHIP_STATUSES = (
+    (RELATIONSHIP_PENDING, 'Pending'),
+    (RELATIONSHIP_ACCEPTED, 'Accepted'),
+    (RELATIONSHIP_BLOCKED, 'Blocked'),
+)
 
 
 class IntegerRangeField(models.IntegerField):
@@ -78,7 +89,9 @@ class EventifyUser(models.Model):
         blank=True,
         null=True,
     )
-    connection = models.ManyToManyField("self", symmetrical=False, through='UserConnection')
+    relationships = models.ManyToManyField('self', through='Relationship',
+                                           symmetrical=False,
+                                           related_name='related_to+')
 
     def __unicode__(self):
         try:
@@ -86,19 +99,48 @@ class EventifyUser(models.Model):
         except AttributeError:
             return str(self.pk)
 
+    def add_relationship(self, person, status, event, symm=True):
+        relationship, created = Relationship.objects.get_or_create(
+            from_person=self,
+            to_person=person,
+            status=status,
+            event=event)
+        if symm:
+            # avoid recursion by passing `symm=False`
+            person.add_relationship(self, status, event, False)
+        return relationship
 
-class UserConnection(models.Model):
-    initiated_by_user = models.ForeignKey(EventifyUser, on_delete=models.CASCADE, related_name='from_people')
-    sent_to_user = models.ForeignKey(EventifyUser, on_delete=models.CASCADE, related_name='to_people')
-    accepted = models.BooleanField(default=False)
-    sent_time = models.DateTimeField(default=datetime.now)
-    response_time = models.DateTimeField(blank=True, null=True)
+    def update_relationship(self, person, status, event, symm=True):
+        relationship = Relationship.objects.filter(
+            from_person=self,
+            to_person=person).update(status=status)
+        if symm:
+            # avoid recursion by passing `symm=False`
+            person.update_relationship(self, status, event, False)
+        return relationship
 
-    def __unicode__(self):
-        try:
-            return self.initiated_by_user.firebase_id + " -> " + self.sent_to_user.firebase_id
-        except AttributeError:
-            return str(self.pk)
+    def remove_relationship(self, person, status, symm=True):
+        Relationship.objects.filter(
+            from_person=self,
+            to_person=person,
+            status=status).delete()
+        if symm:
+            # avoid recursion by passing `symm=False`
+            person.remove_relationship(self, status, False)
+
+    def get_relationships(self, status):
+        return self.relationships.filter(
+            to_people__status=status,
+            to_people__from_person=self)
+
+    def get_pending_relationships(self):
+        self.get_relationships(RELATIONSHIP_PENDING)
+
+    def get_accepted_relationships(self):
+        self.get_relationships(RELATIONSHIP_ACCEPTED)
+
+    def get_blocked_relationships(self):
+        self.get_relationships(RELATIONSHIP_BLOCKED)
 
 
 class Panelist(models.Model):
@@ -265,3 +307,22 @@ class EventCoupon(models.Model):
 
     def __unicode__(self):
         return self.coupon_description
+
+
+class Relationship(models.Model):
+    from_person = models.ForeignKey(
+        EventifyUser, related_name='from_people', on_delete=models.CASCADE)
+    to_person = models.ForeignKey(
+        EventifyUser, related_name='to_people', on_delete=models.CASCADE)
+    event = models.ForeignKey(
+        Event, related_name='met_at_event', on_delete=models.CASCADE, blank=True, null=True)
+    status = models.IntegerField(
+        choices=RELATIONSHIP_STATUSES, default=RELATIONSHIP_PENDING)
+    sent_time = models.DateTimeField(default=timezone.now)
+    response_time = models.DateTimeField(blank=True, null=True)
+
+    def __unicode__(self):
+        try:
+            return self.from_person.firebase_id + " -> " + self.to_person.firebase_id
+        except AttributeError:
+            return str(self.pk)

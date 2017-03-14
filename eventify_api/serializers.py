@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from eventify_api.models import Event, Venue, UserSkill, EventifyUser, UserProfileInformation, Panelist, Organiser, \
-    EventCategory, EventTalk, Attachment, UserEventBooking, UserEventFeedback, EventCoupon
+    EventCategory, EventTalk, Attachment, UserEventBooking, UserEventFeedback, EventCoupon, Relationship
 
 
 class DjangoAuthUserSerializer(serializers.ModelSerializer):
@@ -28,6 +28,7 @@ class UserProfileInformationSerializer(serializers.ModelSerializer):
 class EventifyUserSerializer(serializers.ModelSerializer):
     auth_user = DjangoAuthUserSerializer()
     user_profile_information = UserProfileInformationSerializer()
+    # connection = UserConnectionSerializer()
 
     class Meta:
         model = EventifyUser
@@ -45,11 +46,39 @@ class EventifyUserSerializer(serializers.ModelSerializer):
 
         auth_user, created = User.objects.update_or_create(**auth_user_data)
         user_profile_information, created = UserProfileInformation.objects.update_or_create(
-                **user_profile_information_data)
+            **user_profile_information_data)
         eventifyUser.auth_user = auth_user
         eventifyUser.user_profile_information = user_profile_information
         eventifyUser.save()
         return eventifyUser
+
+
+class EventifyUserSerializerForConnections(serializers.ModelSerializer):
+    # connection = UserConnectionSerializer()
+    first_name = serializers.ReadOnlyField(source='auth_user.first_name')
+    last_name = serializers.ReadOnlyField(source='auth_user.last_name')
+
+    class Meta:
+        model = EventifyUser
+        fields = ('id', 'first_name', 'last_name', 'firebase_id', 'fcm_token', 'blocked',
+                  'user_profile_information',)
+        depth = 0
+
+
+class UserConnectionSerializer(serializers.HyperlinkedModelSerializer):
+    # initiated_by_user = EventifyUserSerializer()
+    # sent_to_user = EventifyUserSerializer()
+    # from_person = EventifyUserSerializerForConnections()
+    to_person = EventifyUserSerializerForConnections()
+    event = serializers.HyperlinkedIdentityField(view_name='event-detail', format='html')
+    event_name = serializers.ReadOnlyField(source='event.event_name')
+    met_time = serializers.ReadOnlyField(source='event.event_start_time')
+
+    class Meta:
+        model = Relationship
+        fields = ('id', 'to_person', 'event_name', 'met_time',
+                  'event', 'status',)
+        depth = 1
 
 
 class UserSkillSerializer(serializers.ModelSerializer):
