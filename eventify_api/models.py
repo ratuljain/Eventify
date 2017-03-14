@@ -78,9 +78,27 @@ class EventifyUser(models.Model):
         blank=True,
         null=True,
     )
+    connection = models.ManyToManyField("self", symmetrical=False, through='UserConnection')
 
     def __unicode__(self):
-        return self.auth_user.first_name
+        try:
+            return self.auth_user.first_name
+        except AttributeError:
+            return str(self.pk)
+
+
+class UserConnection(models.Model):
+    initiated_by_user = models.ForeignKey(EventifyUser, on_delete=models.CASCADE, related_name='from_people')
+    sent_to_user = models.ForeignKey(EventifyUser, on_delete=models.CASCADE, related_name='to_people')
+    accepted = models.BooleanField(default=False)
+    sent_time = models.DateTimeField(default=datetime.now)
+    response_time = models.DateTimeField(blank=True, null=True)
+
+    def __unicode__(self):
+        try:
+            return self.initiated_by_user.firebase_id + " -> " + self.sent_to_user.firebase_id
+        except AttributeError:
+            return str(self.pk)
 
 
 class Panelist(models.Model):

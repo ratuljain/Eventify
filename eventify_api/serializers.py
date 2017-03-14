@@ -43,14 +43,12 @@ class EventifyUserSerializer(serializers.ModelSerializer):
             firebase_id=validated_data['firebase_id'])
         user_profile_information = None
 
-        auth_user = User.objects.update_or_create(**auth_user_data)
-        if auth_user.pk:
-            user_profile_information = UserProfileInformation.objects.update_or_create(
+        auth_user, created = User.objects.update_or_create(**auth_user_data)
+        user_profile_information, created = UserProfileInformation.objects.update_or_create(
                 **user_profile_information_data)
-        if auth_user.pk and user_profile_information:
-            eventifyUser.auth_user = auth_user
-            eventifyUser.user_profile_information = user_profile_information
-            eventifyUser.save()
+        eventifyUser.auth_user = auth_user
+        eventifyUser.user_profile_information = user_profile_information
+        eventifyUser.save()
         return eventifyUser
 
 

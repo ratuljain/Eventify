@@ -23,6 +23,23 @@ from eventify_api.serializers import VenueSerializer, EventSerializer, UserProfi
 from eventify_api.utils import parse_firebase_token, convertToBoolean
 
 
+
+from pyfcm import FCMNotification
+
+push_service = FCMNotification(api_key="AAAAaRIijwg:APA91bFhO7nK3uchPsKh8oo_WGzFwoL8hmfbfeWu"
+                                       "_x5SBZqdm8nIcwsEAIg51qVt5l9rsajG4XlgeaBnuiUdFKoUuHve"
+                                       "EEncH-2QozIA0VD2BYGhmnbnXnPjgbCHrpi3AAqK_E-RXhHGSZzaD"
+                                       "D3lPhYXYffh4Pw-EQ")
+
+
+def send_notification(push_service, registration_id, message_title, message_body):
+    result = push_service.notify_single_device(registration_id=registration_id, message_title=message_title,
+                                               message_body=message_body,
+                                               data_message={"id": "2", "name": "Neo4j Workshop with Django API"})
+
+    print result
+
+
 @api_view(['GET'])
 def api_root(request, format=None):
     return Response({
@@ -405,6 +422,26 @@ class CouponList(generics.ListCreateAPIView):
 class CouponDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = EventCoupon.objects.all()
     serializer_class = EventCouponsSerializer
+
+
+class ConnectUsers(APIView):
+
+    def get(self, request, format=None):
+        request_from = self.request.query_params.get('from', None)
+        request_to = self.request.query_params.get('to', None)
+
+        from_user = get_object_or_404(EventifyUser, firebase_id=request_from)
+        to_user = get_object_or_404(EventifyUser, firebase_id=request_to)
+
+        from_user_first_name = from_user.auth_user.first_name
+        from_user_last_name = from_user.auth_user.last_name
+
+        message_title = "New Connection"
+        message_body =  "{} {} wants to connect to you".format(from_user_first_name, from_user_last_name)
+
+        send_notification(push_service, to_user.fcm_token, message_title, message_body)
+        return Response(data={}, status=status.HTTP_200_OK)
+
 
 
 class FirebaseToken(APIView):

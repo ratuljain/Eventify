@@ -59,7 +59,8 @@ urlpatterns = [
         views.CouponList.as_view(), name='feedback-detail'),
     url(r'^coupons/(?P<pk>[0-9]+)/$',
         views.CouponDetail.as_view(), name='feedback-list'),
-
+    url(r'^connects/$',
+        views.ConnectUsers.as_view(), name='feedback-detail'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
