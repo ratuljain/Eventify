@@ -276,29 +276,18 @@ class UserEventBookingDetail(APIView):
 class UserEventFeedbackDetail(APIView):
 
     def get_object(self, pk):
-        try:
-            return Event.objects.get(pk=pk)
-        except Event.DoesNotExist:
-            raise Http404
+        return get_object_or_404(UserEventFeedback, pk=pk)
 
     # get all feedback of an event
     def get(self, request, pk, format=None):
-        event = self.get_object(pk)
-        event_bookings = event.usereventfeedback_set.all()
+        feedback = self.get_object(pk)
         booking_serialized = UserEventFeedbackSerializer(
-            event_bookings, many=True)
+            feedback)
         return Response(booking_serialized.data)
-
-    # def post(self, request, format=None):
-    #     serializer = UserEventFeedbackSerializer(data=post_data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         EventifyUser.objects.filter(pk=post_data['user']).update(blocked=False)
-    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserEventFeedbackList(APIView):
+
     def get_queryset(self):
         try:
             return UserEventFeedback.objects.all()
@@ -308,9 +297,13 @@ class UserEventFeedbackList(APIView):
     def get(self, request, format=None):
         feedback = self.get_queryset()
         firebase_id = self.request.query_params.get('firebase-id', None)
+        event_id = self.request.query_params.get('event-id', None)
+        if event_id:
+            event = get_object_or_404(Event, pk=event_id)
+            feedback = feedback.filter(event=event)
         if firebase_id:
             user = get_object_or_404(EventifyUser, firebase_id=firebase_id)
-            feedback = user.usereventfeedback_set.all()
+            feedback = feedback.filter(user=user)
         serializer = UserEventFeedbackSerializer(feedback, many=True)
         return Response(serializer.data)
 

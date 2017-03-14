@@ -90,7 +90,7 @@ class UserEventFeedbackSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserEventFeedback
-        fields = ('event', 'user', 'rating', 'feedback_text',
+        fields = ('id', 'event', 'user', 'rating', 'feedback_text',
                   'food', 'panelist', 'relevance',
                   'engagement', 'duration', 'crowd',)
 
