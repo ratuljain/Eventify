@@ -55,6 +55,11 @@ urlpatterns = [
         views.UserEventFeedbackList.as_view(), name='feedback-detail'),
     url(r'^verifyuser/event/(?P<event_pk>[0-9]+)/user/(?P<firebase_uid>(.)+)/$',
         views.ToggleUserEventBookingPinVerified.as_view(), name='booking-verify'),
+    url(r'^coupons/$',
+        views.CouponList.as_view(), name='feedback-detail'),
+    url(r'^coupons/(?P<pk>[0-9]+)/$',
+        views.CouponDetail.as_view(), name='feedback-list'),
+
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

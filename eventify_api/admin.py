@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 from eventify_api.models import EventifyUser, UserSkill, UserProfileInformation, \
     Panelist, Organiser, EventCategory, Venue, Attachment, Event, UserEventBooking, EventTalk, UserPanelistSession, \
-    UserEventFeedback
+    UserEventFeedback, EventCoupon
 
 
 class Eventify_UserAdmin(admin.ModelAdmin):
@@ -15,8 +15,13 @@ class UserSkillAdmin(admin.ModelAdmin):
     pass
 
 
+class EventCouponAdmin(admin.ModelAdmin):
+    pass
+
+
 class UserFeedbackAdmin(admin.ModelAdmin):
     pass
+
 
 class UserProfileInformationAdmin(admin.ModelAdmin):
     pass
@@ -74,6 +79,7 @@ class UserAdmin(BaseUserAdmin):
 
 admin.site.register(EventifyUser, Eventify_UserAdmin)
 admin.site.register(UserSkill, UserSkillAdmin)
+admin.site.register(EventCoupon, EventCouponAdmin)
 admin.site.register(UserEventFeedback, UserFeedbackAdmin)
 admin.site.register(UserProfileInformation, UserProfileInformationAdmin)
 admin.site.register(Panelist, PanelistAdmin)

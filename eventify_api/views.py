@@ -14,10 +14,11 @@ from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
 from eventify_api.models import Venue, Event, UserProfileInformation, UserSkill, EventifyUser, Panelist, Organiser, \
-    EventCategory, EventTalk, UserEventBooking, UserEventFeedback
+    EventCategory, EventTalk, UserEventBooking, UserEventFeedback, EventCoupon
 from eventify_api.serializers import VenueSerializer, EventSerializer, UserProfileInformationSerializer, \
     UserSkillSerializer, EventifyUserSerializer, PanelistSerializer, OrganiserSerializer, EventCategorySerializer, \
-    DjangoAuthUserSerializer, EventTalkSerializer, UserEventBookingSerializer, UserEventFeedbackSerializer
+    DjangoAuthUserSerializer, EventTalkSerializer, UserEventBookingSerializer, UserEventFeedbackSerializer, \
+    EventCouponsSerializer
 from eventify_api.utils import parse_firebase_token, convertToBoolean
 
 
@@ -191,7 +192,8 @@ class EventList(APIView):
                 user = EventifyUser.objects.get(firebase_id=firebase_id)
                 bookings = UserEventBooking.objects.filter(user=user)
                 if is_closed is True:
-                    events = [booking.event for booking in bookings if booking.event.closed]
+                    events = [
+                        booking.event for booking in bookings if booking.event.closed]
                 else:
                     events = [booking.event for booking in bookings]
             if organiser_id:
@@ -203,8 +205,6 @@ class EventList(APIView):
             if is_upcoming:
                 events = Event.objects.filter(
                     event_start_time__gte=datetime.now())
-
-            print events
 
             serializer = EventSerializer(events, many=True)
             return Response(data=serializer.data, status=status.HTTP_200_OK)
@@ -394,6 +394,16 @@ class ToggleUserEventBookingPinVerified(APIView):
             raise Http404
 
 
+class CouponList(generics.ListCreateAPIView):
+    queryset = EventCoupon.objects.all()
+    serializer_class = EventCouponsSerializer
+
+
+class CouponDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = EventCoupon.objects.all()
+    serializer_class = EventCouponsSerializer
+
+
 class FirebaseToken(APIView):
     # def get(self, request, format=None):
     #     return Response({})
@@ -403,7 +413,7 @@ class FirebaseToken(APIView):
 
         try:
             response_body = parse_firebase_token(id_token)
-            print response_body
+            # print response_body
             user_id = str(response_body['user_id'])
             username = response_body['email']
             name = response_body['name']
