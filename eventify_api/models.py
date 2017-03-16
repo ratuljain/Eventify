@@ -91,7 +91,7 @@ class EventifyUser(models.Model):
     )
     relationships = models.ManyToManyField('self', through='Relationship',
                                            symmetrical=False,
-                                           related_name='related_to+')
+                                           related_name='related_to')
 
     def __unicode__(self):
         try:
@@ -99,24 +99,24 @@ class EventifyUser(models.Model):
         except AttributeError:
             return str(self.pk)
 
-    def add_relationship(self, person, status, event, symm=True):
+    def add_relationship(self, person, status, event):
         relationship, created = Relationship.objects.get_or_create(
             from_person=self,
             to_person=person,
             status=status,
             event=event)
-        if symm:
-            # avoid recursion by passing `symm=False`
-            person.add_relationship(self, status, event, False)
+        # if symm:
+        #     # avoid recursion by passing `symm=False`
+        #     person.add_relationship(self, status, event, False)
         return relationship
 
-    def update_relationship(self, person, status, event, symm=True):
+    def update_relationship(self, person, status, event):
         relationship = Relationship.objects.filter(
             from_person=self,
             to_person=person).update(status=status)
-        if symm:
-            # avoid recursion by passing `symm=False`
-            person.update_relationship(self, status, event, False)
+        # if symm:
+        #     # avoid recursion by passing `symm=False`
+        #     person.update_relationship(self, status, event, False)
         return relationship
 
     def remove_relationship(self, person, status, symm=True):
@@ -124,17 +124,20 @@ class EventifyUser(models.Model):
             from_person=self,
             to_person=person,
             status=status).delete()
-        if symm:
+        # if symm:
             # avoid recursion by passing `symm=False`
-            person.remove_relationship(self, status, False)
+            # person.remove_relationship(self, status, False)
+        return
 
     def get_relationships(self, status):
         return self.relationships.filter(
             to_people__status=status,
-            to_people__from_person=self)
+            to_people__to_person=self)
 
     def get_pending_relationships(self):
-        self.get_relationships(RELATIONSHIP_PENDING)
+        return self.relationships.filter(
+            to_people__status=RELATIONSHIP_PENDING,
+            to_people__to_person=self)
 
     def get_accepted_relationships(self):
         self.get_relationships(RELATIONSHIP_ACCEPTED)

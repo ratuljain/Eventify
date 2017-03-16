@@ -1,15 +1,12 @@
-import json
-import random
-import string
-
 from datetime import datetime, timedelta
+
 from django.contrib.auth.models import User
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from jose import JWTError
+from pyfcm import FCMNotification
 from rest_framework import generics
 from rest_framework import status
-from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -20,10 +17,8 @@ from eventify_api.models import Venue, Event, UserProfileInformation, UserSkill,
 from eventify_api.serializers import VenueSerializer, EventSerializer, UserProfileInformationSerializer, \
     UserSkillSerializer, EventifyUserSerializer, PanelistSerializer, OrganiserSerializer, EventCategorySerializer, \
     DjangoAuthUserSerializer, EventTalkSerializer, UserEventBookingSerializer, UserEventFeedbackSerializer, \
-    EventCouponsSerializer, UserConnectionSerializer, EventifyUserSerializerForConnections
+    EventCouponsSerializer, UserConnectionSerializer
 from eventify_api.utils import parse_firebase_token, convertToBoolean
-from pyfcm import FCMNotification
-
 
 push_service = FCMNotification(api_key="AAAAaRIijwg:APA91bFhO7nK3uchPsKh8oo_WGzFwoL8hmfbfeWu"
                                        "_x5SBZqdm8nIcwsEAIg51qVt5l9rsajG4XlgeaBnuiUdFKoUuHve"
@@ -37,6 +32,7 @@ def send_notification(push_service, registration_id, message_title, message_body
                                                data_message={"id": "2", "name": "Neo4j Workshop with Django API"})
 
     print result
+
 
 RELATIONSHIP_PENDING = 0
 RELATIONSHIP_ACCEPTED = 1
@@ -191,7 +187,6 @@ closed param can only be used in conjunction with firebase-id
 
 
 class EventList(APIView):
-
     def get(self, request, format=None):
         try:
             organiser_id = self.request.query_params.get('organiser', None)
@@ -243,7 +238,6 @@ class EventList(APIView):
 
 
 class EventDetail(APIView):
-
     def get_object(self, pk):
         try:
             return Event.objects.get(pk=pk)
@@ -270,7 +264,6 @@ class UserEventBookingDetailList(generics.ListCreateAPIView):
 
 
 class UserEventBookingDetail(APIView):
-
     def get_object(self, pk):
         try:
             return Event.objects.get(pk=pk)
@@ -291,7 +284,6 @@ class UserEventBookingDetail(APIView):
 
 
 class UserEventFeedbackDetail(APIView):
-
     def get_object(self, pk):
         return get_object_or_404(UserEventFeedback, pk=pk)
 
@@ -304,7 +296,6 @@ class UserEventFeedbackDetail(APIView):
 
 
 class UserEventFeedbackList(APIView):
-
     def get_queryset(self):
         try:
             return UserEventFeedback.objects.all()
@@ -423,11 +414,11 @@ class CouponDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = EventCoupon.objects.all()
     serializer_class = EventCouponsSerializer
 
+
 # parameter fb_id to get friends of a user and pending requests
 
 
 class ConnectionList(APIView):
-
     def get_user_by_FUID(self):
         firebase_id = self.request.query_params.get('firebase-id', None)
         eventify_user = None
@@ -459,9 +450,10 @@ class ConnectionList(APIView):
         if firebase_id:
             eventify_user = get_object_or_404(EventifyUser, firebase_id=firebase_id)
 
-            pending_relationships = eventify_user.get_relationships(RELATIONSHIP_PENDING)
-            for i in pending_relationships:
-                pending_relationships_res.append(Relationship.objects.get(from_person=eventify_user, to_person=i))
+            pending_relationships = Relationship.objects.filter(to_person=eventify_user, status=RELATIONSHIP_PENDING)
+            # pending_relationships = eventify_user.get_pending_relationships()
+            # for i in pending_relationships:
+            #     pending_relationships_res.append(Relationship.objects.get(from_person=eventify_user, to_person=i))
 
             accepted_relationships = eventify_user.get_relationships(RELATIONSHIP_ACCEPTED)
             for i in accepted_relationships:
@@ -471,9 +463,12 @@ class ConnectionList(APIView):
             for i in blocked_relationships:
                 blocked_relationships_res.append(Relationship.objects.get(from_person=eventify_user, to_person=i))
 
-            response_map["pending_relationships"] = UserConnectionSerializer(pending_relationships_res, many=True, context={'request': request}).data
-            response_map["accepted_relationships"] = UserConnectionSerializer(accepted_relationships_res, many=True, context={'request': request}).data
-            response_map["blocked_relationships"] = UserConnectionSerializer(blocked_relationships_res, many=True, context={'request': request}).data
+            response_map["pending_relationships"] = UserConnectionSerializer(pending_relationships, many=True,
+                                                                             context={'request': request}).data
+            response_map["accepted_relationships"] = UserConnectionSerializer(accepted_relationships_res, many=True,
+                                                                              context={'request': request}).data
+            response_map["blocked_relationships"] = UserConnectionSerializer(blocked_relationships_res, many=True,
+                                                                             context={'request': request}).data
             return Response(data=response_map, status=status.HTTP_200_OK)
 
         return Response(data=response, status=status.HTTP_200_OK)
@@ -484,7 +479,8 @@ class ConnectionList(APIView):
         event_id = self.request.query_params.get('event-id', None)
 
         if None in [request_from, request_to, event_id]:
-            return Response(data={'error': 'request_from, request_to, event_id parms are required'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={'error': 'request_from, request_to, event_id parms are required'},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         from_user = get_object_or_404(EventifyUser, firebase_id=request_from)
         to_user = get_object_or_404(EventifyUser, firebase_id=request_to)
