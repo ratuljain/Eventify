@@ -1,12 +1,10 @@
 from datetime import datetime
 
-import StringIO
-
 from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import User
 from django.db import models
-from places.fields import PlacesField
 from django.utils import timezone
+from places.fields import PlacesField
 
 
 RELATIONSHIP_PENDING = 0
@@ -73,7 +71,7 @@ class UserProfileInformation(models.Model):
     user_skills = models.ManyToManyField(UserSkill, blank=True)
 
     def __unicode__(self):
-        return self.photo_url
+        return self.phone
 
 
 class EventifyUser(models.Model):
@@ -88,6 +86,7 @@ class EventifyUser(models.Model):
         on_delete=models.CASCADE,
         blank=True,
         null=True,
+        related_name="profile_info"
     )
     relationships = models.ManyToManyField('self', through='Relationship',
                                            symmetrical=False,
@@ -110,10 +109,11 @@ class EventifyUser(models.Model):
         #     person.add_relationship(self, status, event, False)
         return relationship
 
-    def update_relationship(self, person, status, event):
+    def update_relationship(self, person, status):
         relationship = Relationship.objects.filter(
-            from_person=self,
-            to_person=person).update(status=status)
+            from_person=person,
+            to_person=self).update(status=status)
+        print relationship
         # if symm:
         #     # avoid recursion by passing `symm=False`
         #     person.update_relationship(self, status, event, False)
@@ -125,8 +125,8 @@ class EventifyUser(models.Model):
             to_person=person,
             status=status).delete()
         # if symm:
-            # avoid recursion by passing `symm=False`
-            # person.remove_relationship(self, status, False)
+        # avoid recursion by passing `symm=False`
+        # person.remove_relationship(self, status, False)
         return
 
     def get_relationships(self, status):

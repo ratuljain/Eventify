@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from jose import JWTError
@@ -17,7 +18,7 @@ from eventify_api.models import Venue, Event, UserProfileInformation, UserSkill,
 from eventify_api.serializers import VenueSerializer, EventSerializer, UserProfileInformationSerializer, \
     UserSkillSerializer, EventifyUserSerializer, PanelistSerializer, OrganiserSerializer, EventCategorySerializer, \
     DjangoAuthUserSerializer, EventTalkSerializer, UserEventBookingSerializer, UserEventFeedbackSerializer, \
-    EventCouponsSerializer, UserConnectionSerializer
+    EventCouponsSerializer, UserConnectionSerializer, EventifyUserSerializerForConnections
 from eventify_api.utils import parse_firebase_token, convertToBoolean
 
 push_service = FCMNotification(api_key="AAAAaRIijwg:APA91bFhO7nK3uchPsKh8oo_WGzFwoL8hmfbfeWu"
@@ -116,9 +117,61 @@ class EventifyUserList(APIView):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
 
-class EventifyUserDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = EventifyUser.objects.all()
-    serializer_class = EventifyUserSerializer
+class EventifyUserDetail(APIView):
+    """
+    Retrieve, update or delete a snippet instance.
+    """
+
+    def get_object(self, pk):
+        try:
+            return EventifyUser.objects.get(pk=pk)
+        except EventifyUser.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        snippet = self.get_object(pk)
+        serializer = EventifyUserSerializer(snippet)
+        return Response(serializer.data)
+
+    def put(self, request, pk, format=None):
+        print "here"
+        snippet = self.get_object(pk)
+        serializer = EventifyUserSerializer(snippet, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        snippet = self.get_object(pk)
+        snippet.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+        # def patch(self, request, pk):
+        #     eventify_user = self.get_object(pk)
+        #     auth_user = request.data['auth_user']
+        #     user_profile_information = request.data['user_profile_information']
+        #
+        #     phone = user_profile_information['phone']
+        #     description = user_profile_information['description']
+        #     employer = user_profile_information['employer']
+        #     role = user_profile_information['role']
+        #     website_url = user_profile_information['website_url']
+        #     twitter_url = user_profile_information['twitter_url']
+        #     facebook_url = user_profile_information['facebook_url']
+        #
+        #     user_profile = eventify_user.user_profile_information
+        #     user_profile.phone = phone
+        #     user_profile.description = description
+        #     user_profile.employer = employer
+        #     user_profile.role = role
+        #     user_profile.website_url = website_url
+        #     user_profile.twitter_url = twitter_url
+        #     user_profile.facebook_url = facebook_url
+        #
+        #     user_profile.save()
+        #     # set partial=True to update a data partially
+        #     return Response(data={}, status=status.HTTP_201_CREATED)
 
 
 class PanelistList(generics.ListCreateAPIView):
@@ -187,6 +240,7 @@ closed param can only be used in conjunction with firebase-id
 
 
 class EventList(APIView):
+
     def get(self, request, format=None):
         try:
             organiser_id = self.request.query_params.get('organiser', None)
@@ -238,6 +292,7 @@ class EventList(APIView):
 
 
 class EventDetail(APIView):
+
     def get_object(self, pk):
         try:
             return Event.objects.get(pk=pk)
@@ -264,6 +319,7 @@ class UserEventBookingDetailList(generics.ListCreateAPIView):
 
 
 class UserEventBookingDetail(APIView):
+
     def get_object(self, pk):
         try:
             return Event.objects.get(pk=pk)
@@ -284,6 +340,7 @@ class UserEventBookingDetail(APIView):
 
 
 class UserEventFeedbackDetail(APIView):
+
     def get_object(self, pk):
         return get_object_or_404(UserEventFeedback, pk=pk)
 
@@ -296,6 +353,7 @@ class UserEventFeedbackDetail(APIView):
 
 
 class UserEventFeedbackList(APIView):
+
     def get_queryset(self):
         try:
             return UserEventFeedback.objects.all()
@@ -419,6 +477,7 @@ class CouponDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ConnectionList(APIView):
+
     def get_user_by_FUID(self):
         firebase_id = self.request.query_params.get('firebase-id', None)
         eventify_user = None
@@ -443,30 +502,32 @@ class ConnectionList(APIView):
         firebase_id = self.request.query_params.get('firebase-id', None)
 
         user_connections = self.get_queryset()
-        serializer = UserConnectionSerializer(user_connections, many=True, context={'request': request})
+        serializer = UserConnectionSerializer(
+            user_connections, many=True, context={'request': request})
         response = serializer.data
 
         # TODO please make this better when you get time
         if firebase_id:
-            eventify_user = get_object_or_404(EventifyUser, firebase_id=firebase_id)
+            eventify_user = get_object_or_404(
+                EventifyUser, firebase_id=firebase_id)
 
-            pending_relationships = Relationship.objects.filter(to_person=eventify_user, status=RELATIONSHIP_PENDING)
-            # pending_relationships = eventify_user.get_pending_relationships()
-            # for i in pending_relationships:
-            #     pending_relationships_res.append(Relationship.objects.get(from_person=eventify_user, to_person=i))
+            pending_relationships = Relationship.objects.filter(
+                to_person=eventify_user, status=RELATIONSHIP_PENDING)
+            accepted_relationships = Relationship.objects.filter(Q(to_person=eventify_user) | Q(
+                from_person=eventify_user), status=RELATIONSHIP_ACCEPTED)
+            accepted_relationships_custom_serialized = filter_stuff(
+                request, accepted_relationships, eventify_user)
 
-            accepted_relationships = eventify_user.get_relationships(RELATIONSHIP_ACCEPTED)
-            for i in accepted_relationships:
-                accepted_relationships_res.append(Relationship.objects.get(from_person=eventify_user, to_person=i))
-
-            blocked_relationships = eventify_user.get_relationships(RELATIONSHIP_BLOCKED)
+            blocked_relationships = eventify_user.get_relationships(
+                RELATIONSHIP_BLOCKED)
             for i in blocked_relationships:
-                blocked_relationships_res.append(Relationship.objects.get(from_person=eventify_user, to_person=i))
+                blocked_relationships_res.append(Relationship.objects.get(
+                    from_person=eventify_user, to_person=i))
 
             response_map["pending_relationships"] = UserConnectionSerializer(pending_relationships, many=True,
                                                                              context={'request': request}).data
-            response_map["accepted_relationships"] = UserConnectionSerializer(accepted_relationships_res, many=True,
-                                                                              context={'request': request}).data
+            response_map[
+                "accepted_relationships"] = accepted_relationships_custom_serialized
             response_map["blocked_relationships"] = UserConnectionSerializer(blocked_relationships_res, many=True,
                                                                              context={'request': request}).data
             return Response(data=response_map, status=status.HTTP_200_OK)
@@ -486,9 +547,22 @@ class ConnectionList(APIView):
         to_user = get_object_or_404(EventifyUser, firebase_id=request_to)
         event = get_object_or_404(Event, pk=event_id)
 
+        # TODO change this validation
+        results1 = Relationship.objects.filter(
+            from_person=from_user, to_person=to_user)
+        results2 = Relationship.objects.filter(
+            from_person=to_user, to_person=from_user)
+        num_results1 = len(results1)
+        num_results2 = len(results2)
+
+        if num_results1 + num_results2 == 1:
+            return Response(data={'error': 'Connection Pending/Exists'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
         user_connection = from_user.add_relationship(
             to_user, RELATIONSHIP_PENDING, event)
-        serializer = UserConnectionSerializer(user_connection, context={'request': request})
+        serializer = UserConnectionSerializer(
+            user_connection, context={'request': request})
 
         from_user_first_name = from_user.auth_user.first_name
         from_user_last_name = from_user.auth_user.last_name
@@ -499,6 +573,8 @@ class ConnectionList(APIView):
 
         send_notification(push_service, to_user.fcm_token,
                           message_title, message_body)
+        # send_notification(push_service, to_user.fcm_token,
+        #                   message_title, message_body)
 
         return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
@@ -516,7 +592,7 @@ class ConnectionList(APIView):
         event = get_object_or_404(Event, pk=event_id)
 
         user_connection = from_user.update_relationship(
-            to_user, RELATIONSHIP_ACCEPTED, event)
+            to_user, RELATIONSHIP_ACCEPTED)
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -574,3 +650,22 @@ class FirebaseToken(APIView):
             request_status = status.HTTP_401_UNAUTHORIZED
 
         return Response(data=response_body, status=request_status)
+
+
+def filter_stuff(request, accepted_relationships, user):
+    res = []
+    for relationship_object in accepted_relationships:
+        from_to_tuple = [relationship_object.from_person.pk,
+                         relationship_object.to_person.pk]
+        x = set(from_to_tuple) - {user.pk}
+        user_connection = EventifyUser.objects.get(pk=x.pop())
+        serialized_user = EventifyUserSerializerForConnections(
+            user_connection, context={'request': request}).data
+        _serialized_relationship = UserConnectionSerializer(
+            relationship_object, context={'request': request}).data
+        serialized_relationship = dict(_serialized_relationship)
+        serialized_relationship['to_person'] = serialized_user
+        del serialized_relationship['from_person']
+        res.append(serialized_relationship)
+
+    return res

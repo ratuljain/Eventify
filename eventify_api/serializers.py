@@ -26,8 +26,8 @@ class UserProfileInformationSerializer(serializers.ModelSerializer):
 
 
 class EventifyUserSerializer(serializers.ModelSerializer):
-    auth_user = DjangoAuthUserSerializer()
-    user_profile_information = UserProfileInformationSerializer()
+    auth_user = DjangoAuthUserSerializer(required=False)
+    user_profile_information = UserProfileInformationSerializer(required=True)
     # connection = UserConnectionSerializer()
 
     class Meta:
@@ -52,6 +52,10 @@ class EventifyUserSerializer(serializers.ModelSerializer):
         eventifyUser.save()
         return eventifyUser
 
+    def update(self, instance, validated_data):
+        print instance
+        return instance
+
 
 class EventifyUserSerializerForConnections(serializers.ModelSerializer):
     # connection = UserConnectionSerializer()
@@ -69,14 +73,15 @@ class UserConnectionSerializer(serializers.HyperlinkedModelSerializer):
     # initiated_by_user = EventifyUserSerializer()
     # sent_to_user = EventifyUserSerializer()
     # from_person = EventifyUserSerializerForConnections()
-    to_person = EventifyUserSerializerForConnections()
-    event = serializers.HyperlinkedIdentityField(view_name='event-detail', format='html')
+    from_person = EventifyUserSerializerForConnections()
+    event = serializers.HyperlinkedIdentityField(
+        view_name='event-detail', format='html')
     event_name = serializers.ReadOnlyField(source='event.event_name')
     met_time = serializers.ReadOnlyField(source='event.event_start_time')
 
     class Meta:
         model = Relationship
-        fields = ('id', 'to_person', 'event_name', 'met_time',
+        fields = ('id', 'from_person', 'event_name', 'met_time',
                   'event', 'status',)
         depth = 1
 
