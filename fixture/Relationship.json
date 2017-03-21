@@ -1,0 +1,50 @@
+[
+  {
+    "model": "eventify_api.relationship",
+    "pk": 61,
+    "fields": {
+      "from_person": 64,
+      "to_person": 65,
+      "event": 2,
+      "status": 1,
+      "sent_time": "2017-03-16T14:10:42.584Z",
+      "response_time": null
+    }
+  },
+  {
+    "model": "eventify_api.relationship",
+    "pk": 54,
+    "fields": {
+      "from_person": 2,
+      "to_person": 65,
+      "event": 2,
+      "status": 1,
+      "sent_time": "2017-03-16T13:59:04Z",
+      "response_time": null
+    }
+  },
+  {
+    "model": "eventify_api.relationship",
+    "pk": 62,
+    "fields": {
+      "from_person": 2,
+      "to_person": 63,
+      "event": 2,
+      "status": 1,
+      "sent_time": "2017-03-18T08:34:42.147Z",
+      "response_time": null
+    }
+  },
+  {
+    "model": "eventify_api.relationship",
+    "pk": 51,
+    "fields": {
+      "from_person": 64,
+      "to_person": 2,
+      "event": 2,
+      "status": 1,
+      "sent_time": "2017-03-16T13:57:07.204Z",
+      "response_time": null
+    }
+  }
+]

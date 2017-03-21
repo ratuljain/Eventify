@@ -1,1 +1,101 @@
-[{"model": "eventify_api.eventifyuser", "pk": 54, "fields": {"auth_user": 65, "firebase_id": "o6Ps08K5pch2g6n2oH5Nvi6cKqE2", "user_profile_information": 14}}, {"model": "eventify_api.eventifyuser", "pk": 55, "fields": {"auth_user": 66, "firebase_id": "KkizfOps14WKU1JX2lCLLgfc9ya2", "user_profile_information": 15}}, {"model": "eventify_api.eventifyuser", "pk": 2, "fields": {"auth_user": 10, "firebase_id": "9RuSqDvliuXGCrtCiqc3mnp7RvA2", "user_profile_information": 1}}]
+[
+  {
+    "model": "eventify_api.eventifyuser",
+    "pk": 54,
+    "fields": {
+      "auth_user": 65,
+      "firebase_id": "o6Ps08K5pch2g6n2oH5Nvi6cKqE2",
+      "fcm_token": null,
+      "blocked": false,
+      "user_profile_information": 14
+    }
+  },
+  {
+    "model": "eventify_api.eventifyuser",
+    "pk": 55,
+    "fields": {
+      "auth_user": 66,
+      "firebase_id": "KkizfOps14WKU1JX2lCLLgfc9ya2",
+      "fcm_token": null,
+      "blocked": false,
+      "user_profile_information": 15
+    }
+  },
+  {
+    "model": "eventify_api.eventifyuser",
+    "pk": 62,
+    "fields": {
+      "auth_user": 73,
+      "firebase_id": "VnTqehV6XjZKyD6KFLPrP8s8pmv1",
+      "fcm_token": "c8-ftWMzpd4:APA91bGnzf7hCHvKvcQMFhN9hi47hPnIDQf5bTcVadw67mkSVjtHY1e-5Bjaa-vfAHLCpoG3Ckq2j7Kl5q_pTmJUqxaBkWOJYF9ihr-xeD-KGxQSpqGofKbS4tTYyKQiOgGhjOsnCmGO",
+      "blocked": false,
+      "user_profile_information": 21
+    }
+  },
+  {
+    "model": "eventify_api.eventifyuser",
+    "pk": 2,
+    "fields": {
+      "auth_user": 10,
+      "firebase_id": "9RuSqDvliuXGCrtCiqc3mnp7RvA2",
+      "fcm_token": "fPnr51qVdZg:APA91bFj_N6tcDHoCOqqZ-7fZ26wky0VppHtLi2ZOc3FdNPAI2wWlYjwdNkdAS-HDhYvX8ULI8udSOoqokXlN02t7O16nj0JTiVJbFwqaZHIhwkSI50OI4Cu219dEJ46WIrjcDKRl9GT",
+      "blocked": false,
+      "user_profile_information": 1
+    }
+  },
+  {
+    "model": "eventify_api.eventifyuser",
+    "pk": 63,
+    "fields": {
+      "auth_user": 74,
+      "firebase_id": "HgrBzhuhLBh6oHSzXcFbVUq0Z613",
+      "fcm_token": "fPnr51qVdZg:APA91bFj_N6tcDHoCOqqZ-7fZ26wky0VppHtLi2ZOc3FdNPAI2wWlYjwdNkdAS-HDhYvX8ULI8udSOoqokXlN02t7O16nj0JTiVJbFwqaZHIhwkSI50OI4Cu219dEJ46WIrjcDKRl9GT",
+      "blocked": false,
+      "user_profile_information": 22
+    }
+  },
+  {
+    "model": "eventify_api.eventifyuser",
+    "pk": 64,
+    "fields": {
+      "auth_user": 75,
+      "firebase_id": "orScehAix4WIQRgoi3PsmSr7MmT2",
+      "fcm_token": "cKGZ-yBSnjE:APA91bHK5aQJJ-R24nqtA4uaGoUS2bf4q8DByfA62PF-Zfhis5EyGTn3_ze5ngMrnQl5s9kfePu3DkrQJx1cvMtcqQ7Sds3PHCyyeL_Szez9Sjby6KIIkZQBjD2ocURa8KFJpOjzikwy",
+      "blocked": false,
+      "user_profile_information": 23
+    }
+  },
+  {
+    "model": "eventify_api.eventifyuser",
+    "pk": 65,
+    "fields": {
+      "auth_user": 76,
+      "firebase_id": "PS8TRZRMcge0QaGE3jVjdFQm1NB2",
+      "fcm_token": "c8-ftWMzpd4:APA91bGnzf7hCHvKvcQMFhN9hi47hPnIDQf5bTcVadw67mkSVjtHY1e-5Bjaa-vfAHLCpoG3Ckq2j7Kl5q_pTmJUqxaBkWOJYF9ihr-xeD-KGxQSpqGofKbS4tTYyKQiOgGhjOsnCmGO",
+      "blocked": false,
+      "user_profile_information": 24
+    }
+  },
+  {
+    "model": "eventify_api.eventifyuser",
+    "pk": 66,
+    "fields": {
+      "auth_user": 77,
+      "firebase_id": "FV4OBbpSZtSXBCHUQxyIqw3Txkm1",
+      "fcm_token": "cKGZ-yBSnjE:APA91bHK5aQJJ-R24nqtA4uaGoUS2bf4q8DByfA62PF-Zfhis5EyGTn3_ze5ngMrnQl5s9kfePu3DkrQJx1cvMtcqQ7Sds3PHCyyeL_Szez9Sjby6KIIkZQBjD2ocURa8KFJpOjzikwy",
+      "blocked": false,
+      "user_profile_information": 25
+    }
+  },
+  {
+    "model": "eventify_api.eventifyuser",
+    "pk": 67,
+    "fields": {
+      "auth_user": 78,
+      "firebase_id": "7a6HJw2yIudqdqackF2OrjC67EL2",
+      "fcm_token": "fPnr51qVdZg:APA91bFj_N6tcDHoCOqqZ-7fZ26wky0VppHtLi2ZOc3FdNPAI2wWlYjwdNkdAS-HDhYvX8ULI8udSOoqokXlN02t7O16nj0JTiVJbFwqaZHIhwkSI50OI4Cu219dEJ46WIrjcDKRl9GT",
+      "blocked": false,
+      "user_profile_information": 26
+    }
+  }
+]
