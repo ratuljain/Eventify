@@ -1,11 +1,20 @@
 from datetime import datetime
 
-import StringIO
-
 from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils import timezone
 from places.fields import PlacesField
+
+
+RELATIONSHIP_PENDING = 0
+RELATIONSHIP_ACCEPTED = 1
+RELATIONSHIP_BLOCKED = 2
+RELATIONSHIP_STATUSES = (
+    (RELATIONSHIP_PENDING, 'Pending'),
+    (RELATIONSHIP_ACCEPTED, 'Accepted'),
+    (RELATIONSHIP_BLOCKED, 'Blocked'),
+)
 
 
 class IntegerRangeField(models.IntegerField):
@@ -62,22 +71,79 @@ class UserProfileInformation(models.Model):
     user_skills = models.ManyToManyField(UserSkill, blank=True)
 
     def __unicode__(self):
-        return self.photo_url
+        return self.phone
 
 
 class EventifyUser(models.Model):
     auth_user = models.OneToOneField(
         User, on_delete=models.CASCADE, blank=True, null=True)
     firebase_id = models.CharField(max_length=200, unique=True)
+    fcm_token = models.CharField(
+        max_length=320, unique=False, blank=True, null=True)
+    blocked = models.BooleanField(default=False)
     user_profile_information = models.OneToOneField(
         UserProfileInformation,
         on_delete=models.CASCADE,
         blank=True,
         null=True,
+        related_name="profile_info"
     )
+    relationships = models.ManyToManyField('self', through='Relationship',
+                                           symmetrical=False,
+                                           related_name='related_to')
 
     def __unicode__(self):
-        return self.auth_user.first_name
+        try:
+            return self.auth_user.first_name
+        except AttributeError:
+            return str(self.pk)
+
+    def add_relationship(self, person, status, event):
+        relationship, created = Relationship.objects.get_or_create(
+            from_person=self,
+            to_person=person,
+            status=status,
+            event=event)
+        # if symm:
+        #     # avoid recursion by passing `symm=False`
+        #     person.add_relationship(self, status, event, False)
+        return relationship
+
+    def update_relationship(self, person, status):
+        relationship = Relationship.objects.filter(
+            from_person=person,
+            to_person=self).update(status=status)
+        print relationship
+        # if symm:
+        #     # avoid recursion by passing `symm=False`
+        #     person.update_relationship(self, status, event, False)
+        return relationship
+
+    def remove_relationship(self, person, status, symm=True):
+        Relationship.objects.filter(
+            from_person=self,
+            to_person=person,
+            status=status).delete()
+        # if symm:
+        # avoid recursion by passing `symm=False`
+        # person.remove_relationship(self, status, False)
+        return
+
+    def get_relationships(self, status):
+        return self.relationships.filter(
+            to_people__status=status,
+            to_people__to_person=self)
+
+    def get_pending_relationships(self):
+        return self.relationships.filter(
+            to_people__status=RELATIONSHIP_PENDING,
+            to_people__to_person=self)
+
+    def get_accepted_relationships(self):
+        self.get_relationships(RELATIONSHIP_ACCEPTED)
+
+    def get_blocked_relationships(self):
+        self.get_relationships(RELATIONSHIP_BLOCKED)
 
 
 class Panelist(models.Model):
@@ -145,6 +211,7 @@ class Event(models.Model):
     feedback = models.ManyToManyField(
         EventifyUser, related_name="event_user_feedback", through='UserEventFeedback')
     qr_code_url = models.URLField(blank=True, null=True)
+    closed = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.event_name
@@ -233,12 +300,32 @@ class Question(models.Model):
         return self.event.question_text
 
 
-# class EventCoupons(models.Model):
-#     event = models.ForeignKey(
-#         Event, related_name='coupons', on_delete=models.CASCADE, blank=True, null=True)
-#     provider_name = models.CharField(max_length=250, blank=True, null=True)
-#     coupon_description = models.CharField(max_length=250, blank=True, null=True)
-#     coupon_url = models.URLField(max_length=250, blank=True, null=True)
-#
-#     def __unicode__(self):
-#         return self.event.question_text
+class EventCoupon(models.Model):
+    event = models.ForeignKey(
+        Event, related_name='coupons', on_delete=models.CASCADE, blank=True, null=True)
+    provider_name = models.CharField(max_length=250, blank=True, null=True)
+    coupon_description = models.CharField(
+        max_length=250, blank=True, null=True)
+    coupon_url = models.URLField(max_length=250, blank=True, null=True)
+
+    def __unicode__(self):
+        return self.coupon_description
+
+
+class Relationship(models.Model):
+    from_person = models.ForeignKey(
+        EventifyUser, related_name='from_people', on_delete=models.CASCADE)
+    to_person = models.ForeignKey(
+        EventifyUser, related_name='to_people', on_delete=models.CASCADE)
+    event = models.ForeignKey(
+        Event, related_name='met_at_event', on_delete=models.CASCADE, blank=True, null=True)
+    status = models.IntegerField(
+        choices=RELATIONSHIP_STATUSES, default=RELATIONSHIP_PENDING)
+    sent_time = models.DateTimeField(default=timezone.now)
+    response_time = models.DateTimeField(blank=True, null=True)
+
+    def __unicode__(self):
+        try:
+            return self.from_person.firebase_id + " -> " + self.to_person.firebase_id
+        except AttributeError:
+            return str(self.pk)

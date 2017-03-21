@@ -1,1 +1,52 @@
-[{"model": "eventify_api.event", "pk": 2, "fields": {"event_bg_image": "image/upload/v1486208875/qiywn4vocqebg0iczazt.jpg", "venue": 1, "agenda": "This course helps build a good knowledge of graph databases. It also teaches the core functionality of the Neo4j graph database. With a mixture of theory and hands-on practice sessions, you will quickly learn how easy it is to work with a powerful graph database using Cypher as the query language.", "event_name": "Neo4j Workshop with Django API", "event_start_time": "2018-03-04T11:30:00Z", "event_end_time": "2017-03-04T14:30:00Z", "entry_code": "luca123", "qr_code_url": "http://res.cloudinary.com/dukt9s7aj/image/upload/v1488014104/juyy0ghzu2n41gnl5i2c.png", "event_category": [2], "organiser": [54], "panelist": [55]}}, {"model": "eventify_api.event", "pk": 1, "fields": {"event_bg_image": "image/upload/v1486134456/uwolojuwttyl9sjrwwe6.jpg", "venue": 1, "agenda": "One of the world's most powerful hosting platform, Amazon Web Services, needs to be harnessed in order to create high performance apps, sites and programs. We introduce a new series of LearnUps teaching you the capabilities and power of the AWS platform and how it can be leveraged to give your software the boost it needs.", "event_name": "Web Development with Django", "event_start_time": "2016-02-02T12:30:00Z", "event_end_time": "2017-02-02T15:30:00Z", "entry_code": "entry12", "qr_code_url": "http://res.cloudinary.com/dukt9s7aj/image/upload/v1488014480/wfepoyxzqii0cd0jettm.png", "event_category": [1, 2], "organiser": [54], "panelist": [55]}}]
+[
+  {
+    "model": "eventify_api.event",
+    "pk": 1,
+    "fields": {
+      "event_bg_image": "image/upload/v1486134456/uwolojuwttyl9sjrwwe6.jpg",
+      "venue": 1,
+      "agenda": "One of the world's most powerful hosting platform, Amazon Web Services, needs to be harnessed in order to create high performance apps, sites and programs. We introduce a new series of LearnUps teaching you the capabilities and power of the AWS platform and how it can be leveraged to give your software the boost it needs.",
+      "event_name": "Web Development with Django",
+      "event_start_time": "2016-02-02T12:30:00Z",
+      "event_end_time": "2017-02-02T15:30:00Z",
+      "entry_code": "entry12",
+      "qr_code_url": "http://res.cloudinary.com/dukt9s7aj/image/upload/v1488014480/wfepoyxzqii0cd0jettm.png",
+      "closed": true,
+      "event_category": [
+        1,
+        2
+      ],
+      "organiser": [
+        54
+      ],
+      "panelist": [
+        55
+      ]
+    }
+  },
+  {
+    "model": "eventify_api.event",
+    "pk": 2,
+    "fields": {
+      "event_bg_image": "image/upload/v1486208875/qiywn4vocqebg0iczazt.jpg",
+      "venue": 1,
+      "agenda": "This course helps build a good knowledge of graph databases. It also teaches the core functionality of the Neo4j graph database. With a mixture of theory and hands-on practice sessions, you will quickly learn how easy it is to work with a powerful graph database using Cypher as the query language.",
+      "event_name": "Neo4j Workshop with Django API",
+      "event_start_time": "2018-03-04T11:30:00Z",
+      "event_end_time": "2017-03-04T14:30:00Z",
+      "entry_code": "luca123",
+      "qr_code_url": "http://res.cloudinary.com/dukt9s7aj/image/upload/v1488014104/juyy0ghzu2n41gnl5i2c.png",
+      "closed": false,
+      "event_category": [
+        2
+      ],
+      "organiser": [
+        54
+      ],
+      "panelist": [
+        55,
+        66
+      ]
+    }
+  }
+]

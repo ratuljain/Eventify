@@ -1,0 +1,12 @@
+[
+  {
+    "model": "eventify_api.eventcoupon",
+    "pk": 2,
+    "fields": {
+      "event": 2,
+      "provider_name": "Jeetlab",
+      "coupon_description": "free everything",
+      "coupon_url": "http://google.com"
+    }
+  }
+]

@@ -1,1 +1,12 @@
-[{"model": "eventify_api.panelist", "pk": 55, "fields": {}}]
+[
+  {
+    "model": "eventify_api.panelist",
+    "pk": 55,
+    "fields": {}
+  },
+  {
+    "model": "eventify_api.panelist",
+    "pk": 66,
+    "fields": {}
+  }
+]

@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from eventify_api.models import Event, Venue, UserSkill, EventifyUser, UserProfileInformation, Panelist, Organiser, \
-    EventCategory, EventTalk, Attachment, UserEventBooking, UserEventFeedback
+    EventCategory, EventTalk, Attachment, UserEventBooking, UserEventFeedback, EventCoupon, Relationship
 
 
 class DjangoAuthUserSerializer(serializers.ModelSerializer):
@@ -19,23 +19,20 @@ class UserProfileInformationSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfileInformation
         fields = ('id', 'photo_url', 'phone', 'dob',
-                  'description', 'sex', 'employer', 'role', 'website_url', 'twitter_url', 'facebook_url', 'user_skills',)
+                  'description', 'sex', 'employer', 'role',
+                  'website_url', 'twitter_url', 'facebook_url', 'user_skills',)
 
         depth = 1
 
 
 class EventifyUserSerializer(serializers.ModelSerializer):
-    # user_profile_information = serializers.HyperlinkedRelatedField(
-    # user_profile_information = serializers.HyperlinkedRelatedField(
-    #     view_name='userprofileinformation-detail', read_only=True)
-    # user_skills = serializers.HyperlinkedRelatedField(
-    #     many=True, view_name='userskills-detail', read_only=True)
-    auth_user = DjangoAuthUserSerializer()
-    user_profile_information = UserProfileInformationSerializer()
+    auth_user = DjangoAuthUserSerializer(required=False)
+    user_profile_information = UserProfileInformationSerializer(required=True)
+    # connection = UserConnectionSerializer()
 
     class Meta:
         model = EventifyUser
-        fields = ('id', 'auth_user', 'firebase_id',
+        fields = ('id', 'auth_user', 'firebase_id', 'fcm_token', 'blocked',
                   'user_profile_information',)
         depth = 2
 
@@ -47,15 +44,46 @@ class EventifyUserSerializer(serializers.ModelSerializer):
             firebase_id=validated_data['firebase_id'])
         user_profile_information = None
 
-        auth_user = User.objects.create(**auth_user_data)
-        if auth_user.pk:
-            user_profile_information = UserProfileInformation.objects.create(
-                **user_profile_information_data)
-        if auth_user.pk and user_profile_information:
-            eventifyUser.auth_user = auth_user
-            eventifyUser.user_profile_information = user_profile_information
-            eventifyUser.save()
+        auth_user, created = User.objects.update_or_create(**auth_user_data)
+        user_profile_information, created = UserProfileInformation.objects.update_or_create(
+            **user_profile_information_data)
+        eventifyUser.auth_user = auth_user
+        eventifyUser.user_profile_information = user_profile_information
+        eventifyUser.save()
         return eventifyUser
+
+    def update(self, instance, validated_data):
+        print instance
+        return instance
+
+
+class EventifyUserSerializerForConnections(serializers.ModelSerializer):
+    # connection = UserConnectionSerializer()
+    first_name = serializers.ReadOnlyField(source='auth_user.first_name')
+    last_name = serializers.ReadOnlyField(source='auth_user.last_name')
+
+    class Meta:
+        model = EventifyUser
+        fields = ('id', 'first_name', 'last_name', 'firebase_id', 'fcm_token', 'blocked',
+                  'user_profile_information',)
+        depth = 0
+
+
+class UserConnectionSerializer(serializers.HyperlinkedModelSerializer):
+    # initiated_by_user = EventifyUserSerializer()
+    # sent_to_user = EventifyUserSerializer()
+    # from_person = EventifyUserSerializerForConnections()
+    from_person = EventifyUserSerializerForConnections()
+    event = serializers.HyperlinkedIdentityField(
+        view_name='event-detail', format='html')
+    event_name = serializers.ReadOnlyField(source='event.event_name')
+    met_time = serializers.ReadOnlyField(source='event.event_start_time')
+
+    class Meta:
+        model = Relationship
+        fields = ('id', 'from_person', 'event_name', 'met_time',
+                  'event', 'status',)
+        depth = 1
 
 
 class UserSkillSerializer(serializers.ModelSerializer):
@@ -94,7 +122,7 @@ class UserEventFeedbackSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserEventFeedback
-        fields = ('event', 'user', 'rating', 'feedback_text',
+        fields = ('id', 'event', 'user', 'rating', 'feedback_text',
                   'food', 'panelist', 'relevance',
                   'engagement', 'duration', 'crowd',)
 
@@ -132,14 +160,25 @@ class EventTalkSerializer(serializers.ModelSerializer):
         depth = 1
 
 
+class EventCouponsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = EventCoupon
+        fields = ('id', 'provider_name', 'coupon_description',
+                  'coupon_url',)
+        depth = 1
+
+
 class EventSerializer(serializers.ModelSerializer):
     panelist = PanelistSerializer(many=True, read_only=True)
     organiser = OrganiserSerializer(many=True, read_only=True)
+    coupons = EventCouponsSerializer(many=True, read_only=True)
+    talks = EventTalkSerializer(many=True, read_only=True)
 
     class Meta:
         model = Event
         fields = (
             'id', 'event_bg_image', 'event_category', 'venue', 'agenda',
             'event_name', 'event_start_time', 'event_end_time',
-            'entry_code', 'organiser', 'panelist', 'talks',)
+            'entry_code', 'organiser', 'panelist', 'talks', 'closed', 'coupons',)
         depth = 4

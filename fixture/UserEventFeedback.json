@@ -1,1 +1,114 @@
-[]
+[
+  {
+    "model": "eventify_api.usereventfeedback",
+    "pk": 64,
+    "fields": {
+      "event": 1,
+      "user": 2,
+      "rating": 4,
+      "feedback_text": "maza aa gaya bc",
+      "food": true,
+      "panelist": true,
+      "relevance": false,
+      "engagement": true,
+      "duration": false,
+      "crowd": false
+    }
+  },
+  {
+    "model": "eventify_api.usereventfeedback",
+    "pk": 65,
+    "fields": {
+      "event": 1,
+      "user": 63,
+      "rating": 2,
+      "feedback_text": "Booty wasn't there so I was lonely. :(",
+      "food": false,
+      "panelist": false,
+      "relevance": false,
+      "engagement": true,
+      "duration": false,
+      "crowd": true
+    }
+  },
+  {
+    "model": "eventify_api.usereventfeedback",
+    "pk": 66,
+    "fields": {
+      "event": 2,
+      "user": 66,
+      "rating": 5,
+      "feedback_text": "Donuts were awesome",
+      "food": true,
+      "panelist": false,
+      "relevance": false,
+      "engagement": true,
+      "duration": true,
+      "crowd": false
+    }
+  },
+  {
+    "model": "eventify_api.usereventfeedback",
+    "pk": 67,
+    "fields": {
+      "event": 2,
+      "user": 65,
+      "rating": 3,
+      "feedback_text": "ok ok",
+      "food": false,
+      "panelist": false,
+      "relevance": true,
+      "engagement": true,
+      "duration": true,
+      "crowd": false
+    }
+  },
+  {
+    "model": "eventify_api.usereventfeedback",
+    "pk": 68,
+    "fields": {
+      "event": 1,
+      "user": 64,
+      "rating": 3,
+      "feedback_text": "need improvements",
+      "food": true,
+      "panelist": false,
+      "relevance": true,
+      "engagement": true,
+      "duration": true,
+      "crowd": true
+    }
+  },
+  {
+    "model": "eventify_api.usereventfeedback",
+    "pk": 69,
+    "fields": {
+      "event": 1,
+      "user": 54,
+      "rating": 5,
+      "feedback_text": "good",
+      "food": false,
+      "panelist": true,
+      "relevance": true,
+      "engagement": false,
+      "duration": true,
+      "crowd": true
+    }
+  },
+  {
+    "model": "eventify_api.usereventfeedback",
+    "pk": 70,
+    "fields": {
+      "event": 2,
+      "user": 54,
+      "rating": 1,
+      "feedback_text": "baaad",
+      "food": true,
+      "panelist": true,
+      "relevance": true,
+      "engagement": true,
+      "duration": true,
+      "crowd": false
+    }
+  }
+]

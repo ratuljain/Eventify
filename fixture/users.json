@@ -1,0 +1,182 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$24000$h7KbLVWAQm29$KQ3cXtVKBXEMKM1i4zPgIr+HSOH2eDR484KLELgbLnI=",
+      "last_login": "2017-03-18T09:48:03.209Z",
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2017-01-27T09:03:33.670Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 10,
+    "fields": {
+      "password": "pbkdf2_sha256$24000$ewSL3mLq1dWe$cv85aU8v88UqbQ1H/WcQTZ93WNIlqhH1pio2NEGlEXI=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "ratuljain1991@gmail.com",
+      "first_name": "Ratul Jain",
+      "last_name": "",
+      "email": "ratuljain1991@gmail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2017-02-02T14:00:12Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 65,
+    "fields": {
+      "password": "",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "organiser@gmail.com",
+      "first_name": "Organiser",
+      "last_name": "Bro",
+      "email": "organiser@gmail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2017-03-09T15:33:09.869Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 66,
+    "fields": {
+      "password": "",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "panelist@gmail.com",
+      "first_name": "Panelist",
+      "last_name": "Bro",
+      "email": "panelist@gmail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2017-03-09T15:35:39.795Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 73,
+    "fields": {
+      "password": "",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "ratuljain1992@gmail.com",
+      "first_name": "Ankit",
+      "last_name": "Rathore",
+      "email": "ratuljain1992@gmail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2017-03-14T13:17:21.721Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 74,
+    "fields": {
+      "password": "",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "luca2@gmail.com",
+      "first_name": "Luca",
+      "last_name": "Daniel",
+      "email": "luca2@gmail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2017-03-14T15:01:05.871Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 75,
+    "fields": {
+      "password": "",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "ajasra@jeetlab.com",
+      "first_name": "ajasra",
+      "last_name": "das",
+      "email": "ajasra@jeetlab.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2017-03-16T09:27:48.513Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 76,
+    "fields": {
+      "password": "",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "soorajcmpm@gmail.com",
+      "first_name": "Sooraj",
+      "last_name": "C",
+      "email": "soorajcmpm@gmail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2017-03-16T10:58:56.504Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 77,
+    "fields": {
+      "password": "",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "das.ajasra@gmail.com",
+      "first_name": "Homer",
+      "last_name": "Simpson",
+      "email": "das.ajasra@gmail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2017-03-16T11:01:20.418Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 78,
+    "fields": {
+      "password": "",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "lucaydaniel@gmail.com",
+      "first_name": "Ratul",
+      "last_name": "Jain",
+      "email": "lucaydaniel@gmail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2017-03-18T15:08:33.219Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  }
+]

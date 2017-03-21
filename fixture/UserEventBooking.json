@@ -1,1 +1,79 @@
-[{"model": "eventify_api.usereventbooking", "pk": 24, "fields": {"event": 1, "user": 2, "booking_datetime": "2017-02-28T15:09:35.785Z", "booking_seat_count": 1, "pin_verified": true}}]
+[
+  {
+    "model": "eventify_api.usereventbooking",
+    "pk": 34,
+    "fields": {
+      "event": 2,
+      "user": 64,
+      "booking_datetime": "2017-03-16T09:28:08.894Z",
+      "booking_seat_count": 1,
+      "pin_verified": true
+    }
+  },
+  {
+    "model": "eventify_api.usereventbooking",
+    "pk": 35,
+    "fields": {
+      "event": 2,
+      "user": 65,
+      "booking_datetime": "2017-03-16T11:02:27.184Z",
+      "booking_seat_count": 1,
+      "pin_verified": true
+    }
+  },
+  {
+    "model": "eventify_api.usereventbooking",
+    "pk": 36,
+    "fields": {
+      "event": 2,
+      "user": 66,
+      "booking_datetime": "2017-03-16T12:47:40.123Z",
+      "booking_seat_count": 1,
+      "pin_verified": false
+    }
+  },
+  {
+    "model": "eventify_api.usereventbooking",
+    "pk": 46,
+    "fields": {
+      "event": 2,
+      "user": 2,
+      "booking_datetime": "2017-03-17T13:13:06.043Z",
+      "booking_seat_count": 1,
+      "pin_verified": true
+    }
+  },
+  {
+    "model": "eventify_api.usereventbooking",
+    "pk": 33,
+    "fields": {
+      "event": 2,
+      "user": 63,
+      "booking_datetime": "2017-03-14T16:48:58Z",
+      "booking_seat_count": 1,
+      "pin_verified": true
+    }
+  },
+  {
+    "model": "eventify_api.usereventbooking",
+    "pk": 47,
+    "fields": {
+      "event": 2,
+      "user": 67,
+      "booking_datetime": "2017-03-18T15:16:22.147Z",
+      "booking_seat_count": 1,
+      "pin_verified": false
+    }
+  },
+  {
+    "model": "eventify_api.usereventbooking",
+    "pk": 24,
+    "fields": {
+      "event": 1,
+      "user": 2,
+      "booking_datetime": "2017-02-28T15:09:35.785Z",
+      "booking_seat_count": 1,
+      "pin_verified": true
+    }
+  }
+]
