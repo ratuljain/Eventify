@@ -247,6 +247,10 @@ class EventList(APIView):
             organiser_id = self.request.query_params.get('organiser', None)
             firebase_id = self.request.query_params.get('firebase-id', None)
             is_upcoming = self.request.query_params.get('upcoming', None)
+            fields = self.request.query_params.get('fields', None)
+            fields_list = None
+            if fields:
+                fields_list = fields.split(",")
             events = Event.objects.all()
 
             number_of_param = [organiser_id, firebase_id, is_upcoming]
@@ -277,7 +281,7 @@ class EventList(APIView):
                 events = Event.objects.filter(
                     event_start_time__gte=datetime.now())
 
-            serializer = EventSerializer(events, many=True)
+            serializer = EventSerializer(events, many=True, fields=fields_list)
             return Response(data=serializer.data, status=status.HTTP_200_OK)
         except EventifyUser.DoesNotExist:
             raise Http404
