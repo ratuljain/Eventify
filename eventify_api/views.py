@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+import requests
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.http import Http404
@@ -669,3 +670,27 @@ def filter_stuff(request, accepted_relationships, user):
         res.append(serialized_relationship)
 
     return res
+
+
+class CloudinaryPictures(APIView):
+    def get_object(self, pk):
+        try:
+            return Event.objects.get(pk=pk)
+        except Event.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        event = self.get_object(pk)
+        prefix_text = 'Eventify/' + str(event.pk)
+        payload = {'prefix': prefix_text, 'max_results': '50'}
+        r = requests.get('https://api.cloudinary.com/v1_1/dukt9s7aj/resources/image/upload',
+                         auth=('742926962481883', 'MQ5RQj650yZcaIhxC1IYcbnvSxg'), params=payload)
+        try:
+            r.raise_for_status()
+            status = r.status_code
+        except:
+            status = r.status_code
+
+        data = r.json()
+
+        return Response(data=data, status=status)

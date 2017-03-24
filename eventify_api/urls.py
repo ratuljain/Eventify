@@ -61,6 +61,8 @@ urlpatterns = [
         views.CouponDetail.as_view(), name='feedback-list'),
     url(r'^connections/$',
         views.ConnectionList.as_view(), name='connections-list'),
+    url(r'^photos/(?P<pk>[0-9]+)/$',
+        views.CloudinaryPictures.as_view(), name='photo-list'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
