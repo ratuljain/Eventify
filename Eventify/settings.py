@@ -203,3 +203,11 @@ PLACES_MAPS_API_KEY = 'AIzaSyBqJsshdcMRAPeZIvzJ7YRBfENrdkwT4MA'
 
 SERVICE_ACCOUNT_JSON_FILE = os.path.join(
     "eventify_api", "serviceAccountCredentials.json")
+
+config = {
+    "apiKey": "AIzaSyBOvqjUrM1juX2ZiPD1HwDQOjvKPY0q9nM",
+    "authDomain": "eventifyapp-d5196.firebaseapp.com",
+    "databaseURL": "https://eventifyapp-d5196.firebaseio.com/",
+    "storageBucket": "eventifyapp-d5196.appspot.com",
+    "serviceAccount": SERVICE_ACCOUNT_JSON_FILE
+}

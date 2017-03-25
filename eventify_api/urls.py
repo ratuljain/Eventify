@@ -1,10 +1,7 @@
-from django.conf.urls import url, include
-from rest_framework.routers import DefaultRouter
+from django.conf.urls import url
 from rest_framework.urlpatterns import format_suffix_patterns
-from rest_framework_nested import routers
 
 from eventify_api import views
-
 
 urlpatterns = [
     url(r'^$', views.api_root),
@@ -63,6 +60,8 @@ urlpatterns = [
         views.ConnectionList.as_view(), name='connections-list'),
     url(r'^photos/(?P<pk>[0-9]+)/$',
         views.CloudinaryPictures.as_view(), name='photo-list'),
+    url(r'^signup-web/$',
+        views.RegisterAndBookEventWebView.as_view(), name='signup-webview'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

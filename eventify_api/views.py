@@ -1,12 +1,16 @@
+import ast
 from datetime import datetime, timedelta
 
 import requests
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from jose import JWTError
 from pyfcm import FCMNotification
+from pyrebase import pyrebase
+from requests.exceptions import HTTPError
 from rest_framework import generics
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -14,6 +18,7 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
+from Eventify.settings import config
 from eventify_api.models import Venue, Event, UserProfileInformation, UserSkill, EventifyUser, Panelist, Organiser, \
     EventCategory, EventTalk, UserEventBooking, UserEventFeedback, EventCoupon, Relationship
 from eventify_api.serializers import VenueSerializer, EventSerializer, UserProfileInformationSerializer, \
@@ -698,3 +703,60 @@ class CloudinaryPictures(APIView):
         data = r.json()
 
         return Response(data=data, status=status)
+
+
+class RegisterAndBookEventWebView(APIView):
+    def post(self, request, format=None):
+        result = None
+        firebase = pyrebase.initialize_app(config)
+        auth = firebase.auth()
+        email = request.data['email']
+        password = request.data['password']
+        first_name = request.data['first_name']
+        last_name = request.data['last_name']
+        phone = request.data['phone']
+        company = request.data['company']
+        sex = request.data['sex']
+        role = request.data['role']
+        event_id = request.data['event_id']
+
+        print request.data
+
+        if sex not in [i[0] for i in UserProfileInformation.SEX_CHOICES]:
+            return Response(data={"error": "Value too long for type character"}, status=status.HTTP_400_BAD_REQUEST)
+        if role not in [i[0] for i in UserProfileInformation.ROLE_CHOICES]:
+            return Response(data={"error": "Value too long for type character"}, status=status.HTTP_400_BAD_REQUEST)
+        # before the 1 hour expiry:
+        try:
+            user = auth.create_user_with_email_and_password(email, password)
+            user_email = user['email']
+            user_firebase_id = user['localId']
+            auth_user = User(username=user_firebase_id, email=user_email, first_name=first_name, last_name=last_name)
+            user_profile_information = UserProfileInformation(phone=phone, sex=sex, employer=company, role=role)
+            auth_user.save()
+            try:
+                user_profile_information.save()
+            except IntegrityError as e:
+                return Response(data={"error": "Phone number already exists"}, status=status.HTTP_409_CONFLICT)
+
+            eventify_user = EventifyUser.objects.create(auth_user=auth_user, firebase_id=user_firebase_id,
+                                                        user_profile_information=user_profile_information)
+            serializer = EventifyUserSerializer(eventify_user)
+            status_code = status.HTTP_201_CREATED
+            event = Event.objects.get(pk=int(event_id))
+            booking = UserEventBooking.objects.create(event=event, user=eventify_user)
+            booking_serializer = UserEventBookingSerializer(booking,
+                                                            fields=(
+                                                            'booking_datetime', 'booking_seat_count', 'pin_verified',))
+            d5 = {}
+            d5['booking_information'] = booking_serializer.data
+            d4 = dict(serializer.data, **d5)
+            result = d4
+        except HTTPError as error:
+            x = error.strerror
+            result = ast.literal_eval(x)
+            status_code = status.HTTP_400_BAD_REQUEST
+
+            # print error
+
+        return Response(data=result, status=status_code)

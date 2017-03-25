@@ -1,18 +1,14 @@
-import StringIO
 import os
+import pyrebase
 import qrcode
 from cloudinary.uploader import upload
-
-from django.conf import settings
 from django.contrib.auth.models import User
-from django.core.files.uploadedfile import InMemoryUploadedFile
-from django.db.models.signals import post_save, pre_init
+from django.db.models.signals import post_save
 from django.dispatch import receiver
-from mock.mock import self
 from rest_framework.authtoken.models import Token
-import qrcode
-from Eventify.settings import SERVICE_ACCOUNT_JSON_FILE
-from eventify_api.models import Venue, Attachment, Event
+
+from Eventify.settings import config
+from eventify_api.models import Attachment, Event
 
 
 @receiver(post_save, sender=User)
@@ -23,15 +19,6 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 
 @receiver(post_save, sender=Attachment)
 def do_something(sender, instance, created, **kwargs):
-    import pyrebase
-
-    config = {
-        "apiKey": "AIzaSyBOvqjUrM1juX2ZiPD1HwDQOjvKPY0q9nM",
-        "authDomain": "eventifyapp-d5196.firebaseapp.com",
-        "databaseURL": "https://eventifyapp-d5196.firebaseio.com/",
-        "storageBucket": "eventifyapp-d5196.appspot.com",
-        "serviceAccount": SERVICE_ACCOUNT_JSON_FILE
-    }
 
     # get name of file
     filename = os.path.basename(instance.file.url)

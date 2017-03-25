@@ -50,7 +50,7 @@ class UserProfileInformation(models.Model):
     )
     photo_url = models.URLField()
     phone = models.CharField(max_length=10, unique=True)
-    dob = models.DateField()
+    dob = models.DateField(blank=True, null=True)
     sex = models.CharField(
         max_length=6,
         choices=SEX_CHOICES,
