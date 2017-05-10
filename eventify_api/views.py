@@ -281,7 +281,7 @@ class EventList(APIView):
                 organiser = Organiser.objects.get(user=user)
                 nine_hours_from_now = datetime.now() + timedelta(hours=9)
                 events = Event.objects.filter(
-                    organiser=organiser, event_start_time__gte=nine_hours_from_now)
+                    organiser=organiser)
             if is_upcoming:
                 events = Event.objects.filter(
                     event_start_time__gte=datetime.now())
@@ -728,17 +728,17 @@ class RegisterAndBookEventWebView(APIView):
             return Response(data={"error": "Value too long for type character"}, status=status.HTTP_400_BAD_REQUEST)
         # before the 1 hour expiry:
         try:
-            user = auth.create_user_with_email_and_password(email, password)
-            user_email = user['email']
-            user_firebase_id = user['localId']
-            auth_user = User(username=user_firebase_id, email=user_email, first_name=first_name, last_name=last_name)
             user_profile_information = UserProfileInformation(phone=phone, sex=sex, employer=company, role=role)
-            auth_user.save()
             try:
                 user_profile_information.save()
             except IntegrityError as e:
                 return Response(data={"error": "Phone number already exists"}, status=status.HTTP_409_CONFLICT)
+            user = auth.create_user_with_email_and_password(email, password)
+            user_email = user['email']
+            user_firebase_id = user['localId']
+            auth_user = User(username=user_firebase_id, email=user_email, first_name=first_name, last_name=last_name)
 
+            auth_user.save()
             eventify_user = EventifyUser.objects.create(auth_user=auth_user, firebase_id=user_firebase_id,
                                                         user_profile_information=user_profile_information)
             serializer = EventifyUserSerializer(eventify_user)
