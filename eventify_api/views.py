@@ -17,6 +17,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
+from rest_framework_swagger.views import get_swagger_view
 
 from Eventify.settings import config
 from eventify_api.models import Venue, Event, UserProfileInformation, UserSkill, EventifyUser, Panelist, Organiser, \
@@ -25,7 +26,7 @@ from eventify_api.serializers import VenueSerializer, EventSerializer, UserProfi
     UserSkillSerializer, EventifyUserSerializer, PanelistSerializer, OrganiserSerializer, EventCategorySerializer, \
     DjangoAuthUserSerializer, EventTalkSerializer, UserEventBookingSerializer, UserEventFeedbackSerializer, \
     EventCouponsSerializer, UserConnectionSerializer, EventifyUserSerializerForConnections
-from eventify_api.utils import parse_firebase_token, convertToBoolean
+from eventify_api.utils import parse_firebase_token, convertToBoolean, send_notification_to_multiple
 
 push_service = FCMNotification(api_key="AAAAaRIijwg:APA91bFhO7nK3uchPsKh8oo_WGzFwoL8hmfbfeWu"
                                        "_x5SBZqdm8nIcwsEAIg51qVt5l9rsajG4XlgeaBnuiUdFKoUuHve"
@@ -54,6 +55,8 @@ def api_root(request, format=None):
         'eventify_users': reverse('eventifyuser-list', request=request, format=format),
     })
 
+
+schema_view = get_swagger_view(title='Pastebin API')
 
 class AuthUserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
@@ -86,9 +89,7 @@ class UserSkillDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class EventifyUserList(APIView):
-    """
-    List all snippets, or create a new snippet.
-    """
+
 
     def get_queryset(self):
         queryset = EventifyUser.objects.all()
@@ -98,12 +99,46 @@ class EventifyUserList(APIView):
 
         return queryset
 
+
     def get(self, request, format=None):
+        """Returns list of all the users in Eventify."""
         queryset = self.get_queryset()
         serializer = EventifyUserSerializer(queryset, many=True)
         return Response(serializer.data)
 
+
     def post(self, request, format=None):
+        """
+        Create a new Eventify User
+
+        * Body:
+
+            {
+                "auth_user": {
+                    "username": "user_test@gmail.com",
+                    "first_name": "Test",
+                    "last_name": "User",
+                    "email": "panelist@gmail.com",
+                    "date_joined": "2017-03-09T15:35:39.795823Z"
+                },
+                "firebase_id": "KkizfOps14WKU1JX2lCLLgfcTEST",
+                "fcm_token": null,
+                "blocked": false,
+                "user_profile_information": {
+                    "photo_url": "https://unsplash.it/400/300",
+                    "phone": "9988776655",
+                    "dob": "2017-02-18",
+                    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam efficitur ipsum in placerat molestie. Fusce quis mauris a enim sollicitudin",
+                    "sex": "Male",
+                    "employer": "Test",
+                    "role": "Student",
+                    "website_url": "https://linkedin.com/",
+                    "twitter_url": "https://twitter.com/",
+                    "facebook_url": "https://facebook.com/",
+                    "user_skills": []
+                }
+            }
+                    """
         serializer = EventifyUserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -111,6 +146,7 @@ class EventifyUserList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, format=None):
+        """Returns list of all the users in Eventify."""
         try:
             fcm_token = request.data['fcm_token']
         except KeyError:
@@ -124,9 +160,6 @@ class EventifyUserList(APIView):
 
 
 class EventifyUserDetail(APIView):
-    """
-    Retrieve, update or delete a snippet instance.
-    """
 
     def get_object(self, pk):
         try:
@@ -135,12 +168,13 @@ class EventifyUserDetail(APIView):
             raise Http404
 
     def get(self, request, pk, format=None):
+        """Returns user by id."""
         snippet = self.get_object(pk)
         serializer = EventifyUserSerializer(snippet)
         return Response(serializer.data)
 
     def put(self, request, pk, format=None):
-        print "here"
+        """Update an existing user."""
         snippet = self.get_object(pk)
         serializer = EventifyUserSerializer(snippet, data=request.data)
         if serializer.is_valid():
@@ -149,6 +183,7 @@ class EventifyUserDetail(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
+        """Deletes a user."""
         snippet = self.get_object(pk)
         snippet.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -329,6 +364,12 @@ class UserEventBookingDetailList(generics.ListCreateAPIView):
 
 
 class UserEventBookingDetail(APIView):
+    """
+    Get all the bookings of an event
+    Takes in optional boolean param verified which returns list of people who've checked-in(present in the event).
+    example - http://127.0.0.1:8000/bookings/1/?verified=1
+    This will return list of the people who are check-in at the event(pk=1)
+    """
 
     def get_object(self, pk):
         try:
@@ -760,3 +801,36 @@ class RegisterAndBookEventWebView(APIView):
             # print error
 
         return Response(data=result, status=status_code)
+
+
+class SendCommonPushNotificationToAllEventAttendees(APIView):
+    """
+    Send push notification to all the users who are registered/booked for an event.
+    Takes in required query parameter, 'message' which defines the message body of the notification.
+    Returns: 204
+    """
+
+    def get_object(self, event_pk):
+        try:
+            return Event.objects.get(pk=event_pk)
+        except Event.DoesNotExist:
+            raise Http404
+
+    def get(self, request, event_pk, format=None):
+        message_body = self.request.query_params.get('message', None)
+
+        if not message_body:
+            return Response({"detail": "Query parameter message is required."},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        event_object = self.get_object(event_pk)
+        event_bookings_user_id = event_object.usereventbooking_set.all().values_list('user', flat=True)
+        users_fcm_queryset = EventifyUser.objects.filter(id__in=event_bookings_user_id).filter(
+            fcm_token__isnull=False).values_list('fcm_token', flat=True)
+
+        # send notification
+        if users_fcm_queryset:
+            message_title = event_object.event_name
+            send_notification_to_multiple(push_service, users_fcm_queryset, message_title, message_body)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)

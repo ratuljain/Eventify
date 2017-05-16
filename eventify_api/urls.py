@@ -2,8 +2,10 @@ from django.conf.urls import url
 from rest_framework.urlpatterns import format_suffix_patterns
 
 from eventify_api import views
+from eventify_api.views import schema_view
 
 urlpatterns = [
+    url(r'^$', schema_view),
     url(r'^$', views.api_root),
     url(r'^users/$', views.AuthUserList.as_view(), name='user-list'),
     url(r'^users/(?P<pk>[0-9]+)/$',
@@ -62,6 +64,8 @@ urlpatterns = [
         views.CloudinaryPictures.as_view(), name='photo-list'),
     url(r'^signup-web/$',
         views.RegisterAndBookEventWebView.as_view(), name='signup-webview'),
+    url(r'^send-notification/(?P<event_pk>[0-9]+)/$',
+        views.SendCommonPushNotificationToAllEventAttendees.as_view(), name='send-notification'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
