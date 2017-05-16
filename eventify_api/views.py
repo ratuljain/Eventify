@@ -5,6 +5,7 @@ import requests
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.db.models import Q
+from django.db.models.functions import Lower
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from jose import JWTError
@@ -379,7 +380,7 @@ class UserEventBookingDetail(APIView):
 
     def get(self, request, pk, format=None):
         event = self.get_object(pk)
-        event_bookings = event.usereventbooking_set.all()
+        event_bookings = event.usereventbooking_set.all().order_by(Lower('user__auth_user__first_name'))
 
         pin_verified = self.request.query_params.get('verified', None)
         if pin_verified is not None:
