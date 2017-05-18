@@ -94,8 +94,7 @@ class UserConnectionSerializer(serializers.HyperlinkedModelSerializer):
     # sent_to_user = EventifyUserSerializer()
     # from_person = EventifyUserSerializerForConnections()
     from_person = EventifyUserSerializerForConnections()
-    event = serializers.HyperlinkedIdentityField(
-        view_name='event-detail', format='html')
+    event = serializers.ReadOnlyField(source='event.id')
     event_name = serializers.ReadOnlyField(source='event.event_name')
     met_time = serializers.ReadOnlyField(source='event.event_start_time')
 
