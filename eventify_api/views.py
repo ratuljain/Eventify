@@ -43,6 +43,25 @@ def send_notification(push_service, registration_id, message_title, message_body
     print result
 
 
+def filter_stuff(request, accepted_relationships, user):
+    res = []
+    for relationship_object in accepted_relationships:
+        from_to_tuple = [relationship_object.from_person.pk,
+                         relationship_object.to_person.pk]
+        x = set(from_to_tuple) - {user.pk}
+        user_connection = EventifyUser.objects.get(pk=x.pop())
+        serialized_user = EventifyUserSerializerForConnections(
+            user_connection, context={'request': request}).data
+        _serialized_relationship = UserConnectionSerializer(
+            relationship_object, context={'request': request}).data
+        serialized_relationship = dict(_serialized_relationship)
+        serialized_relationship['to_person'] = serialized_user
+        del serialized_relationship['from_person']
+        res.append(serialized_relationship)
+
+    return res
+
+
 RELATIONSHIP_PENDING = 0
 RELATIONSHIP_ACCEPTED = 1
 RELATIONSHIP_BLOCKED = 2
@@ -58,6 +77,7 @@ def api_root(request, format=None):
 
 
 schema_view = get_swagger_view(title='Pastebin API')
+
 
 class AuthUserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
@@ -90,8 +110,6 @@ class UserSkillDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class EventifyUserList(APIView):
-
-
     def get_queryset(self):
         queryset = EventifyUser.objects.all()
         username = self.request.query_params.get('firebase_id', None)
@@ -100,13 +118,11 @@ class EventifyUserList(APIView):
 
         return queryset
 
-
     def get(self, request, format=None):
         """Returns list of all the users in Eventify."""
         queryset = self.get_queryset()
         serializer = EventifyUserSerializer(queryset, many=True)
         return Response(serializer.data)
-
 
     def post(self, request, format=None):
         """
@@ -139,7 +155,7 @@ class EventifyUserList(APIView):
                     "user_skills": []
                 }
             }
-                    """
+        """
         serializer = EventifyUserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -160,8 +176,66 @@ class EventifyUserList(APIView):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
 
-class EventifyUserDetail(APIView):
+class EventifyUserRegisteriOS(APIView):
+    def post(self, request, format=None):
+        """
+        Create a new Eventify User
 
+        * Request Body:
+
+            {
+              "email": "lukaku8@gmail.com",
+              "password": "password",
+              "first_name": "Test",
+              "last_name": "User",
+              "phone": "9911231231",
+              "employer": "Test",
+              "sex": "Male",
+              "role": "Student"
+            }
+
+
+        """
+        email = request.data["email"]
+        password = request.data["password"]
+        first_name = request.data["first_name"]
+        last_name = request.data["last_name"]
+        phone = request.data["phone"]
+        employer = request.data["employer"]
+        sex = request.data["sex"]
+        role = request.data["role"]
+        firebase = pyrebase.initialize_app(config)
+        auth = firebase.auth()
+
+        s = status.HTTP_201_CREATED
+        response = {}
+
+        try:
+            # Check if phone exists
+            duplicate_phone = UserProfileInformation.objects.filter(phone=phone).count()
+            if duplicate_phone > 0:
+                raise IntegrityError
+            firebase_user = auth.create_user_with_email_and_password(email, password)
+            auth_user = User.objects.create_user(username=firebase_user['localId'],
+                                                 email=email,
+                                                 first_name=first_name,
+                                                 last_name=last_name)
+            user_profile_information = UserProfileInformation.objects.create(photo_url="", phone=phone, sex=sex,
+                                                                             employer=employer, role=role)
+            EventifyUser.objects.create(auth_user=auth_user, user_profile_information=user_profile_information,
+                                        firebase_id=firebase_user['localId'])
+        except HTTPError as e:
+            if 'EMAIL_EXISTS' in repr(e):
+                response = '"error": "EMAIL_EXISTS"'
+                s = status.HTTP_400_BAD_REQUEST
+        except IntegrityError as e:
+            response = '"error": "PHONE_EXISTS"'
+            s = status.HTTP_400_BAD_REQUEST
+
+        return Response(data=response, status=s)
+
+
+class EventifyUserDetail(APIView):
     def get_object(self, pk):
         try:
             return EventifyUser.objects.get(pk=pk)
@@ -188,32 +262,6 @@ class EventifyUserDetail(APIView):
         snippet = self.get_object(pk)
         snippet.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-        # def patch(self, request, pk):
-        #     eventify_user = self.get_object(pk)
-        #     auth_user = request.data['auth_user']
-        #     user_profile_information = request.data['user_profile_information']
-        #
-        #     phone = user_profile_information['phone']
-        #     description = user_profile_information['description']
-        #     employer = user_profile_information['employer']
-        #     role = user_profile_information['role']
-        #     website_url = user_profile_information['website_url']
-        #     twitter_url = user_profile_information['twitter_url']
-        #     facebook_url = user_profile_information['facebook_url']
-        #
-        #     user_profile = eventify_user.user_profile_information
-        #     user_profile.phone = phone
-        #     user_profile.description = description
-        #     user_profile.employer = employer
-        #     user_profile.role = role
-        #     user_profile.website_url = website_url
-        #     user_profile.twitter_url = twitter_url
-        #     user_profile.facebook_url = facebook_url
-        #
-        #     user_profile.save()
-        #     # set partial=True to update a data partially
-        #     return Response(data={}, status=status.HTTP_201_CREATED)
 
 
 class PanelistList(generics.ListCreateAPIView):
@@ -282,7 +330,6 @@ closed param can only be used in conjunction with firebase-id
 
 
 class EventList(APIView):
-
     def get(self, request, format=None):
         try:
             organiser_id = self.request.query_params.get('organiser', None)
@@ -338,7 +385,6 @@ class EventList(APIView):
 
 
 class EventDetail(APIView):
-
     def get_object(self, pk):
         try:
             return Event.objects.get(pk=pk)
@@ -392,7 +438,6 @@ class UserEventBookingDetail(APIView):
 
 
 class UserEventFeedbackDetail(APIView):
-
     def get_object(self, pk):
         return get_object_or_404(UserEventFeedback, pk=pk)
 
@@ -405,7 +450,6 @@ class UserEventFeedbackDetail(APIView):
 
 
 class UserEventFeedbackList(APIView):
-
     def get_queryset(self):
         try:
             return UserEventFeedback.objects.all()
@@ -529,7 +573,6 @@ class CouponDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ConnectionList(APIView):
-
     def get_user_by_FUID(self):
         firebase_id = self.request.query_params.get('firebase-id', None)
         eventify_user = None
@@ -786,25 +829,6 @@ class FirebaseToken(APIView):
         return Response(data=response_body, status=request_status)
 
 
-def filter_stuff(request, accepted_relationships, user):
-    res = []
-    for relationship_object in accepted_relationships:
-        from_to_tuple = [relationship_object.from_person.pk,
-                         relationship_object.to_person.pk]
-        x = set(from_to_tuple) - {user.pk}
-        user_connection = EventifyUser.objects.get(pk=x.pop())
-        serialized_user = EventifyUserSerializerForConnections(
-            user_connection, context={'request': request}).data
-        _serialized_relationship = UserConnectionSerializer(
-            relationship_object, context={'request': request}).data
-        serialized_relationship = dict(_serialized_relationship)
-        serialized_relationship['to_person'] = serialized_user
-        del serialized_relationship['from_person']
-        res.append(serialized_relationship)
-
-    return res
-
-
 class CloudinaryPictures(APIView):
     def get_object(self, pk):
         try:
@@ -871,7 +895,8 @@ class RegisterAndBookEventWebView(APIView):
             booking = UserEventBooking.objects.create(event=event, user=eventify_user)
             booking_serializer = UserEventBookingSerializer(booking,
                                                             fields=(
-                                                            'booking_datetime', 'booking_seat_count', 'pin_verified',))
+                                                                'booking_datetime', 'booking_seat_count',
+                                                                'pin_verified',))
             d5 = {}
             d5['booking_information'] = booking_serializer.data
             d4 = dict(serializer.data, **d5)
