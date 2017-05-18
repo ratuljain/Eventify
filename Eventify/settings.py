@@ -14,6 +14,7 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import cloudinary
+from pyfcm import FCMNotification
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework.authtoken',
     'places',
+    'rest_framework_swagger',
 ]
 
 SITE_ID = 1
@@ -177,6 +179,11 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ],
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
+        'rest_framework.parsers.JSONParser',
+    ],
     # 'PAGE_SIZE': 10
 }
 
@@ -211,3 +218,8 @@ config = {
     "storageBucket": "eventifyapp-d5196.appspot.com",
     "serviceAccount": SERVICE_ACCOUNT_JSON_FILE
 }
+
+push_service = FCMNotification(api_key="AAAAaRIijwg:APA91bFhO7nK3uchPsKh8oo_WGzFwoL8hmfbfeWu"
+                                       "_x5SBZqdm8nIcwsEAIg51qVt5l9rsajG4XlgeaBnuiUdFKoUuHve"
+                                       "EEncH-2QozIA0VD2BYGhmnbnXnPjgbCHrpi3AAqK_E-RXhHGSZzaD"
+                                       "D3lPhYXYffh4Pw-EQ")

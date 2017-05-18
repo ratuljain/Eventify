@@ -546,6 +546,73 @@ class ConnectionList(APIView):
             raise Http404
 
     def get(self, request, format=None):
+
+        """
+        End point to retrieve user's connections.
+
+
+        | Query Parameter | Description                 | Type          | Required?     |
+        | -------------   | -------------               | ------------- | ------------- |
+        | firebase-id     | Firebase id of the the user | String        | Required      |
+
+
+        * Returns response consisting of following keys -
+
+
+        | Key                    | Description                                                                           | Type          |
+        | -------------          | -------------                                                                         | ------------- |
+        | pending_relationships  | Contains pending request of users who want to connect to you (like a friend request). | Array         |
+        | accepted_relationships | Contains your connections (your friends).                                             | Array         |
+        | blocked_relationships  | Connections you have blocked.                                                         | Array         |
+
+
+        * Example request url
+
+            http://eventify.tk/connections/?firebase-id=78TDCQTLsIambj9psLL4ta7Gdqr2
+
+        * Example Response Body:
+
+                {
+                "pending_relationships": [
+                    {
+                        "id": 72,
+                        "from_person": {
+                            "id": 85,
+                            "first_name": "RAtul",
+                            "last_name": "Jain",
+                            "firebase_id": "78TDCQTLsIambj9psLL4ta7Gdqr2",
+                            "fcm_token": "c8-ftWMzpd4:APA91bGnzf7hCHvKvcQMFhN9hi47hPnIDQf5bTcVadw67mkSVjtHY1e-5Bjaa-vfAHLCpoG3Ckq2j7Kl5q_pTmJUqxaBkWOJYF9ihr-xeD-KGxQSpqGofKbS4tTYyKQiOgGhjOsnCmGO",
+                            "blocked": false,
+                            "user_profile_information": 52
+                        },
+                        "event_name": "Neo4j Workshop with Django API",
+                        "met_time": "2018-03-04T11:30:00Z",
+                        "event": "http://127.0.0.1:8000/events/72/",
+                        "status": 0
+                    }
+                ],
+                "accepted_relationships": [
+                    {
+                        "status": 1,
+                        "event_name": "Neo4j Workshop with Django API",
+                        "to_person": {
+                            "id": 65,
+                            "first_name": "Sooraj",
+                            "last_name": "C",
+                            "firebase_id": "PS8TRZRMcge0QaGE3jVjdFQm1NB2",
+                            "fcm_token": "c8-ftWMzpd4:APA91bGnzf7hCHvKvcQMFhN9hi47hPnIDQf5bTcVadw67mkSVjtHY1e-5Bjaa-vfAHLCpoG3Ckq2j7Kl5q_pTmJUqxaBkWOJYF9ihr-xeD-KGxQSpqGofKbS4tTYyKQiOgGhjOsnCmGO",
+                            "blocked": false,
+                            "user_profile_information": 24
+                        },
+                        "event": "http://127.0.0.1:8000/events/73/",
+                        "met_time": "2018-03-04T11:30:00Z",
+                        "id": 73
+                    }
+                ],
+                "blocked_relationships": []
+                }
+        """
+
         response_map = {}
         # response = {}
         pending_relationships_res = []
@@ -558,7 +625,7 @@ class ConnectionList(APIView):
             user_connections, many=True, context={'request': request})
         response = serializer.data
 
-        # TODO please make this better when you get time
+        # TODO please improve on this
         if firebase_id:
             eventify_user = get_object_or_404(
                 EventifyUser, firebase_id=firebase_id)
@@ -578,15 +645,30 @@ class ConnectionList(APIView):
 
             response_map["pending_relationships"] = UserConnectionSerializer(pending_relationships, many=True,
                                                                              context={'request': request}).data
-            response_map[
-                "accepted_relationships"] = accepted_relationships_custom_serialized
+            response_map["accepted_relationships"] = accepted_relationships_custom_serialized
             response_map["blocked_relationships"] = UserConnectionSerializer(blocked_relationships_res, many=True,
                                                                              context={'request': request}).data
+
             return Response(data=response_map, status=status.HTTP_200_OK)
 
         return Response(data=response, status=status.HTTP_200_OK)
 
     def post(self, request, format=None):
+        """
+        End point to send connection/friend request to a user.
+
+        | Query Parameter | Description                                                     | Type          | Required?     |
+        | -------------   | -------------                                                   | ------------- | ------------- |
+        | from            | Firebase id of the the person who is sending the request        | String        | Required      |
+        | to              | Firebase id of the the person to whom the request is being sent | String        | Required      |
+        | event-id        | ID of the event at which they met                               | Integer       | Required      |
+
+
+        Example request url
+
+            http://eventify.tk/connections/?from=78TDCQTLsIambj9psLL4ta7Gdqr2&to=PS8TRZRMcge0QaGE3jVjdFQm1NB2&event-id=2
+        """
+
         request_from = self.request.query_params.get('from', None)
         request_to = self.request.query_params.get('to', None)
         event_id = self.request.query_params.get('event-id', None)
