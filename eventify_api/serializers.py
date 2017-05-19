@@ -35,14 +35,18 @@ class DjangoAuthUserSerializer(serializers.ModelSerializer):
 
 
 class UserProfileInformationSerializer(serializers.ModelSerializer):
+    user_skills_comma_separated_string = serializers.SerializerMethodField()
 
     class Meta:
         model = UserProfileInformation
         fields = ('id', 'photo_url', 'phone', 'dob',
                   'description', 'sex', 'employer', 'role',
-                  'website_url', 'twitter_url', 'facebook_url', 'user_skills',)
+                  'website_url', 'twitter_url', 'facebook_url', 'user_skills', 'user_skills_comma_separated_string',)
 
         depth = 1
+
+    def get_user_skills_comma_separated_string(self, obj):
+        return ", ".join(obj.user_skills.all().values_list("skill_name", flat=True))
 
 
 class EventifyUserSerializer(serializers.ModelSerializer):
