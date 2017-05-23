@@ -429,9 +429,14 @@ class UserEventBookingDetail(APIView):
         event_bookings = event.usereventbooking_set.all().order_by(Lower('user__auth_user__first_name'))
 
         pin_verified = self.request.query_params.get('verified', None)
+        skills_list_param = self.request.GET.get("skills")
+
         if pin_verified is not None:
             event_bookings = event_bookings.filter(pin_verified=pin_verified)
-
+        if skills_list_param is not None:
+            skills_list_param = map(int, skills_list_param.split(","))
+            event_bookings = event_bookings.filter(
+                user__user_profile_information__user_skills__id__in=skills_list_param).distinct()
         booking_serialized = UserEventBookingSerializer(
             event_bookings, many=True)
         return Response(booking_serialized.data)
