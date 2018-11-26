@@ -165,15 +165,6 @@ JENKINS_TASKS = (
     # 'django_jenkins.tasks.run_sloccount'
 )
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_PERMISSION_CLASSES': (
-#         'rest_framework.permissions.IsAuthenticated',
-#     ),
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework.authentication.TokenAuthentication',
-#     )
-# }
-
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
@@ -201,25 +192,22 @@ LETTUCE_USE_TEST_DATABASE = True
 UNIQUE_EMAIL = True
 
 cloudinary.config(
-    cloud_name="dukt9s7aj",
-    api_key="742926962481883",
-    api_secret="MQ5RQj650yZcaIhxC1IYcbnvSxg"
+    cloud_name="",
+    api_key="",
+    api_secret=""
 )
 
-PLACES_MAPS_API_KEY = 'AIzaSyBqJsshdcMRAPeZIvzJ7YRBfENrdkwT4MA'
+PLACES_MAPS_API_KEY = ''
 
 SERVICE_ACCOUNT_JSON_FILE = os.path.join(
     "eventify_api", "serviceAccountCredentials.json")
 
 config = {
-    "apiKey": "AIzaSyBOvqjUrM1juX2ZiPD1HwDQOjvKPY0q9nM",
+    "apiKey": "",
     "authDomain": "eventifyapp-d5196.firebaseapp.com",
-    "databaseURL": "https://eventifyapp-d5196.firebaseio.com/",
-    "storageBucket": "eventifyapp-d5196.appspot.com",
+    "databaseURL": "",
+    "storageBucket": "",
     "serviceAccount": SERVICE_ACCOUNT_JSON_FILE
 }
 
-push_service = FCMNotification(api_key="AAAAaRIijwg:APA91bFhO7nK3uchPsKh8oo_WGzFwoL8hmfbfeWu"
-                                       "_x5SBZqdm8nIcwsEAIg51qVt5l9rsajG4XlgeaBnuiUdFKoUuHve"
-                                       "EEncH-2QozIA0VD2BYGhmnbnXnPjgbCHrpi3AAqK_E-RXhHGSZzaD"
-                                       "D3lPhYXYffh4Pw-EQ")
+push_service = FCMNotification(api_key="")
