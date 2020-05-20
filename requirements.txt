@@ -40,7 +40,7 @@ grpc-google-logging-v2==0.8.1
 grpc-google-pubsub-v1==0.8.1
 grpcio==1.1.0
 gunicorn==19.6.0
-httplib2==0.10.3
+httplib2==0.18.0
 isort==4.2.5
 itypes==1.1.0
 Jinja2==2.9.6
