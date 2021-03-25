@@ -84,7 +84,7 @@ python-Levenshtein==0.12.0
 python-mimeparse==1.6.0
 python-openid==2.2.5
 python-subunit==1.2.0
-PyYAML==3.12
+PyYAML==5.4
 qrcode==5.3
 requests==2.12.4
 requests-oauthlib==0.7.0
