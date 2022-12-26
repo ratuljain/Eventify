@@ -101,6 +101,6 @@ unittest2==1.1.0
 uritemplate==3.0.0
 urllib3==1.20
 virtualenv==15.1.0
-wheel==0.24.0
+wheel==0.38.1
 whitenoise==3.2.2
 wrapt==1.10.8
